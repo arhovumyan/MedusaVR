@@ -1,0 +1,502 @@
+
+'
+{
+  _id: ObjectId('6895a5aac30fc9df25947f5e'),
+  name: 'CyrSylSyl Ash',
+  createdAt: ISODate('2025-08-08T07:22:18.034Z')
+}
+{
+  _id: ObjectId('6895a4c4c30fc9df25947f01'),
+  name: 'ThalZep Frost',
+  createdAt: ISODate('2025-08-08T07:18:28.551Z')
+}
+{
+  _id: ObjectId('6895a3ddc30fc9df25947ea4'),
+  name: 'VesAur Moon',
+  createdAt: ISODate('2025-08-08T07:14:37.025Z')
+}
+{
+  _id: ObjectId('6895a2f5c30fc9df25947e47'),
+  name: 'SylLunAur Gale',
+  createdAt: ISODate('2025-08-08T07:10:45.745Z')
+}
+{
+  _id: ObjectId('6895a20fc30fc9df25947dea'),
+  name: 'LarLunZep Breeze',
+  createdAt: ISODate('2025-08-08T07:06:55.756Z')
+}
+{
+  _id: ObjectId('6895a128c30fc9df25947d8d'),
+  name: 'ZepAri Stone',
+  createdAt: ISODate('2025-08-08T07:03:04.627Z')
+}
+{
+  _id: ObjectId('6895a042c30fc9df25947d30'),
+  name: 'SylVes Stone',
+  createdAt: ISODate('2025-08-08T06:59:14.809Z')
+}
+{
+  _id: ObjectId('68959f59c30fc9df25947cd3'),
+  name: 'EluOph Glow',
+  createdAt: ISODate('2025-08-08T06:55:21.754Z')
+}
+{
+  _id: ObjectId('68959e71c30fc9df25947c76'),
+  name: 'EriElu Glow',
+  createdAt: ISODate('2025-08-08T06:51:29.633Z')
+}
+{
+  _id: ObjectId('68959d8ac30fc9df25947c19'),
+  name: 'VesAur Blaze',
+  createdAt: ISODate('2025-08-08T06:47:38.299Z')
+}
+{
+  _id: ObjectId('68959ca1c30fc9df25947bbc'),
+  name: 'EluOphSyl Glow',
+  createdAt: ISODate('2025-08-08T06:43:45.944Z')
+}
+{
+  _id: ObjectId('68959bb9c30fc9df25947b5f'),
+  name: 'NymNym Vale',
+  createdAt: ISODate('2025-08-08T06:39:53.791Z')
+}
+{
+  _id: ObjectId('68959ad0c30fc9df25947b02'),
+  name: 'EriLarElu Wind',
+  createdAt: ISODate('2025-08-08T06:36:00.630Z')
+}
+{
+  _id: ObjectId('689599e8c30fc9df25947aa5'),
+  name: 'EriVesOph Stone',
+  createdAt: ISODate('2025-08-08T06:32:08.438Z')
+}
+{
+  _id: ObjectId('689598ffc30fc9df25947a48'),
+  name: 'CyrZep Ash',
+  createdAt: ISODate('2025-08-08T06:28:15.266Z')
+}
+{
+  _id: ObjectId('68959818c30fc9df259479eb'),
+  name: 'AurLunEri Ash',
+  createdAt: ISODate('2025-08-08T06:24:24.655Z')
+}
+{
+  _id: ObjectId('6895972fc30fc9df2594798e'),
+  name: 'NymZepSyl Gale',
+  createdAt: ISODate('2025-08-08T06:20:31.840Z')
+}
+{
+  _id: ObjectId('68959647c30fc9df25947931'),
+  name: 'VesIsil Ash',
+  createdAt: ISODate('2025-08-08T06:16:39.443Z')
+}
+{
+  _id: ObjectId('68959560c30fc9df259478d4'),
+  name: 'LarIsilLun Vale',
+  createdAt: ISODate('2025-08-08T06:12:48.355Z')
+}
+{
+  _id: ObjectId('68959479c30fc9df25947877'),
+  name: 'SylAurOph Vale',
+  createdAt: ISODate('2025-08-08T06:08:57.199Z')
+}
+{
+  _id: ObjectId('68959392c30fc9df2594781a'),
+  name: 'EluZepLar Skye',
+  createdAt: ISODate('2025-08-08T06:05:06.007Z')
+}
+{
+  _id: ObjectId('689592aac30fc9df259477bd'),
+  name: 'EluIsilAri Blaze',
+  createdAt: ISODate('2025-08-08T06:01:14.246Z')
+}
+{
+  _id: ObjectId('689591c1c30fc9df25947760'),
+  name: 'IsilIsil Storm',
+  createdAt: ISODate('2025-08-08T05:57:21.990Z')
+}
+{
+  _id: ObjectId('689590d8c30fc9df25947703'),
+  name: 'EluLar Breeze',
+  createdAt: ISODate('2025-08-08T05:53:28.709Z')
+}
+{
+  _id: ObjectId('68958fefc30fc9df259476a6'),
+  name: 'LarMar Breeze',
+  createdAt: ISODate('2025-08-08T05:49:35.244Z')
+}
+{
+  _id: ObjectId('68958f08c30fc9df25947649'),
+  name: 'AurCyrAri Glow',
+  createdAt: ISODate('2025-08-08T05:45:44.281Z')
+}
+{
+  _id: ObjectId('68958e1fc30fc9df259475ec'),
+  name: 'VesAriZep Flare',
+  createdAt: ISODate('2025-08-08T05:41:51.577Z')
+}
+{
+  _id: ObjectId('68958d35c30fc9df2594758f'),
+  name: 'AurIsil Skye',
+  createdAt: ISODate('2025-08-08T05:37:57.710Z')
+}
+{
+  _id: ObjectId('68958c4dc30fc9df25947532'),
+  name: 'NymZep Flare',
+  createdAt: ISODate('2025-08-08T05:34:05.623Z')
+}
+{
+  _id: ObjectId('68958b65c30fc9df259474d5'),
+  name: 'ZepLunNym Flare',
+  createdAt: ISODate('2025-08-08T05:30:13.070Z')
+}
+{
+  _id: ObjectId('68958a79c30fc9df25947478'),
+  name: 'AriVes Vale',
+  createdAt: ISODate('2025-08-08T05:26:17.240Z')
+}
+{
+  _id: ObjectId('68957079c30fc9df2594741b'),
+  name: 'AriEriLar Ash',
+  createdAt: ISODate('2025-08-08T03:35:21.682Z')
+}
+{
+  _id: ObjectId('68956f91c30fc9df259473be'),
+  name: 'NymEluLun Skye',
+  createdAt: ISODate('2025-08-08T03:31:29.445Z')
+}
+{
+  _id: ObjectId('68956e99c30fc9df25947361'),
+  name: 'VesEri Stone',
+  createdAt: ISODate('2025-08-08T03:27:21.940Z')
+}
+{
+  _id: ObjectId('68956daec30fc9df25947304'),
+  name: 'AriSyl Breeze',
+  createdAt: ISODate('2025-08-08T03:23:26.138Z')
+}
+{
+  _id: ObjectId('68956cc5c30fc9df259472a7'),
+  name: 'ThalIsil Moon',
+  createdAt: ISODate('2025-08-08T03:19:33.909Z')
+}
+{
+  _id: ObjectId('68956bddc30fc9df2594724a'),
+  name: 'IsilAriLun Breeze',
+  createdAt: ISODate('2025-08-08T03:15:41.775Z')
+}
+{
+  _id: ObjectId('68956af5c30fc9df259471ed'),
+  name: 'OphElu Gale',
+  createdAt: ISODate('2025-08-08T03:11:49.913Z')
+}
+{
+  _id: ObjectId('68956a0ec30fc9df25947190'),
+  name: 'OphNym Gale',
+  createdAt: ISODate('2025-08-08T03:07:58.249Z')
+}
+{
+  _id: ObjectId('68956925c30fc9df25947133'),
+  name: 'NymLunSyl Storm',
+  createdAt: ISODate('2025-08-08T03:04:05.428Z')
+}
+{
+  _id: ObjectId('6895683dc30fc9df259470d6'),
+  name: 'AurCyr Flare',
+  createdAt: ISODate('2025-08-08T03:00:13.893Z')
+}
+{
+  _id: ObjectId('68956756c30fc9df25947079'),
+  name: 'NymAur Breeze',
+  createdAt: ISODate('2025-08-08T02:56:22.431Z')
+}
+{
+  _id: ObjectId('6895666cc30fc9df2594701c'),
+  name: 'LunOph Stone',
+  createdAt: ISODate('2025-08-08T02:52:28.065Z')
+}
+{
+  _id: ObjectId('68956546c30fc9df25946fbf'),
+  name: 'SylEluAri Storm',
+  createdAt: ISODate('2025-08-08T02:47:34.288Z')
+}
+{
+  _id: ObjectId('68956460c30fc9df25946f62'),
+  name: 'AriNymMar Ash',
+  createdAt: ISODate('2025-08-08T02:43:44.910Z')
+}
+{
+  _id: ObjectId('68956379c30fc9df25946f05'),
+  name: 'LarZep Frost',
+  createdAt: ISODate('2025-08-08T02:39:53.370Z')
+}
+{
+  _id: ObjectId('68956292c30fc9df25946ea8'),
+  name: 'AriElu Ash',
+  createdAt: ISODate('2025-08-08T02:36:02.557Z')
+}
+{
+  _id: ObjectId('68955fa4c30fc9df25946e4b'),
+  name: 'MarCyrLun Blaze',
+  createdAt: ISODate('2025-08-08T02:23:32.065Z')
+}
+{
+  _id: ObjectId('68955ef2c30fc9df25946deb'),
+  name: 'LunNymThal Wind',
+  createdAt: ISODate('2025-08-08T02:20:34.235Z')
+}
+{
+  _id: ObjectId('68955e09c30fc9df25946d52'),
+  name: 'CyrEriLar Moon',
+  createdAt: ISODate('2025-08-08T02:16:41.163Z')
+}
+{
+  _id: ObjectId('68955d8ec30fc9df25946d2f'),
+  name: 'Elara Ash',
+  createdAt: ISODate('2025-08-08T02:14:38.893Z')
+}
+{
+  _id: ObjectId('68955c98c30fc9df25946ca2'),
+  name: 'MarOph Vale',
+  createdAt: ISODate('2025-08-08T02:10:32.671Z')
+}
+{
+  _id: ObjectId('68955baec30fc9df25946c31'),
+  name: 'AurEriNym Skye',
+  createdAt: ISODate('2025-08-08T02:06:38.674Z')
+}
+{
+  _id: ObjectId('68955ac7c30fc9df25946ba7'),
+  name: 'VesOphThal Frost',
+  createdAt: ISODate('2025-08-08T02:02:47.515Z')
+}
+{
+  _id: ObjectId('689559e0c30fc9df25946b4a'),
+  name: 'LarLar Moon',
+  createdAt: ISODate('2025-08-08T01:58:56.259Z')
+}
+{
+  _id: ObjectId('689558f7c30fc9df25946aed'),
+  name: 'NymOphCyr Vale',
+  createdAt: ISODate('2025-08-08T01:55:03.691Z')
+}
+{
+  _id: ObjectId('68955810c30fc9df25946a6c'),
+  name: 'IsilElu Skye',
+  createdAt: ISODate('2025-08-08T01:51:12.042Z')
+}
+{
+  _id: ObjectId('68955724c30fc9df259469df'),
+  name: 'IsilSylSyl Ash',
+  createdAt: ISODate('2025-08-08T01:47:16.438Z')
+}
+{
+  _id: ObjectId('6895563dc30fc9df2594694d'),
+  name: 'SylSylMar Vale',
+  createdAt: ISODate('2025-08-08T01:43:25.893Z')
+}
+{
+  _id: ObjectId('6895550cc30fc9df259468f0'),
+  name: 'AurOph Vale',
+  createdAt: ISODate('2025-08-08T01:38:20.025Z')
+}
+{
+  _id: ObjectId('68955425c30fc9df25946870'),
+  name: 'LarSyl Gale',
+  createdAt: ISODate('2025-08-08T01:34:29.909Z')
+}
+{
+  _id: ObjectId('6895533dc30fc9df25946807'),
+  name: 'OphOphNym Flare',
+  createdAt: ISODate('2025-08-08T01:30:37.941Z')
+}
+{
+  _id: ObjectId('68955256c30fc9df2594675a'),
+  name: 'ZepLunEri Moon',
+  createdAt: ISODate('2025-08-08T01:26:46.520Z')
+}
+{
+  _id: ObjectId('6895516fc30fc9df259466d0'),
+  name: 'EluZepVes Gale',
+  createdAt: ISODate('2025-08-08T01:22:55.388Z')
+}
+{
+  _id: ObjectId('68955087c30fc9df2594666f'),
+  name: 'EluLunAur Glow',
+  createdAt: ISODate('2025-08-08T01:19:03.671Z')
+}
+{
+  _id: ObjectId('68954f9fc30fc9df25946610'),
+  name: 'ZepEluLun Blaze',
+  createdAt: ISODate('2025-08-08T01:15:11.218Z')
+}
+{
+  _id: ObjectId('68954eb8c30fc9df25946528'),
+  name: 'IsilNymCyr Wind',
+  createdAt: ISODate('2025-08-08T01:11:20.278Z')
+}
+{
+  _id: ObjectId('68954dd1c30fc9df2594647b'),
+  name: 'MarZep Moon',
+  createdAt: ISODate('2025-08-08T01:07:29.405Z')
+}
+{
+  _id: ObjectId('68954ce7c30fc9df259463fd'),
+  name: 'MarVes Skye',
+  createdAt: ISODate('2025-08-08T01:03:35.104Z')
+}
+{
+  _id: ObjectId('68954bffc30fc9df25946384'),
+  name: 'OphAur Mist',
+  createdAt: ISODate('2025-08-08T00:59:43.267Z')
+}
+{
+  _id: ObjectId('68954b19c30fc9df259462c6'),
+  name: 'EriMarEri Flare',
+  createdAt: ISODate('2025-08-08T00:55:53.109Z')
+}
+{
+  _id: ObjectId('68954a30c30fc9df25946258'),
+  name: 'MarLunAur Stone',
+  createdAt: ISODate('2025-08-08T00:52:00.812Z')
+}
+{
+  _id: ObjectId('68954947c30fc9df259461fb'),
+  name: 'LunAri Glow',
+  createdAt: ISODate('2025-08-08T00:48:07.180Z')
+}
+{
+  _id: ObjectId('6895485dc30fc9df2594619a'),
+  name: 'NymCyr Storm',
+  createdAt: ISODate('2025-08-08T00:44:13.189Z')
+}
+{
+  _id: ObjectId('6895476fc30fc9df25946131'),
+  name: 'VesCyrOph Mist',
+  createdAt: ISODate('2025-08-08T00:40:15.629Z')
+}
+{
+  _id: ObjectId('68954681c30fc9df25946090'),
+  name: 'OphAri Dawn',
+  createdAt: ISODate('2025-08-08T00:36:17.766Z')
+}
+{
+  _id: ObjectId('6895459ac30fc9df2594600f'),
+  name: 'IsilLun Frost',
+  createdAt: ISODate('2025-08-08T00:32:26.557Z')
+}
+{
+  _id: ObjectId('689544b2c30fc9df25945fb2'),
+  name: 'OphEri Flare',
+  createdAt: ISODate('2025-08-08T00:28:34.162Z')
+}
+{
+  _id: ObjectId('689543c6c30fc9df25945f2b'),
+  name: 'VesThal Storm',
+  createdAt: ISODate('2025-08-08T00:24:38.893Z')
+}
+{
+  _id: ObjectId('689542dbc30fc9df25945ece'),
+  name: 'MarIsil Ash',
+  createdAt: ISODate('2025-08-08T00:20:43.383Z')
+}
+{
+  _id: ObjectId('689541f1c30fc9df25945e50'),
+  name: 'CyrSyl Mist',
+  createdAt: ISODate('2025-08-08T00:16:49.425Z')
+}
+{
+  _id: ObjectId('68954109c30fc9df25945dd6'),
+  name: 'Milo Gale',
+  createdAt: ISODate('2025-08-08T00:12:57.056Z')
+}
+{
+  _id: ObjectId('68954021c30fc9df25945d79'),
+  name: 'Hector Crow',
+  createdAt: ISODate('2025-08-08T00:09:05.772Z')
+}
+{
+  _id: ObjectId('68953f3ac30fc9df25945d1c'),
+  name: 'Orion Ash',
+  createdAt: ISODate('2025-08-08T00:05:14.723Z')
+}
+{
+  _id: ObjectId('68953e50c30fc9df25945cbf'),
+  name: 'Ivory Dusk',
+  createdAt: ISODate('2025-08-08T00:01:20.487Z')
+}
+{
+  _id: ObjectId('68953d68c30fc9df25945c62'),
+  name: 'Luna Dusk',
+  createdAt: ISODate('2025-08-07T23:57:28.096Z')
+}
+{
+  _id: ObjectId('68953c80c30fc9df25945c05'),
+  name: 'Hector Hawk',
+  createdAt: ISODate('2025-08-07T23:53:36.749Z')
+}
+{
+  _id: ObjectId('68953b9ac30fc9df25945ba8'),
+  name: 'Blaze Blaze',
+  createdAt: ISODate('2025-08-07T23:49:46.320Z')
+}
+{
+  _id: ObjectId('68953ab1c30fc9df25945b4b'),
+  name: 'Dante Dusk',
+  createdAt: ISODate('2025-08-07T23:45:53.377Z')
+}
+{
+  _id: ObjectId('689539cac30fc9df25945aee'),
+  name: 'Gwen Blaze',
+  createdAt: ISODate('2025-08-07T23:42:02.838Z')
+}
+{
+  _id: ObjectId('689538e3c30fc9df25945a91'),
+  name: 'Milo Crow',
+  createdAt: ISODate('2025-08-07T23:38:11.842Z')
+}
+{
+  _id: ObjectId('689537fec30fc9df25945a34'),
+  name: 'Aria Crow',
+  createdAt: ISODate('2025-08-07T23:34:22.163Z')
+}
+{
+  _id: ObjectId('68953715c30fc9df259459d7'),
+  name: 'Milo Jade',
+  createdAt: ISODate('2025-08-07T23:30:29.470Z')
+}
+{
+  _id: ObjectId('6895362ac30fc9df2594597a'),
+  name: 'Jaxon Blaze',
+  createdAt: ISODate('2025-08-07T23:26:34.829Z')
+}
+{
+  _id: ObjectId('68953544c30fc9df2594591d'),
+  name: 'Gwen Hawk',
+  createdAt: ISODate('2025-08-07T23:22:44.520Z')
+}
+{
+  _id: ObjectId('6895345bc30fc9df259458c0'),
+  name: 'Nova Ivy',
+  createdAt: ISODate('2025-08-07T23:18:51.892Z')
+}
+{
+  _id: ObjectId('68953373c30fc9df25945863'),
+  name: 'Kira Ash',
+  createdAt: ISODate('2025-08-07T23:14:59.454Z')
+}
+{
+  _id: ObjectId('6895328ac30fc9df25945806'),
+  name: 'Hector Flint',
+  createdAt: ISODate('2025-08-07T23:11:06.630Z')
+}
+{
+  _id: ObjectId('689531a2c30fc9df259457a9'),
+  name: 'Aria Gale',
+  createdAt: ISODate('2025-08-07T23:07:14.983Z')
+}
+{
+  _id: ObjectId('689530bbc30fc9df2594574c'),
+  name: 'Cora Crow',
+  createdAt: ISODate('2025-08-07T23:03:23.696Z')
+}

@@ -1,0 +1,115 @@
+{
+  "characterId": "340709",
+  "characterName": "Aria Tanaka",
+  "characterSeed": 2849585538,
+  "images": [
+    {
+      "variationName": "portrait_front",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_1.png",
+      "seed": 2849585539,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "portrait_side",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_2.png",
+      "seed": 2849585540,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "full_body_standing",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_3.png",
+      "seed": 2849585541,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "sitting_pose",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_4.png",
+      "seed": 2849585542,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "action_pose",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_5.png",
+      "seed": 2849585543,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "close_up_face",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_6.png",
+      "seed": 2849585544,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "three_quarter_view",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_7.png",
+      "seed": 2849585545,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "upper_body_shot",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_8.png",
+      "seed": 2849585546,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "happy_expression",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_9.png",
+      "seed": 2849585547,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    },
+    {
+      "variationName": "confident_pose",
+      "bunnyUrl": "https://medusavr.b-cdn.net/BatchCreator/characters/Aria Tanaka/embeddings/Aria Tanaka_image_10.png",
+      "seed": 2849585548,
+      "generatedAt": "2025-08-16T23:55:02.206Z"
+    }
+  ],
+  "totalImages": 10,
+  "embeddingVersion": "1.0",
+  "createdAt": "2025-08-16T23:55:02.206Z",
+  "metadata": {
+    "basePrompt": "masterpiece, ultra-HD, anime, high detail, best quality, very aesthetic, 8k, cyberpunk city alley, athletic brunette with tattoos holding a camera, confident stance, neon reflections, bold vibe, cinematic lighting, anime style, Bold, fearless, decisive, daring, female, anime, brunette, athletic, straight, bdsm, girlfriend, asian",
+    "artStyle": {
+      "primaryStyle": "anime"
+    },
+    "personalityTraits": {
+      "mainTrait": "Bold",
+      "subTraits": [
+        "fearless",
+        "decisive",
+        "daring"
+      ]
+    },
+    "selectedTags": {
+      "character-type": [
+        "female"
+      ],
+      "genre": [
+        "anime"
+      ],
+      "personality": [],
+      "physical-traits": [],
+      "appearance": [
+        "brunette",
+        "athletic"
+      ],
+      "origin": [],
+      "sexuality": [
+        "straight"
+      ],
+      "fantasy": [
+        "bdsm"
+      ],
+      "content-rating": [
+        "sfw"
+      ],
+      "relationship": [
+        "girlfriend"
+      ],
+      "ethnicity": [
+        "asian"
+      ],
+      "scenario": []
+    }
+  }
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Prohibited Words Filter</title>
+</head>
+<body>
+    <h1>Testing Prohibited Words Filter</h1>
+    <div>
+        <input id="testInput" placeholder="Type 'blood' here" />
+        <div id="result"></div>
+    </div>
+
+    <script type="module">
+        // Import the filter (this won't work in browser directly, just for structure)
+        // We'll inline the filter code here for testing
+        
+        const prohibitedWords = [
+            // === Alcohol & Drugs ===
+            'alcohol', 'drunk', 'intoxicated', 'booze', 'liquor', 'beer', 'wine', 'whiskey', 'vodka', 'rum',
+            'drug', 'drugs', 'narcotics', 'substance abuse', 'addiction', 'overdose', 'high', 'stoned', 'trip',
+            'cocaine', 'crack', 'heroin', 'fentanyl', 'meth', 'methamphetamine', 'speed', 'ecstasy', 'mdma',
+            'lsd', 'acid', 'shrooms', 'psilocybin', 'pcp', 'ketamine', 'opiates', 'opioids', 'oxycodone',
+            'hydrocodone', 'xanax', 'valium', 'adderall', 'dexedrine', 'rohypnol', 'date rape drug', 'gbl',
+            'ghb', 'chloroform', 'ether', 'inhalants', 'spice', 'k2', 'bath salts', 'synthetic drugs',
+
+            // === Sexual & Non-Consensual Acts ===
+            'rape', 'raped', 'raping', 'sexual assault', 'assault', 'non-consensual', 'consent denied',
+            'forced', 'forced sex', 'coerced', 'coercion', 'unwanted sex', 'stealthing', 'revenge porn',
+            'upskirt', 'downblouse', 'voyeurism', 'peeping', 'spycam', 'hidden camera', 'blackmail sex',
+            'sex slave', 'sex trafficking', 'human trafficking', 'trafficking', 'captive sex', 'prisoner sex',
+            'abduction', 'kidnapping', 'snatch', 'grab', 'abduct', 'hostage', 'imprison', 'locked in',
+            'sleeping', 'sleep sex', 'unconscious sex', 'passed out sex', 'drugged sex', 'hypnosis', 'hypnotized',
+            'mind control sex', 'zombie sex', 'robot sex slave', 'brainwashed', 'programmed', 'sleeper agent sex',
+
+            // === Underage & Child Exploitation ===
+            'child porn', 'cp', 'lolicon', 'shotacon', 'underage', 'minor', 'teen', 'tween', 'pre-teen',
+            'preadolescent', 'barely legal', 'jailbait', 'schoolgirl', 'kindergarten', 'elementary', 'middle school',
+            'high school', 'locker room', 'changing room', 'bathhouse', 'nudity minor', 'child nudity', 'naked kid',
+            'babygirl', 'daddy issues', 'stepdaughter', 'stepsister', 'adopted daughter', 'foster child',
+            'child model', 'youth model', 'barely 18', 'almost 18', 'not quite 18', 'close to 18',
+
+            // === Incest & Family Abuse ===
+            'incest', 'father daughter', 'mother son', 'brother sister', 'sibling', 'twin', 'stepdad', 'stepmom',
+            'stepson', 'stepdaughter', 'half sister', 'half brother', 'cousin', 'aunt', 'uncle', 'niece', 'nephew',
+            'family sex', 'inbred', 'genetic', 'bloodline', 'pure blood', 'dynasty', 'royal blood',
+
+            // === Bestiality & Zoophilia ===
+            'bestiality', 'zoophilia', 'animal sex', 'fuck animal', 'dog sex', 'cat sex', 'horse sex',
+            'cow sex', 'pet sex', 'animal porn', 'beast', 'furry sex', 'anthro', 'anthropomorphic',
+            'pony play', 'petplay', 'animal hybrid', 'furries having sex',
+
+            // === Cannibalism & Gore ===
+            'cannibal', 'cannibalism', 'human meat', 'eat human', 'flesh', 'raw meat', 'butcher human',
+            'cut up body', 'dissect', 'autopsy', 'autopsy photo', 'morgue', 'dead body', 'corpse',
+            'cadaver', 'embalming', 'organ harvesting', 'organ theft', 'body parts', 'skull', 'bones',
+            'gore', 'gory', 'blood', 'bloodbath', 'pool of blood', 'splatter', 'entrails', 'intestines',
+            'guts', 'mutilated', 'dismembered', 'dismemberment', 'decapitated', 'headless', 'severed head'
+        ];
+
+        function containsWord(text, word) {
+            // Handle multi-word phrases
+            if (word.includes(' ')) {
+                return text.includes(word);
+            }
+
+            // For single words, use word boundaries to avoid false positives
+            const regex = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+            return regex.test(text);
+        }
+
+        function checkProhibitedWords(text) {
+            const normalizedText = text.toLowerCase().trim();
+            const foundViolations = [];
+
+            for (const word of prohibitedWords) {
+                if (containsWord(normalizedText, word)) {
+                    foundViolations.push(word);
+                }
+            }
+
+            if (foundViolations.length > 0) {
+                return {
+                    isAllowed: false,
+                    violations: foundViolations,
+                    message: `The following content is not allowed: ${foundViolations.slice(0, 3).join(', ')}${foundViolations.length > 3 ? ' and others' : ''}. Please modify your input to comply with our content policy.`
+                };
+            }
+
+            return {
+                isAllowed: true,
+                violations: [],
+                message: ''
+            };
+        }
+
+        document.getElementById('testInput').addEventListener('input', (e) => {
+            const value = e.target.value;
+            const result = checkProhibitedWords(value);
+            document.getElementById('result').innerHTML = 
+                `<p>Input: "${value}"</p>
+                 <p>Is Allowed: ${result.isAllowed}</p>
+                 <p>Violations: ${result.violations.join(', ')}</p>
+                 <p>Message: ${result.message}</p>`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,580 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Design System - Orange Glowy Theme */
+    --color-primary: 234 88 12; /* orange-600 */
+    --color-primary-light: 251 146 60; /* orange-400 */
+    --color-primary-dark: 194 65 12; /* orange-700 */
+    --color-accent: 245 158 11; /* amber-500 */
+    
+    /* Background Colors */
+    --color-bg-primary: 9 9 11; /* zinc-900 */
+    --color-bg-secondary: 24 24 27; /* zinc-800 */
+    --color-bg-tertiary: 39 39 42; /* zinc-700 */
+    
+    /* Text Colors */
+    --color-text-primary: 244 244 245; /* zinc-100 */
+    --color-text-secondary: 161 161 170; /* zinc-400 */
+    --color-text-muted: 113 113 122; /* zinc-500 */
+    
+    /* Border Colors */
+    --color-border-primary: rgb(234 88 12 / 0.3); /* orange-600/30 */
+    --color-border-secondary: rgb(234 88 12 / 0.2); /* orange-600/20 */
+    
+    /* Shadow Colors */
+    --shadow-orange-glow: 0 0 20px rgb(234 88 12 / 0.15);
+    --shadow-orange-strong: 0 8px 32px rgb(234 88 12 / 0.2);
+    
+    /* Lime/Green Theme Variables */
+    --color-lime-primary: 132 204 22; /* lime-500 */
+    --color-lime-light: 163 230 53; /* lime-400 */
+    --color-lime-dark: 101 163 13; /* lime-600 */
+    --color-emerald-primary: 16 185 129; /* emerald-500 */
+    
+    /* Lime Glow Effects */
+    --shadow-lime-glow: 0 0 20px rgb(132 204 22 / 0.3);
+    --shadow-lime-strong: 0 8px 32px rgb(132 204 22 / 0.4);
+    --shadow-lime-hover: 0 0 30px rgb(132 204 22 / 0.5);
+  }
+
+  * {
+    @apply border-solid;
+    overscroll-behavior: none;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* WebKit browsers */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
+  }
+
+  /* Custom scrollbar styles for dropdowns */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(39, 39, 42, 0.5);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(249, 115, 22, 0.3);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(249, 115, 22, 0.5);
+  }
+
+  .scrollbar-thumb-orange-500\/30::-webkit-scrollbar-thumb {
+    background: rgba(249, 115, 22, 0.3);
+  }
+
+  .scrollbar-thumb-orange-500\/50::-webkit-scrollbar-thumb {
+    background: rgba(249, 115, 22, 0.5);
+  }
+
+  .scrollbar-track-zinc-800\/50::-webkit-scrollbar-track {
+    background: rgba(39, 39, 42, 0.5);
+  }
+
+  body {
+    @apply font-sans text-white;
+    background: linear-gradient(135deg, rgb(var(--color-bg-primary)), rgb(var(--color-bg-secondary)));
+    /* Disable bouncy scroll effects */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Disable bounce scroll on all scrollable elements */
+  * {
+    @apply border-solid;
+    overscroll-behavior: none;
+  }
+
+  /* Disable rubber band scrolling on macOS/iOS */
+  html, body {
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
+  }
+
+  /* Image Modal Responsive Constraints */
+  .image-modal-container {
+    max-width: calc(100vw - 16px) !important;
+    max-height: calc(100vh - 16px) !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .image-modal-image {
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* Ensure modals don't cause horizontal overflow */
+  .fixed.inset-0 {
+    overflow: hidden !important;
+  }
+
+  /* High priority z-index for image modals to break out of containers */
+  .fixed.inset-0[style*="z-50"] {
+    z-index: 999999 !important;
+  }
+
+  /* Force image modals to be above all other content */
+  .fixed.inset-0.bg-black\/90 {
+    z-index: 999999 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
+
+  /* Override any height constraints from parent containers */
+  .image-modal-container,
+  .image-modal-container * {
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  /* Ensure modals break out of workshop area constraints */
+  .lg\:h-\[65vh\] .image-modal-container,
+  .lg\:h-\[65vh\] .image-modal-image {
+    max-height: calc(100vh - 16px) !important;
+    height: auto !important;
+  }
+
+  /* Mobile-first responsive image constraints */
+  @media (max-width: 640px) {
+    .image-modal-container {
+      max-width: calc(100vw - 8px) !important;
+      max-height: calc(100vh - 8px) !important;
+    }
+    
+    .image-modal-image {
+      max-width: calc(100vw - 16px) !important;
+      max-height: calc(100vh - 16px) !important;
+    }
+  }
+
+  /* Remove default focus outlines while maintaining accessibility */
+  *:focus {
+    outline: none !important;
+  }
+  
+  /* Provide custom focus styles for better UX */
+  input:focus, textarea:focus, select:focus, button:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.3) !important;
+  }
+}
+
+@layer components {
+  /* Glassmorphic Card Pattern */
+  .glass-card {
+    @apply bg-zinc-800/50 backdrop-blur-xl border border-orange-500/20 rounded-xl shadow-xl;
+    box-shadow: var(--shadow-orange-glow);
+  }
+  
+  .glass-card-strong {
+    @apply bg-gradient-to-br from-zinc-800/60 to-zinc-900/60 backdrop-blur-xl border border-orange-500/30 rounded-xl shadow-2xl;
+    box-shadow: var(--shadow-orange-strong);
+  }
+
+  /* Orange Gradient Text */
+  .gradient-text-orange {
+    @apply bg-gradient-to-r from-orange-400 via-orange-500 to-amber-400 bg-clip-text text-transparent;
+  }
+
+  /* Glowy Button Pattern */
+  .btn-orange-glow {
+    @apply bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-lg;
+    box-shadow: 0 4px 16px rgb(234 88 12 / 0.25);
+  }
+
+  .btn-orange-glow:hover {
+    box-shadow: 0 6px 20px rgb(234 88 12 / 0.35);
+    transform: translateY(-1px);
+  }
+
+  /* Enhanced button text centering */
+  .btn-text-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Tag button improvements */
+  .tag-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    min-height: 36px;
+  }
+
+  /* Glowy Avatar Pattern */
+  .avatar-glow {
+    @apply border-2 border-orange-500/40 rounded-full overflow-hidden;
+    position: relative;
+  }
+
+  .avatar-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, rgb(234 88 12 / 0.3), rgb(245 158 11 / 0.3));
+    border-radius: inherit;
+    filter: blur(8px);
+    z-index: -1;
+  }
+
+  /* Input Glow Pattern */
+  .input-glow {
+    @apply bg-zinc-800/50 border border-orange-500/20 rounded-lg px-3 py-2 text-zinc-200 placeholder-zinc-400 backdrop-blur-sm transition-all duration-200;
+  }
+
+  .input-glow:focus {
+    @apply outline-none ring-2 ring-orange-500/40 border-orange-500/40;
+    box-shadow: 0 0 12px rgb(234 88 12 / 0.2);
+  }
+
+  /* Background Gradient Overlay */
+  .bg-gradient-orange {
+    background: linear-gradient(135deg, 
+      rgb(var(--color-bg-primary)) 0%,
+      rgb(var(--color-bg-secondary)) 50%,
+      rgb(234 88 12 / 0.05) 100%
+    );
+  }
+
+  /* Legacy Classes - Optimized with Design System */
+  .card-container {
+    @apply flex flex-row flex-wrap justify-start; 
+    gap: 0;
+    padding: 0;
+  }
+
+  .character-card {
+    border: 1px solid rgb(var(--color-primary-dark)); 
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-orange-glow);
+    background-color: rgb(var(--color-bg-secondary));
+    color: rgb(var(--color-text-primary));
+  }
+
+  /* Responsive Character Grid - Fixed 2 columns on mobile, auto-fit on larger screens */
+  .responsive-character-grid {
+    display: grid;
+    gap: 12px;
+    max-width: 100%;
+    width: 100%;
+    /* Mobile: exactly 2 columns with consistent spacing */
+    grid-template-columns: repeat(2, 1fr);
+    /* Ensure grid items don't overflow */
+    grid-auto-rows: 1fr;
+    align-items: start;
+  }
+
+  /* Tablet and up: auto-fit with minimum width */
+  @media (min-width: 640px) {
+    .responsive-character-grid {
+      grid-template-columns: repeat(auto-fit, minmax(clamp(160px, 12vw, 220px), 1fr));
+      gap: 16px;
+    }
+  }
+
+  /* Desktop: more columns for larger screens */
+  @media (min-width: 1024px) {
+    .responsive-character-grid {
+      grid-template-columns: repeat(auto-fit, minmax(clamp(180px, 10vw, 200px), 1fr));
+      gap: 20px;
+    }
+  }
+
+  /* Responsive Character Card - Mobile optimized for 2-column layout */
+  .responsive-character-card {
+    aspect-ratio: 3/4;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    /* Mobile: smaller cards for 2-column layout */
+    min-height: clamp(180px, 35vw, 260px);
+    max-width: 100%;
+    /* Ensure card doesn't overflow its container */
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Tablet and up: restore original sizing */
+  @media (min-width: 640px) {
+    .responsive-character-card {
+      min-height: clamp(220px, 18vw, 300px);
+      max-width: 100%;
+    }
+  }
+
+  /* Desktop: larger cards */
+  @media (min-width: 1024px) {
+    .responsive-character-card {
+      min-height: clamp(240px, 16vw, 320px);
+    }
+  }
+
+  .character-image {
+    @apply w-full h-48 object-cover rounded;
+  }
+
+  .character-name {
+    @apply mt-2 text-xl font-semibold truncate;
+  }
+
+  .character-description {
+    @apply text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-3;
+  }
+
+  .character-image {
+    @apply w-full h-48 object-cover rounded transition-transform duration-300 ease-in-out;
+  }
+  
+  .group:hover .character-image {
+    @apply scale-105;
+  }
+  
+  .character-messages {
+    @apply text-xs;
+  }
+
+  .character-rating {
+    @apply mt-2;
+  }
+
+  /* Custom animations for character creation page */
+  @keyframes tilt {
+    0%, 50%, 100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(0.5deg);
+    }
+    75% {
+      transform: rotate(-0.5deg);
+    }
+  }
+
+  .animate-tilt {
+    animation: tilt 10s infinite linear;
+  }
+
+  /* Custom slow spin animation for loading spinner */
+  @keyframes slow-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-slow-spin {
+    animation: slow-spin 8s linear infinite;
+  }
+
+  /* Shimmer animation for buffer cards */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+
+  /* Enhanced card hover effects */
+  .card-hover-glow {
+    transition: all 0.3s ease;
+  }
+
+  .card-hover-glow:hover {
+    box-shadow: 0 0 30px rgba(234, 88, 12, 0.2);
+    border-color: rgba(234, 88, 12, 0.4);
+  }
+
+  /* Character preview card animations */
+  .character-preview-card {
+    background: linear-gradient(135deg, rgba(24, 24, 27, 0.6), rgba(39, 39, 42, 0.8));
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(234, 88, 12, 0.3);
+  }
+
+  /* Form input focus glow */
+  .input-focus-glow:focus {
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1), 0 0 20px rgba(234, 88, 12, 0.1);
+  }
+
+  /* Lime Glow Effect Classes */
+  .glow-lime {
+    box-shadow: 0 0 20px rgba(132, 204, 22, 0.4), 0 0 40px rgba(132, 204, 22, 0.2);
+  }
+
+  .glow-lime-subtle {
+    box-shadow: 0 0 15px rgba(132, 204, 22, 0.3);
+  }
+
+  .hover\:glow-lime-subtle:hover {
+    box-shadow: 0 0 15px rgba(132, 204, 22, 0.3);
+  }
+
+  /* Button hover glow effects */
+  .btn-lime-glow {
+    transition: all 0.3s ease;
+  }
+
+  .btn-lime-glow:hover {
+    box-shadow: 0 0 25px rgba(132, 204, 22, 0.5), 0 0 50px rgba(132, 204, 22, 0.3);
+    transform: translateY(-2px);
+  }
+
+}
+
+@layer utilities {
+  /* Custom Utility Classes */
+  .text-shadow-glow {
+    text-shadow: 0 0 10px rgb(234 88 12 / 0.3);
+  }
+  
+  .border-glow {
+    border-color: rgb(var(--color-border-primary));
+    box-shadow: 0 0 8px rgb(234 88 12 / 0.15);
+  }
+  
+  .bg-glass {
+    background: rgba(var(--color-bg-secondary), 0.5);
+    backdrop-filter: blur(12px);
+  }
+
+  /* Mobile-specific utilities */
+  .mobile-scroll-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .mobile-text-readable {
+    font-size: clamp(14px, 4vw, 16px);
+    line-height: 1.5;
+  }
+
+  .mobile-spacing-sm {
+    padding: clamp(0.5rem, 2vw, 1rem);
+  }
+
+  .mobile-spacing-md {
+    padding: clamp(1rem, 4vw, 1.5rem);
+  }
+
+  .mobile-spacing-lg {
+    padding: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  /* Responsive grid improvements */
+  .grid-responsive-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+    width: 100%;
+  }
+
+  /* Mobile-first responsive grid for character cards */
+  .grid-characters-mobile {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .grid-characters-mobile {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-characters-mobile {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+  }
+
+  /* Hide scrollbar but maintain scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile-optimized text truncation */
+  .truncate-mobile {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .truncate-mobile-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Enhanced mobile horizontal scroll */
+  .mobile-horizontal-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+  }
+
+  .mobile-horizontal-scroll > * {
+    scroll-snap-align: start;
+  }
+
+  .truncate-mobile-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+

@@ -1,0 +1,13 @@
+Character: TestCharacter1
+Description: beautiful woman with long red hair, green eyes, fair skin
+Created: 20250727T231537
+Generated Images: 5/5
+Directory: ./characters/TestCharacter1/training_images
+
+Next steps:
+1. Review the generated images
+2. Use them for embedding training
+3. Create embedding with name: emb_TestCharacter1
+
+Images can be used for training textual inversion embeddings
+for consistent character generation in future prompts.

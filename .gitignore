@@ -1,0 +1,15 @@
+node_modules
+.env
+.env.*
+!/.env.example
+
+
+firebase-service-account.json
+*env
+.vercel
+stuffThatWasChanged.md
+links.md
+
+guidesAndPhotos
+runningModels.md
+testing

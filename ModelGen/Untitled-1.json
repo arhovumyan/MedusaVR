@@ -1,0 +1,57 @@
+{
+  "prompt": {
+    "0": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": { "ckpt_name": "diving.safetensors" }
+    },
+    "1": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": ["0", 1],
+        "text": "masterpiece, ultra-HD, impressionism, high detail, best quality, very aesthetic, 8k, best quality, sharp focus, depth of field, hyper realistic, vibrant colors, film grain, 1woman, green makeup, green lips, sideways glance, facing away, mouth, half-closed eyes. messy hair. big breasts. come here, (one hand view), long nail polish. simple green background, one hand focus, knee up, fashion photo theme. shoot from side, dynamic composition, dynamic angle. blurry foreground, shiny skin, foreshortening."
+      }
+    },
+    "2": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": ["0", 1],
+        "text": "worst quality, low quality, normal quality, caucasian, toon, lowres, bad anatomy, bad hands, signature, watermarks, ugly, imperfect eyes, unnatural face, unnatural body, error, extra limb, missing limbs, Child, muscular, colored skin"
+      }
+    },
+    "3": {
+      "class_type": "EmptyLatentImage",
+      "inputs": { 
+        "width": 1024, 
+        "height": 1024, 
+        "batch_size": 1 
+      }
+    },
+    "4": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": ["0", 0],
+        "positive": ["1", 0],
+        "negative": ["2", 0],
+        "latent_image": ["3", 0],
+        "steps": 25,
+        "cfg": 6,
+        "sampler_name": "dpmpp_2m",
+        "scheduler": "karras",
+        "denoise": 1.0, 
+        "seed": 976162879"RANDOM_SEED_PLACEHOLDER"
+      }
+    },
+    "5": {
+      "class_type": "VAEDecode",
+      "inputs": { "samples": ["4", 0], "vae": ["0", 2] }
+    },
+    "6": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": ["5", 0],
+        "filename_prefix": "output1",
+        "increment_index": false
+      }
+    }
+  }
+}

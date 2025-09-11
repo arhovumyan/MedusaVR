@@ -1,0 +1,36 @@
+[
+  {
+    "username": "testuser1",
+    "email": "testuser1@example.com",
+    "password": "password123",
+    "avatarUrl": "https://example.com/avatar1.jpg",
+    "bio": "A test user for demonstration purposes.",
+    "verified": true,
+    "coins": 100,
+    "favorites": [],
+    "likedCharacters": [],
+    "preferences": {
+      "selectedTags": [],
+      "nsfwEnabled": false,
+      "completedOnboarding": true
+    },
+    "subscriptionTier": "regular"
+  },
+  {
+    "username": "testuser2",
+    "email": "testuser2@example.com",
+    "password": "password123",
+    "avatarUrl": "https://example.com/avatar2.jpg",
+    "bio": "Another test user.",
+    "verified": false,
+    "coins": 50,
+    "favorites": [],
+    "likedCharacters": [],
+    "preferences": {
+      "selectedTags": ["fantasy", "sci-fi"],
+      "nsfwEnabled": true,
+      "completedOnboarding": true
+    },
+    "subscriptionTier": "premium"
+  }
+]

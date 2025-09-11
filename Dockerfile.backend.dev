@@ -1,0 +1,23 @@
+# Dockerfile.backend.dev
+FROM node:20
+WORKDIR /app
+
+# Update package list and install CA certificates for SSL connections
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Copy package.json and package-lock.json to install dependencies
+COPY package.json package-lock.json ./
+
+# Install dependencies inside thecontainer for the correct architecture
+RUN npm install
+
+# Copy the entire project (server, shared, etc.)
+COPY server/ ./server/
+COPY shared/ ./shared/
+COPY service-account.json ./service-account.json
+
+# Expose the port the backend server runs on
+EXPOSE 5002
+
+# Command to run the development server directly with tsx
+CMD ["npx", "nodemon", "--exec", "npx", "tsx", "server/index.ts"]

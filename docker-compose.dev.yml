@@ -1,0 +1,53 @@
+services:
+  backend:
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile.backend.dev
+    ports:
+      - "5002:5002"
+    environment:
+      - NODE_ENV=docker-development
+      - PORT=5002
+      - FIREBASE_SERVICE_ACCOUNT_KEY_PATH=/app/service-account.json
+    volumes:
+      - .:/app
+      - ./service-account.json:/app/service-account.json
+      - /app/node_modules
+    env_file: .env
+    command: >
+      sh -c "
+        npm run dev
+      "
+    networks:
+      - medusavr-network
+    restart: always
+
+  frontend:
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile.client.dev
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:5002
+      - VITE_SOCKET_URL=ws://backend:5002
+      - NODE_ENV=development
+    volumes:
+      - ./client:/app/client
+      - /app/node_modules
+    env_file: .env
+    networks:
+      - medusavr-network
+    depends_on:
+      - backend
+    restart: always
+    command: >
+      sh -c "
+        npm run dev
+      "
+
+networks:
+  medusavr-network:
+    driver: bridge 

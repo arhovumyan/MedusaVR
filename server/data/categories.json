@@ -1,0 +1,10 @@
+[
+    { "name": "NSFW",      "emoji": "🔥" },
+    { "name": "Female",    "emoji": "👩‍🦰" },
+    { "name": "Male",      "emoji": "👨‍🦰" },
+    { "name": "Scenario",  "emoji": "🪢" },
+    { "name": "Fictional", "emoji": "📚" },
+    { "name": "Anime",     "emoji": "📺" },
+    { "name": "Game",      "emoji": "🎮" },
+    { "name": "Romantic",  "emoji": "💞" }
+  ]

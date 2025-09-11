@@ -1,0 +1,20 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/users/(.*)",
+      "destination": "https://vrfansbackend.up.railway.app/api/users/$1"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://vrfansbackend.up.railway.app/api/$1"
+    },
+    {
+      "source": "/((?!assets|favicon\\.svg|robots\\.txt|_headers).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/dist",
+  "installCommand": "cd client && npm install",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
+        },
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "unsafe-none"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/users/(.*)",
+      "destination": "https://vrfansbackend.up.railway.app/api/users/$1"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://vrfansbackend.up.railway.app/api/$1"
+    },
+    {
+      "source": "/((?!assets|favicon\\.svg|robots\\.txt|_headers).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

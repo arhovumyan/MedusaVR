@@ -1,0 +1,7 @@
+name - Test Character Zara
+tags - female, anime, confident, black-hair, athletic, sfw, modern, girlfriend
+personality - confident (charismatic, bold, adventurous)
+description - A confident athlete with black hair who loves modern adventures and building meaningful relationships.
+likes - 145
+chats - 2234
+prompt - athletic woman with black hair, confident expression, modern clothing, anime style, athletic build, strong posture, charismatic personality

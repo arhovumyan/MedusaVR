@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSP and Clickjacking Security Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+        .pass { color: green; }
+        .fail { color: red; }
+        .warning { color: orange; }
+        iframe { border: 1px solid red; width: 300px; height: 200px; }
+    </style>
+</head>
+<body>
+    <h1>MedusaVR Security Test Page</h1>
+    <p>This page tests various security features implemented in nginx configuration.</p>
+
+    <div class="test-section">
+        <h2>1. Content Security Policy Tests</h2>
+        
+        <h3>Inline Script Test (Should be blocked)</h3>
+        <button onclick="alert('This should be blocked by CSP')">Click me - Inline Script</button>
+        <div id="inline-script-result">Inline script test not run</div>
+        
+        <h3>External Script Test (Should work from allowed domains)</h3>
+        <div id="external-script-result">External script test not run</div>
+        
+        <h3>Image Loading Test</h3>
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='50'%3E%3Ctext x='10' y='30'%3EDATA URI%3C/text%3E%3C/svg%3E" alt="Data URI Image">
+        <img src="https://res.cloudinary.com/demo/image/upload/sample.jpg" alt="Cloudinary Image" style="max-width: 100px;">
+        
+        <h3>Font Loading Test</h3>
+        <p style="font-family: 'Roboto', sans-serif;">This should load Google Fonts if CSP allows it</p>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Clickjacking Protection Tests</h2>
+        
+        <h3>Self-Embedding Test (Should be blocked)</h3>
+        <p>The following iframe should be blocked by X-Frame-Options and frame-ancestors:</p>
+        <iframe src="/" title="Self-embed test"></iframe>
+        
+        <h3>External Site Embedding Test</h3>
+        <p>The following iframe should work (external site):</p>
+        <iframe src="https://example.com" title="External site test"></iframe>
+        
+        <h3>Allowed Domain Test</h3>
+        <p>The following should work (Google - allowed in CSP):</p>
+        <iframe src="https://accounts.google.com" title="Google test"></iframe>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Mixed Content Protection Test</h2>
+        <p>These should be automatically upgraded to HTTPS or blocked:</p>
+        <img src="http://example.com/image.jpg" alt="HTTP image - should be upgraded or blocked">
+    </div>
+
+    <div class="test-section">
+        <h2>4. Form Action Test</h2>
+        <form action="https://example.com/form" method="post">
+            <input type="text" name="test" placeholder="This form should be blocked">
+            <button type="submit">Submit (Should be blocked)</button>
+        </form>
+        
+        <form action="/api/test" method="post">
+            <input type="text" name="test" placeholder="This form should work">
+            <button type="submit">Submit (Should work)</button>
+        </form>
+    </div>
+
+    <script>
+        // This script should be blocked due to strict CSP (no hash/nonce)
+        document.getElementById('inline-script-result').innerHTML = '<span class="fail">❌ Inline script executed (Strict CSP not working)</span>';
+    </script>
+
+    <!-- This script should be blocked by strict CSP -->
+    <script src="https://cdn.jsdelivr.net/npm/test@1.0.0/test.js"></script>
+    
+    <!-- Calculate hash for this script: sha256-{hash} -->
+    <script>
+        // Test script loading and CSP enforcement
+        setTimeout(() => {
+            document.getElementById('external-script-result').innerHTML = '<span class="warning">⚠️ This script should be blocked by strict CSP</span>';
+        }, 1000);
+        
+        // Check for CSP violations - this is good!
+        document.addEventListener('securitypolicyviolation', (e) => {
+            console.log('🚨 CSP Violation (Good!):', e.violatedDirective, e.blockedURI);
+            
+            let violations = document.getElementById('csp-violations');
+            if (!violations) {
+                violations = document.createElement('div');
+                violations.id = 'csp-violations';
+                violations.innerHTML = '<h3>CSP Violations (Good - means CSP is working):</h3>';
+                document.body.appendChild(violations);
+            }
+            
+            const violationEl = document.createElement('p');
+            violationEl.className = 'pass';
+            violationEl.innerHTML = `✅ CSP blocked: ${e.violatedDirective} - ${e.blockedURI || 'inline'}`;
+            violations.appendChild(violationEl);
+        });
+        
+        // Test that would normally work but should be blocked
+        try {
+            eval('console.log("This eval should be blocked")');
+            document.getElementById('csp-violations').innerHTML += '<p class="fail">❌ eval() was not blocked!</p>';
+        } catch (e) {
+            document.getElementById('csp-violations').innerHTML += '<p class="pass">✅ eval() was blocked by CSP</p>';
+        }
+    </script>
+
+    <div class="test-section">
+        <h2>5. Security Headers Verification</h2>
+        <p>Check the Network tab in Developer Tools to verify these headers are present:</p>
+        <ul>
+            <li>X-Frame-Options: DENY</li>
+            <li>Content-Security-Policy: (should contain frame-ancestors 'none')</li>
+            <li>X-Content-Type-Options: nosniff</li>
+            <li>Cross-Origin-Embedder-Policy: require-corp</li>
+            <li>Cross-Origin-Opener-Policy: same-origin</li>
+            <li>Cross-Origin-Resource-Policy: same-origin</li>
+        </ul>
+    </div>
+
+    <div id="csp-violations">
+        <h3>CSP Violations (Good - means CSP is working):</h3>
+    </div>
+</body>
+</html>

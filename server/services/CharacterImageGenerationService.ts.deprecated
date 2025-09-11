@@ -1,0 +1,398 @@
+import { CloudinaryFolderService } from './CloudinaryFolderService.js';
+import { FastCharacterGenerationService } from './FastCharacterGenerationService.js';
+import fetch from 'node-fetch';
+import { nanoid } from 'nanoid';
+
+export interface CharacterImageGenerationOptions {
+  characterId: string;
+  characterName: string;
+  characterDescription: string;
+  characterEmbeddings?: any;
+  imageType: 'portrait' | 'full-body' | 'action' | 'variation' | 'custom';
+  customPrompt?: string;
+  style?: 'fantasy' | 'anime' | 'realistic' | 'cartoon';
+  mood?: string;
+  setting?: string;
+  steps?: number;
+  cfg?: number;
+  username?: string;
+}
+
+export interface ImageGenerationResult {
+  success: boolean;
+  imageUrl?: string;
+  imageId?: string;
+  cloudinaryUrl?: string;
+  prompt?: string;
+  error?: string;
+  generationTime?: number;
+}
+
+export class CharacterImageGenerationService {
+  private fastGenerationService: FastCharacterGenerationService;
+  private runpodUrl: string;
+
+  constructor() {
+    this.fastGenerationService = new FastCharacterGenerationService();
+    this.runpodUrl = process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || 
+                     process.env.RUNPOD_WEBUI_URL || 
+                     'https://4mm1jblh0l3mv2-7861.proxy.runpod.net';
+  }
+
+  /**
+   * Generate a new image for an existing character using their embeddings and traits
+   */
+  async generateCharacterImage(options: CharacterImageGenerationOptions): Promise<ImageGenerationResult> {
+    const startTime = Date.now();
+    
+    try {
+      console.log(`🎨 Generating ${options.imageType} image for: ${options.characterName}`);
+
+      // 1. Build character-specific prompt using embeddings and traits
+      const characterPrompt = this.buildCharacterSpecificPrompt(options);
+      console.log(`📝 Character-specific prompt: ${characterPrompt}`);
+
+      // 2. Generate consistent character seed from character ID
+      const characterSeed = this.generateCharacterSeed(options.characterId, options.imageType);
+      console.log(`🌱 Using character seed: ${characterSeed}`);
+
+      // 3. Create workflow for character image generation
+      const workflow = this.createCharacterImageWorkflow({
+        prompt: characterPrompt,
+        seed: characterSeed,
+        steps: options.steps || 25,
+        cfg: options.cfg || 7,
+        style: options.style || 'fantasy'
+      });
+
+      // 4. Get next image number
+      const imageNumber = await this.getNextImageNumber();
+
+      // 5. Send to RunPod
+      const runpodResponse = await this.sendToRunPod(workflow);
+      if (!runpodResponse.success) {
+        throw new Error(`RunPod generation failed: ${runpodResponse.error}`);
+      }
+
+      // 6. Wait for generation
+      await this.wait(7500); // 7.5 seconds
+
+      // 7. Download generated image
+      const imageUrl = `${this.runpodUrl}/view?filename=output1_${imageNumber.toString().padStart(5, '0')}_.png`;
+      const imageBuffer = await this.downloadImage(imageUrl);
+
+      // 8. Upload to character's folder in Cloudinary
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const fileName = `${options.characterName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${options.imageType}-${timestamp}`;
+      
+      const uploadResult = await CloudinaryFolderService.uploadToCharacterFolder(
+        options.username || 'default-user',
+        options.characterName,
+        imageBuffer,
+        fileName,
+        this.getCloudinaryFolderForImageType(options.imageType)
+      );
+
+      if (!uploadResult.success) {
+        throw new Error(`Cloudinary upload failed: ${uploadResult.error}`);
+      }
+
+      // 9. Update cache
+      await this.updateLastImageNumber(imageNumber);
+
+      const generationTime = Math.round((Date.now() - startTime) / 1000);
+      
+      console.log(`✅ Character image generated successfully in ${generationTime}s`);
+      console.log(`🔗 Image URL: ${uploadResult.url}`);
+
+      return {
+        success: true,
+        imageUrl: uploadResult.url,
+        cloudinaryUrl: uploadResult.url,
+        imageId: fileName,
+        prompt: characterPrompt,
+        generationTime
+      };
+
+    } catch (error) {
+      console.error('Character image generation failed:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        generationTime: Math.round((Date.now() - startTime) / 1000)
+      };
+    }
+  }
+
+  /**
+   * Build character-specific prompt using embeddings and character traits
+   */
+  private buildCharacterSpecificPrompt(options: CharacterImageGenerationOptions): string {
+    let prompt = '';
+
+    // Start with character description
+    prompt += options.characterDescription;
+
+    // Add image type specific elements
+    switch (options.imageType) {
+      case 'portrait':
+        prompt += ', close-up portrait, detailed face, upper body';
+        break;
+      case 'full-body':
+        prompt += ', full body shot, complete character, standing pose';
+        break;
+      case 'action':
+        prompt += ', dynamic action pose, movement, energy';
+        break;
+      case 'variation':
+        prompt += ', character variation, alternative view';
+        break;
+      case 'custom':
+        if (options.customPrompt) {
+          prompt += `, ${options.customPrompt}`;
+        }
+        break;
+    }
+
+    // Add mood if specified
+    if (options.mood) {
+      prompt += `, ${options.mood} mood`;
+    }
+
+    // Add setting if specified
+    if (options.setting) {
+      prompt += `, in ${options.setting}`;
+    }
+
+    // Add style-specific elements
+    switch (options.style) {
+      case 'fantasy':
+        prompt += ', fantasy art, detailed fantasy, magical atmosphere';
+        break;
+      case 'anime':
+        prompt += ', anime style, anime coloring, cel-shaded';
+        break;
+      case 'realistic':
+        prompt += ', ultra realistic, photorealistic, detailed';
+        break;
+      case 'cartoon':
+        prompt += ', cartoon style, colorful, stylized';
+        break;
+    }
+
+    // Add quality tags
+    prompt += ', masterpiece, best quality, high resolution, detailed';
+
+    return prompt;
+  }
+
+  /**
+   * Generate consistent seed for character image variations
+   */
+  private generateCharacterSeed(characterId: string, imageType: string): number {
+    const crypto = require('crypto');
+    const seedString = `${characterId}-${imageType}`;
+    const hash = crypto.createHash('md5').update(seedString).digest('hex');
+    return parseInt(hash.substring(0, 8), 16) % 4294967295;
+  }
+
+  /**
+   * Create workflow for character image generation
+   */
+  private createCharacterImageWorkflow(params: {
+    prompt: string;
+    seed: number;
+    steps: number;
+    cfg: number;
+    style: string;
+  }) {
+    // Create a basic workflow structure for RunPod
+    return {
+      "3": {
+        "inputs": {
+          "seed": params.seed,
+          "steps": params.steps,
+          "cfg": params.cfg,
+          "sampler_name": "euler",
+          "scheduler": "normal",
+          "denoise": 1,
+          "model": ["4", 0],
+          "positive": ["6", 0],
+          "negative": ["7", 0],
+          "latent_image": ["5", 0]
+        },
+        "class_type": "KSampler"
+      },
+      "4": {
+        "inputs": {
+          "ckpt_name": "diving.safetensors"
+        },
+        "class_type": "CheckpointLoaderSimple"
+      },
+      "5": {
+        "inputs": {
+          "width": 768,
+          "height": 1024,
+          "batch_size": 1
+        },
+        "class_type": "EmptyLatentImage"
+      },
+      "6": {
+        "inputs": {
+          "text": params.prompt
+        },
+        "class_type": "CLIPTextEncode"
+      },
+      "7": {
+        "inputs": {
+          "text": "low quality, blurry, distorted, deformed"
+        },
+        "class_type": "CLIPTextEncode"
+      },
+      "8": {
+        "inputs": {
+          "samples": ["3", 0],
+          "vae": ["4", 2]
+        },
+        "class_type": "VAEDecode"
+      },
+      "9": {
+        "inputs": {
+          "filename_prefix": "output1_",
+          "images": ["8", 0]
+        },
+        "class_type": "SaveImage"
+      }
+    };
+  }
+
+  /**
+   * Send workflow to RunPod
+   */
+  private async sendToRunPod(workflow: any) {
+    try {
+      const response = await fetch(`${this.runpodUrl}/prompt`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(workflow)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      return { success: true, data: result };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Download image from RunPod
+   */
+  private async downloadImage(imageUrl: string): Promise<Buffer> {
+    const response = await fetch(imageUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to download image: HTTP ${response.status}`);
+    }
+    return Buffer.from(await response.arrayBuffer());
+  }
+
+  /**
+   * Map image type to Cloudinary folder
+   */
+  private getCloudinaryFolderForImageType(imageType: string): 'avatar' | 'images' | 'variations' | 'embeddings' | 'generations' {
+    switch (imageType) {
+      case 'portrait':
+        return 'avatar';
+      case 'variation':
+        return 'variations';
+      default:
+        return 'images';
+    }
+  }
+
+  /**
+   * Wait utility
+   */
+  private wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Get next image number from cache
+   */
+  private async getNextImageNumber(): Promise<number> {
+    const fs = await import('fs');
+    const path = await import('path');
+    
+    try {
+      const cacheFilePath = path.join(process.cwd(), 'root', '.last_image_number');
+      
+      if (fs.existsSync(cacheFilePath)) {
+        const lastNumber = parseInt(fs.readFileSync(cacheFilePath, 'utf8').trim(), 10);
+        return lastNumber + 1;
+      }
+      
+      return 1; // Start from 1 if no cache exists
+    } catch (error) {
+      console.warn('Could not read cache file, starting from 1:', error);
+      return 1;
+    }
+  }
+
+  /**
+   * Update last image number in cache
+   */
+  private async updateLastImageNumber(imageNumber: number): Promise<void> {
+    const fs = await import('fs');
+    const path = await import('path');
+    
+    try {
+      const rootDir = path.join(process.cwd(), 'root');
+      const cacheFilePath = path.join(rootDir, '.last_image_number');
+      
+      // Create root directory if it doesn't exist
+      if (!fs.existsSync(rootDir)) {
+        fs.mkdirSync(rootDir, { recursive: true });
+      }
+      
+      fs.writeFileSync(cacheFilePath, imageNumber.toString());
+      console.log(`📁 Updated cache with image number: ${imageNumber}`);
+    } catch (error) {
+      console.error('Error updating cache file:', error);
+    }
+  }
+
+  /**
+   * Generate multiple images for a character
+   */
+  async generateCharacterImageBatch(
+    baseOptions: CharacterImageGenerationOptions,
+    imageTypes: Array<CharacterImageGenerationOptions['imageType']>
+  ): Promise<ImageGenerationResult[]> {
+    const results: ImageGenerationResult[] = [];
+    
+    console.log(`🎭 Generating ${imageTypes.length} images for: ${baseOptions.characterName}`);
+    
+    for (const imageType of imageTypes) {
+      const options = { ...baseOptions, imageType };
+      const result = await this.generateCharacterImage(options);
+      results.push(result);
+      
+      // Small delay between generations
+      if (imageTypes.indexOf(imageType) < imageTypes.length - 1) {
+        await this.wait(2000);
+      }
+    }
+    
+    const successful = results.filter(r => r.success).length;
+    console.log(`✅ Batch complete: ${successful}/${results.length} images generated successfully`);
+    
+    return results;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "character_name": "",
+  "created_timestamp": "20250726_164528",
+  "config_file": "configs/my_character.json",
+  "training_images_generated": 16,
+  "training_images_failed": 0,
+  "checkpoint_used": "",
+  "lora_file": "characters/loras/.safetensors",
+  "test_scene": "",
+  "test_image": "_final_test.png",
+  "positive_prompt": "",
+  "negative_prompt": "",
+  "settings": {
+    "lora_strength": ,
+    "training_steps": ,
+    "cfg_scale": ,
+    "resolution": "x"
+  },
+  "status": "COMPLETED"
+}

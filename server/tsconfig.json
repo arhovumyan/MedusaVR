@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "module": "ES2020",
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "outDir": "./dist",
+    "rootDir": "./",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "strictFunctionTypes": false,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": false,
+    "moduleResolution": "node",
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "declaration": false,
+    "sourceMap": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": false,
+    "noEmitOnError": false,
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types", "./types"]
+  },
+  "include": [
+    "./**/*"
+, "scripts", "../scripts/createCharacter.js", "../scripts/addCacheBusting.ts", "../scripts/addCoinsManually.ts", "../scripts/batchCharacterCreation.ts", "../scripts/checkAroFolder.ts", "../scripts/checkZephyr.ts", "../scripts/createCharacter.ts", "../scripts/createTestCharacter.ts", "../scripts/createUserFolders.ts", "../scripts/debugCloudinary.ts", "../scripts/deleteAllCharacters.ts", "../scripts/fastGenerateCharacters.ts", "../scripts/fixCharacter24Cache.ts", "../scripts/generate50FemaleNSFWCharacters.ts", "../scripts/generateCharacter.ts", "../scripts/generateCharactersFromFile.ts", "../scripts/generateFemaleNSFWCharacter.ts", "../scripts/generateMedusaVRCharacters.ts", "../scripts/migrateFolders.ts", "../scripts/migrateToConversations.ts", "../scripts/populateTagReferences.ts", "../scripts/recreateAllCharacters.ts", "../scripts/recreateCharactersEnhanced.ts", "../scripts/seed.ts", "../scripts/seedTags_new.ts", "../scripts/seedTags.ts", "../scripts/seedTagsFromJson.ts", "../scripts/seedTagsWithEmojis.ts", "../scripts/setupBatchUser.ts", "../scripts/testApiCharacterCreation.ts", "../scripts/testCharacterCreation.ts", "../scripts/testCloudinaryUpload.ts", "../scripts/testFolderStructure.ts", "../scripts/testOpenRouter.ts", "../scripts/testRegistrationFlow.ts", "../scripts/testUtility.ts", "../scripts/updateAvatarsToCloudinary.ts", "../scripts/validateCharacters.ts", "../scripts/validateCloudinarySetup.ts", "../scripts/validateSetup.ts", "../scripts/verifyCharacter.ts", "../scripts/verifyTags.ts", "../scripts/createTestCharacter.js", "../scripts/fastGenerateCharacters.js", "../scripts/recreateCharactersEnhanced.js", "../scripts/testCharacterCreation.js", "../scripts/validateCharacters.js"  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "scripts/**/*"
+  ]
+}

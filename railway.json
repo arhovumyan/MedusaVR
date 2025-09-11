@@ -1,0 +1,25 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "services": [
+    {
+      "name": "backend",
+      "rootDirectory": ".",
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfile": "Dockerfile.backend"
+      },
+      "deploy": {
+        "healthcheckPath": "/health",
+        "healthcheckTimeout": 300,
+        "restartPolicy": "Always"
+      }
+    },
+    {
+      "name": "frontend",
+      "rootDirectory": "client",
+      "build": {
+        "builder": "NIXPACKS"
+      }
+    }
+  ]
+}

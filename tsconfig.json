@@ -1,0 +1,37 @@
+
+{
+  "include": [
+    "client/src/**/*",
+    "shared/**/*",
+    "server/**/*",
+    "server/scripts/**/*"
+, "scripts/createCharacter.js", "scripts/scripts/addCacheBusting.ts", "scripts/scripts/addCoinsManually.ts", "scripts/scripts/batchCharacterCreation.ts", "scripts/scripts/checkAroFolder.ts", "scripts/scripts/checkZephyr.ts", "scripts/scripts/createCharacter.ts", "scripts/scripts/createTestCharacter.ts", "scripts/scripts/createUserFolders.ts", "scripts/scripts/debugCloudinary.ts", "scripts/scripts/deleteAllCharacters.ts", "scripts/scripts/fastGenerateCharacters.ts", "scripts/scripts/fixCharacter24Cache.ts", "scripts/scripts/generate50FemaleNSFWCharacters.ts", "scripts/scripts/generateCharacter.ts", "scripts/scripts/generateCharactersFromFile.ts", "scripts/scripts/generateFemaleNSFWCharacter.ts", "scripts/scripts/generateMedusaVRCharacters.ts", "scripts/scripts/migrateFolders.ts", "scripts/scripts/migrateToConversations.ts", "scripts/scripts/populateTagReferences.ts", "scripts/scripts/recreateAllCharacters.ts", "scripts/scripts/recreateCharactersEnhanced.ts", "scripts/scripts/seed.ts", "scripts/scripts/seedTags_new.ts", "scripts/scripts/seedTags.ts", "scripts/scripts/seedTagsFromJson.ts", "scripts/scripts/seedTagsWithEmojis.ts", "scripts/scripts/setupBatchUser.ts", "scripts/scripts/testApiCharacterCreation.ts", "scripts/scripts/testCharacterCreation.ts", "scripts/scripts/testCloudinaryUpload.ts", "scripts/scripts/testFolderStructure.ts", "scripts/scripts/testOpenRouter.ts", "scripts/scripts/testRegistrationFlow.ts", "scripts/scripts/testUtility.ts", "scripts/scripts/updateAvatarsToCloudinary.ts", "scripts/scripts/validateCharacters.ts", "scripts/scripts/validateCloudinarySetup.ts", "scripts/scripts/validateSetup.ts", "scripts/scripts/verifyCharacter.ts", "scripts/scripts/verifyTags.ts", "scripts/createTestCharacter.js", "scripts/fastGenerateCharacters.js", "scripts/recreateCharactersEnhanced.js", "scripts/testCharacterCreation.js", "scripts/validateCharacters.js"  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "**/*.test.ts"
+  ],
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
+    "noEmit": true,
+    "module": "ESNext",
+    "target": "ES2020",
+    "strict": false,
+    "lib": ["ES2020", "dom", "dom.iterable"],
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",                      // repo root
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@/*": ["client/src/*"],           // @ maps to client/src
+      "@shared/*": ["shared/*"]          // @shared maps to shared
+    }
+  }
+}

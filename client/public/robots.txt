@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-domain.com/sitemap.xml
+
+# Disallow sensitive areas
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /internal/
+
+# Allow important pages
+Allow: /
+Allow: /characters/
+Allow: /chat/
+Allow: /gallery/
+Allow: /about/
+Allow: /legal/
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1

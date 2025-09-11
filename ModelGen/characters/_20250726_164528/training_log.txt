@@ -1,0 +1,12 @@
+Character: 
+Training started: 20250726_164528
+Training images: 16
+Base model: 
+Training steps: 
+Learning rate: 0.0001
+Batch size: 1
+
+Status: COMPLETED (MOCK)
+LoRA saved to: characters/loras/.safetensors
+
+Note: This is a simulation. In production, integrate with actual LoRA training pipeline.

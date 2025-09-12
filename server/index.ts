@@ -43,7 +43,7 @@ async function start() {
   const server = createServer(app);
 
   // Only setup Vite in development mode (not in Docker production)
-  if (process.env.NODE_ENV === "development" && !process.env.DOCKER_ENV) {
+  if (process.env.NODE_ENV === "production" && !process.env.DOCKER_ENV) {
     try {
       console.log("Setting up Vite development server...");
       const viteModule = await import("./vite.server.js").catch(() => import("./vite.server"));

@@ -1,83 +1,58 @@
 #!/bin/bash
 
-# MedusaVR Development Environment Starter
-# This script helps start both client and server for testing
+# Development Startup Script
+echo "🚀 Starting MedusaVR Development Environment..."
 
-echo "🎨 MedusaVR Development Environment"
-echo "================================="
-echo ""
-
-# Check if we're in the right directory
-if [ ! -d "client" ] || [ ! -d "server" ]; then
-    echo "❌ Please run this from the MedusaVR root directory"
-    exit 1
+# Check if .env file exists
+if [ ! -f ".env" ]; then
+    echo "⚠️  No .env file found. Creating from template..."
+    if [ -f "env.template" ]; then
+        cp env.template .env
+        echo "✅ Created .env from template. Please edit it with your actual values."
+    else
+        echo "❌ No env.template found. Please create a .env file manually."
+        exit 1
+    fi
 fi
 
-echo "🔧 Starting development environment..."
-echo ""
-
-# Function to start server in background
-start_server() {
-    echo "🖥️ Starting server (port 5002)..."
-    cd server
-    npm run dev &
-    SERVER_PID=$!
-    cd ..
-    echo "   Server PID: $SERVER_PID"
-}
-
-# Function to start client in background  
-start_client() {
-    echo "🌐 Starting client (port 3000)..."
-    cd client
-    npm run dev &
-    CLIENT_PID=$!
-    cd ..
-    echo "   Client PID: $CLIENT_PID"
-}
-
-# Function to cleanup on exit
-cleanup() {
-    echo ""
-    echo "🛑 Shutting down development environment..."
-    if [ ! -z "$SERVER_PID" ]; then
-        kill $SERVER_PID 2>/dev/null
-        echo "   ✅ Server stopped"
+# Check if client/.env file exists
+if [ ! -f "client/.env" ]; then
+    echo "⚠️  No client/.env file found. Creating from template..."
+    if [ -f "client/env.template" ]; then
+        cp client/env.template client/.env
+        echo "✅ Created client/.env from template. Please edit it with your actual values."
+    else
+        echo "❌ No client/env.template found. Please create a client/.env file manually."
+        exit 1
     fi
-    if [ ! -z "$CLIENT_PID" ]; then
-        kill $CLIENT_PID 2>/dev/null
-        echo "   ✅ Client stopped"
+fi
+
+# Install dependencies if node_modules doesn't exist
+if [ ! -d "node_modules" ]; then
+    echo "📦 Installing dependencies..."
+    npm install
+fi
+
+# Check if MongoDB is running (optional check)
+echo "🔍 Checking if MongoDB is accessible..."
+if command -v mongosh &> /dev/null; then
+    if mongosh --eval "db.runCommand('ping')" --quiet &> /dev/null; then
+        echo "✅ MongoDB is running"
+    else
+        echo "⚠️  MongoDB might not be running. Please start MongoDB if you're using a local instance."
     fi
-    exit 0
-}
-
-# Set up cleanup trap
-trap cleanup SIGINT SIGTERM
-
-# Start both services
-start_server
-sleep 3
-start_client
+else
+    echo "ℹ️  MongoDB client not found. Make sure MongoDB is running if you're using a local instance."
+fi
 
 echo ""
-echo "🚀 Development environment started!"
+echo "🎯 Starting development servers..."
+echo "   Frontend: http://localhost:5173"
+echo "   Backend:  http://localhost:5002"
+echo "   Health:   http://localhost:5002/health"
 echo ""
-echo "📍 URLs:"
-echo "   Client: http://localhost:3000"
-echo "   Server: http://localhost:5002"
-echo "   Character Creator: http://localhost:3000/create-character-enhanced"
+echo "Press Ctrl+C to stop all servers"
 echo ""
-echo "🧪 To test character generation:"
-echo "   1. Visit: http://localhost:3000/create-character-enhanced"
-echo "   2. Login with: testuser / password"
-echo "   3. Create a character with comprehensive details"
-echo "   4. Watch the AI generation process"
-echo ""
-echo "💡 ComfyUI URLs configured:"
-echo "   Anime/Fantasy: https://q6y70ohkj2gyyj-7861.proxy.runpod.net"
-echo "   Realistic: https://q6y70ohkj2gyyj-7860.proxy.runpod.net"
-echo ""
-echo "Press Ctrl+C to stop both servers"
 
-# Wait for user to stop
-wait
+# Start both frontend and backend
+npm run dev

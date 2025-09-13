@@ -83,16 +83,16 @@ router.get("/:characterId", requireAuth, async (req, res) => {
             // Generate AI greeting based on character description
             let aiGreeting = "";
             try {
-                        const result = await openRouterWithFallback({
-          model: "x-ai/grok-code-fast-1",
-          messages: [
-            { role: "system", content: greetingSystemMessage },
-            { role: "user", content: "Please introduce yourself and greet me for the first time." }
-          ],
-          max_tokens: 200,
-          temperature: 0.8,
-          top_p: 0.9
-        });
+                const result = await openRouterWithFallback({
+                    model: "x-ai/grok-code-fast-1",
+                    messages: [
+                        { role: "system", content: greetingSystemMessage },
+                        { role: "user", content: "Please introduce yourself and greet me for the first time." }
+                    ],
+                    max_tokens: 200,
+                    temperature: 0.8,
+                    top_p: 0.9
+                });
                 if (result.success && result.data?.choices?.[0]?.message?.content) {
                     const rawAIGreeting = result.data.choices[0].message.content.trim();
                     // Filter AI response for safety
@@ -202,17 +202,17 @@ router.post("/:characterId/message", requireAuth, ContentModerationService.moder
         console.log("🎭 Character personality tags:", tagNames);
         console.log("🎨 System message preview:", systemMessage.substring(0, 100) + '...');
         console.log("👤 Username being sent to AI:", username);
-            // Use OpenRouter with fallback system for personality-based response
-    const result = await openRouterWithFallback({
-      model: "x-ai/grok-code-fast-1",
-      messages: [
-        { role: "system", content: enhancedSystemMessage },
-        { role: "user", content: content }
-      ],
-      max_tokens: 350,
-      temperature: 0.8,
-      top_p: 0.9,
-    });
+        // Use OpenRouter with fallback system for personality-based response
+        const result = await openRouterWithFallback({
+            model: "x-ai/grok-code-fast-1",
+            messages: [
+                { role: "system", content: enhancedSystemMessage },
+                { role: "user", content: content }
+            ],
+            max_tokens: 350,
+            temperature: 0.8,
+            top_p: 0.9,
+        });
         let aiResponse;
         if (result.success) {
             console.log(`✅ OpenRouter response successful using model: ${result.modelUsed}`);
@@ -280,17 +280,17 @@ router.post('/generate', requireAuth, ContentModerationService.moderateChatMessa
         const enhancedSystemMessage = `${systemMessage} ${personalityVariation}.`;
         console.log("Username being sent to AI:", username);
         console.log("Full enhanced system message being sent to AI:", enhancedSystemMessage);
-            // Use OpenRouter with fallback system
-    const result = await openRouterWithFallback({
-      model: "x-ai/grok-code-fast-1", // Primary model (will be overridden by fallback if needed)
-      messages: [
-        { role: "system", content: enhancedSystemMessage },
-        ...messages
-      ],
-      max_tokens: 350, // Increased for more detailed responses
-      temperature: 0.8, // Slightly more creative
-      top_p: 0.9, // Good balance of quality and creativity
-    });
+        // Use OpenRouter with fallback system
+        const result = await openRouterWithFallback({
+            model: "x-ai/grok-code-fast-1", // Primary model (will be overridden by fallback if needed)
+            messages: [
+                { role: "system", content: enhancedSystemMessage },
+                ...messages
+            ],
+            max_tokens: 350, // Increased for more detailed responses
+            temperature: 0.8, // Slightly more creative
+            top_p: 0.9, // Good balance of quality and creativity
+        });
         if (result.success) {
             console.log(`✅ OpenRouter response successful using model: ${result.modelUsed}`);
             // Filter AI response for safety before sending

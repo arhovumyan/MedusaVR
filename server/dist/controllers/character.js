@@ -1151,3 +1151,79 @@ export async function regenerateCharacterImage(req, res) {
         });
     }
 }
+export const searchCharacters = async (req, res, next) => {
+    try {
+        const { q: query, limit = '50', page = '0' } = req.query;
+        if (!query || typeof query !== 'string' || query.trim().length < 2) {
+            return res.status(400).json({
+                success: false,
+                message: "Search query must be at least 2 characters long"
+            });
+        }
+        const searchQuery = query.trim();
+        const limitNum = Math.min(parseInt(limit) || 50, 100);
+        const pageNum = parseInt(page) || 0;
+        const skip = pageNum * limitNum;
+        console.log(`🔍 Searching characters: query="${searchQuery}", limit=${limitNum}, page=${pageNum}`);
+        // Create search conditions
+        const searchConditions = {
+            $or: [
+                // Search in name (case-insensitive)
+                { name: { $regex: searchQuery, $options: 'i' } },
+                // Search in description (case-insensitive)
+                { description: { $regex: searchQuery, $options: 'i' } },
+                // Search in persona (case-insensitive)
+                { persona: { $regex: searchQuery, $options: 'i' } },
+                // Search in selectedTags (nested object search)
+                {
+                    $or: [
+                        { 'selectedTags.personality': { $regex: searchQuery, $options: 'i' } },
+                        { 'selectedTags.character-type': { $regex: searchQuery, $options: 'i' } },
+                        { 'selectedTags.appearance': { $regex: searchQuery, $options: 'i' } },
+                        { 'selectedTags.genre': { $regex: searchQuery, $options: 'i' } },
+                        { 'selectedTags.scenario': { $regex: searchQuery, $options: 'i' } },
+                        { 'selectedTags.fantasy': { $regex: searchQuery, $options: 'i' } },
+                        { 'selectedTags.relationship': { $regex: searchQuery, $options: 'i' } },
+                        { 'selectedTags.content-rating': { $regex: searchQuery, $options: 'i' } },
+                        { 'selectedTags.art-style': { $regex: searchQuery, $options: 'i' } }
+                    ]
+                },
+                // Search in legacy tagNames array
+                { tagNames: { $regex: searchQuery, $options: 'i' } }
+            ]
+        };
+        // Get total count for pagination
+        const totalCount = await CharacterModel.countDocuments(searchConditions);
+        // Execute search with pagination
+        const characters = await CharacterModel.find(searchConditions)
+            .sort({
+            chatCount: -1, // Sort by popularity first
+            likes: -1
+        })
+            .skip(skip)
+            .limit(limitNum)
+            .lean();
+        console.log(`✅ Search completed: found ${characters.length} characters out of ${totalCount} total matches`);
+        res.json({
+            success: true,
+            data: characters,
+            pagination: {
+                page: pageNum,
+                limit: limitNum,
+                total: totalCount,
+                totalPages: Math.ceil(totalCount / limitNum),
+                hasNext: (pageNum + 1) * limitNum < totalCount,
+                hasPrev: pageNum > 0
+            },
+            searchQuery
+        });
+    }
+    catch (error) {
+        console.error('❌ Character search error:', error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to search characters",
+            error: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+};

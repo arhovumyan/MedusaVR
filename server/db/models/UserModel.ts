@@ -6,7 +6,7 @@ const UserSchema = new Schema(
   {
     username: { type: String, required: true, unique: true },
     email:    { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: false }, // Made optional to support OAuth users
     avatar:   { type: String, default: null }, // Deprecated - use avatarUrl
     avatarUrl: { type: String, default: null }, // New field for Cloudinary URLs
     bio:      { type: String, default: null },

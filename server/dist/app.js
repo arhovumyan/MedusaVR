@@ -47,9 +47,9 @@ dotenv.config();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 // Configure Cloudinary
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'your-cloudinary-cloud-name',
+    api_key: process.env.CLOUDINARY_API_KEY || 'your-cloudinary-api-key',
+    api_secret: process.env.CLOUDINARY_API_SECRET || 'your-cloudinary-api-secret',
 });
 // Use memory storage for multer (we'll upload to Cloudinary manually)
 const storage = multer.memoryStorage();
@@ -105,11 +105,11 @@ export function buildApp() {
                 "http://localhost:5175",
                 "http://localhost:3000",
                 "http://3.135.203.99",
-                "https://medusavr.art",
-                "https://www.medusavr.art",
-                "http://medusavr.art",
-                "http://www.medusavr.art",
-                "https://vrfansbackend.up.railway.app",
+                "https://your-domain.com",
+                "https://www.your-domain.com",
+                "http://your-domain.com",
+                "http://www.your-domain.com",
+                "https://your-backend-url.railway.app",
                 process.env.FRONTEND_URL || ""
             ];
             // Allow any Vercel domain

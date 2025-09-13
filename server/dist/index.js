@@ -12,8 +12,8 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 async function start() {
     // 1) Connect to MongoDB first
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            dbName: "test", // ensure you hit your 'test' database
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/your-database', {
+            dbName: process.env.DB_NAME || "your-database",
         });
         console.log("MongoDB connected to", mongoose.connection.name);
     }
@@ -35,7 +35,7 @@ async function start() {
     // 4) Create & start the server
     const server = createServer(app);
     // Only setup Vite in development mode (not in Docker production)
-    if (process.env.NODE_ENV === "development" && !process.env.DOCKER_ENV) {
+    if (process.env.NODE_ENV === "production" && !process.env.DOCKER_ENV) {
         try {
             console.log("Setting up Vite development server...");
             const viteModule = await import("./vite.server.js").catch(() => import("./vite.server"));

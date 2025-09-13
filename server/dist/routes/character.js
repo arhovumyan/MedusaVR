@@ -3,7 +3,7 @@ import { listCharacters, getCharacter, listByCreator, listFollowing, createChara
 // addTagToCharacter,           // DISABLED - incompatible with new selectedTags structure
 // removeTagFromCharacter,      // DISABLED - incompatible with new selectedTags structure
 // updateCharacterTags,         // DISABLED - incompatible with new selectedTags structure
-getCharactersByTags, likeCharacter, unlikeCharacter, toggleLike, regenerateCharacterImage } from "../controllers/character.js";
+getCharactersByTags, likeCharacter, unlikeCharacter, toggleLike, regenerateCharacterImage, searchCharacters } from "../controllers/character.js";
 import { trainCharacterEmbedding, getCharacterEmbeddingStatus, listCharacterEmbeddings } from "../controllers/embeddingController.js";
 import { createTestCharacter } from "../controllers/testCharacter.js";
 import { requireAuth } from "../middleware/auth.js";
@@ -15,6 +15,7 @@ import { ImageModerationService } from '../services/ImageModerationService.js';
 const router = Router();
 router
     .get("/", listCharacters)
+    .get("/search", searchCharacters)
     .get("/by-tags", getCharactersByTags)
     .get("/embedding-status", requireAuth, listCharacterEmbeddings)
     .get("/auth-test", requireAuth, (req, res) => {

@@ -73,18 +73,43 @@ export async function register(req, res) {
             // Don't fail registration if folder creation fails - user can still use the app
         }
         // Email verification disabled - no email sent
-        // Return success response - email verification removed
-        res.status(201).json({
-            success: true,
-            message: "Account created successfully! You can now log in.",
+        // Generate secure tokens for automatic sign-in
+        const { accessToken, refreshToken, sessionId, expiresAt } = generateTokens(newUser._id.toString(), req);
+        // Set secure cookies
+        res.cookie('accessToken', accessToken, {
+            ...SECURE_COOKIE_CONFIG,
+            maxAge: SECURE_COOKIE_CONFIG.maxAge
+        });
+        res.cookie('sessionId', sessionId, {
+            ...SECURE_COOKIE_CONFIG,
+            maxAge: SECURE_COOKIE_CONFIG.maxAge
+        });
+        // Log successful registration and auto-login
+        console.log(`✅ Successful registration and auto-login: ${newUser.email} from ${req.ip} (Session: ${sessionId.substring(0, 8)}...)`);
+        // Return success response with authentication tokens for automatic sign-in
+        const authResponse = {
+            accessToken,
+            refreshToken,
             user: {
                 id: newUser._id.toString(),
                 email: newUser.email,
                 username: newUser.username,
-                verified: true,
-                requiresEmailVerification: false
+                avatarUrl: newUser.avatarUrl || newUser.avatar,
+                isVerified: newUser.verified,
+                role: 'user',
+                coins: newUser.coins || 0,
+                tier: newUser.tier || 'free',
+                subscription: newUser.subscription || { status: 'none' },
+                preferences: newUser.preferences || {
+                    selectedTags: [],
+                    nsfwEnabled: false,
+                    completedOnboarding: false
+                },
+                createdAt: newUser.createdAt.toISOString(),
+                updatedAt: newUser.updatedAt.toISOString()
             }
-        });
+        };
+        res.status(201).json(authResponse);
     }
     catch (error) {
         console.error("Registration error:", error);
@@ -110,10 +135,16 @@ export async function login(req, res) {
         if (!user) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
-        // Check password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: "Invalid credentials" });
+        // Check password (skip for OAuth users who don't have a password)
+        if (user.password) {
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if (!isPasswordValid) {
+                return res.status(401).json({ message: "Invalid credentials" });
+            }
+        }
+        else {
+            // User doesn't have a password (OAuth user), but they're trying to login with password
+            return res.status(401).json({ message: "This account uses Google sign-in. Please use Google to sign in." });
         }
         // Email verification check removed - allow login without verification
         // Generate secure tokens with session tracking
@@ -381,10 +412,34 @@ export async function googleOAuthHandler(req, res) {
                     email,
                     username: finalUsername,
                     avatar: picture,
-                    password: 'google-oauth',
+                    // No password for OAuth users - they authenticate via Google
                     verified: true,
+                    coins: 15, // Give new OAuth users 15 coins to start (same as regular registration)
                 });
                 console.log('✅ New user created:', user._id, 'with username:', finalUsername);
+                // Create Cloudinary folder structure for the new user (if configured)
+                try {
+                    // Dynamic import to avoid breaking the controller if Cloudinary is not configured
+                    const { CloudinaryFolderService } = await import("../services/CloudinaryFolderService");
+                    if (CloudinaryFolderService.isConfigured()) {
+                        console.log("Cloudinary configured?", CloudinaryFolderService.isConfigured());
+                        console.log("Cloudinary name:", process.env.CLOUDINARY_CLOUD_NAME);
+                        const folderCreated = await CloudinaryFolderService.createUserFolders(user.username);
+                        if (folderCreated) {
+                            console.log(`✅ Successfully created Cloudinary folders for user ${user.username}`);
+                        }
+                        else {
+                            console.warn(`Failed to create Cloudinary folders for user ${user.username}, but user registration completed`);
+                        }
+                    }
+                    else {
+                        console.log(`⚠️ Cloudinary not configured, skipping folder creation for user ${user.username}`);
+                    }
+                }
+                catch (folderError) {
+                    console.error(`Error creating Cloudinary folders for user ${user.username}:`, folderError);
+                    // Don't fail registration if folder creation fails - user can still use the app
+                }
             }
             catch (createError) {
                 console.error('❌ Error creating user:', createError);
@@ -400,8 +455,17 @@ export async function googleOAuthHandler(req, res) {
                 console.log('📷 Updated user avatar from Google');
             }
         }
-        // Generate tokens using the same function as regular login
-        const { accessToken, refreshToken } = generateTokens(user._id.toString());
+        // Generate tokens using the same function as regular login with session tracking
+        const { accessToken, refreshToken, sessionId, expiresAt } = generateTokens(user._id.toString(), req);
+        // Set secure cookies
+        res.cookie('accessToken', accessToken, {
+            ...SECURE_COOKIE_CONFIG,
+            maxAge: SECURE_COOKIE_CONFIG.maxAge
+        });
+        res.cookie('sessionId', sessionId, {
+            ...SECURE_COOKIE_CONFIG,
+            maxAge: SECURE_COOKIE_CONFIG.maxAge
+        });
         // Prepare response in the same format as regular login
         const authResponse = {
             accessToken,
@@ -425,6 +489,8 @@ export async function googleOAuthHandler(req, res) {
                 updatedAt: new Date().toISOString(),
             }
         };
+        // Log successful OAuth login for security monitoring
+        console.log(`✅ Successful Google OAuth login: ${user.email} from ${req.ip} (Session: ${sessionId.substring(0, 8)}...)`);
         console.log('✅ Google OAuth completed successfully for:', email);
         res.json(authResponse);
     }

@@ -18,12 +18,13 @@ import {
   personalityTraits, 
   artStyles, 
   scenarios, 
-  tagCategories,
   type PersonalityTrait,
   type ArtStyle,
-  type Scenario,
-  type TagCategory
+  type Scenario
 } from '@shared/character-creation-data';
+
+// Import the same tag system used in signup/onboarding
+import { useTags } from '@/hooks/useTags';
 
 interface CharacterCreationState {
   // Basic info
@@ -31,7 +32,6 @@ interface CharacterCreationState {
   description: string;
   age: number | string; // Allow string during input validation
   quickSuggestion: string;
-  isNsfw: boolean;
   isPublic: boolean;
   
   // Prompt fields
@@ -59,6 +59,7 @@ interface CharacterCreationState {
     'content-rating': string[];
     'ethnicity': string[];
     'scenario': string[];
+    'profession': string[];
   };
 }
 
@@ -66,6 +67,7 @@ const CreateCharacterEnhanced: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user, isLoading, isAuthenticated } = useAuth();
+  const { tagCategories, isLoading: tagsLoading } = useTags(); // Use the same tag system as signup
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   
   const [currentStep, setCurrentStep] = useState(1);
@@ -89,7 +91,6 @@ const CreateCharacterEnhanced: React.FC = () => {
     description: '',
     age: '', // Start with empty string to show validation immediately
     quickSuggestion: '',
-    isNsfw: false,
     isPublic: true,
     personalityTraits: {
       subTraits: []
@@ -105,7 +106,8 @@ const CreateCharacterEnhanced: React.FC = () => {
       'fantasy': [],
       'content-rating': [],
       'ethnicity': [],
-      'scenario': []
+      'scenario': [],
+      'profession': []
     }
   });
   
@@ -230,18 +232,33 @@ const CreateCharacterEnhanced: React.FC = () => {
     });
   };
 
-  const handleTagToggle = (category: string, tagId: string) => {
-    const currentTags = characterData.selectedTags[category as keyof typeof characterData.selectedTags] || [];
-    const tagCategory = tagCategories.find(cat => cat.id === category);
-    const maxSelections = tagCategory?.maxSelections;
+  const handleTagToggle = (category: string, tagName: string) => {
+    // Map category names to match the selectedTags structure
+    const categoryMap: { [key: string]: string } = {
+      'Character Type': 'character-type',
+      'Genre': 'genre',
+      'Personality': 'personality',
+      'Appearance': 'appearance',
+      'Origin': 'origin',
+      'Fantasy': 'fantasy',
+      'Ethnicity': 'ethnicity',
+      'Profession': 'profession'
+    };
     
-    if (currentTags.includes(tagId)) {
+    const mappedCategory = categoryMap[category] || category.toLowerCase().replace(/\s+/g, '-');
+    const currentTags = characterData.selectedTags[mappedCategory as keyof typeof characterData.selectedTags] || [];
+    
+    // Find the tag category to get max selections
+    const tagCategory = tagCategories.find(cat => cat.category === category);
+    const maxSelections = 3; // Default max selections, can be customized per category
+    
+    if (currentTags.includes(tagName)) {
       // Remove tag
-      const newTags = currentTags.filter(id => id !== tagId);
+      const newTags = currentTags.filter(name => name !== tagName);
       updateCharacterData({
         selectedTags: {
           ...characterData.selectedTags,
-          [category]: newTags
+          [mappedCategory]: newTags
         }
       });
     } else {
@@ -249,17 +266,17 @@ const CreateCharacterEnhanced: React.FC = () => {
       if (maxSelections && currentTags.length >= maxSelections) {
         toast({
           title: "Maximum Selection Reached",
-          description: `You can only select up to ${maxSelections} ${tagCategory?.displayName?.toLowerCase()} tags.`,
+          description: `You can only select up to ${maxSelections} ${category.toLowerCase()} tags.`,
           variant: "destructive"
         });
         return;
       }
       
-      const newTags = [...currentTags, tagId];
+      const newTags = [...currentTags, tagName];
       updateCharacterData({
         selectedTags: {
           ...characterData.selectedTags,
-          [category]: newTags
+          [mappedCategory]: newTags
         }
       });
     }
@@ -730,29 +747,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                         <div className="relative">
                           <input
                             type="checkbox"
-                            checked={characterData.isNsfw}
-                            onChange={(e) => updateCharacterData({ isNsfw: e.target.checked })}
-                            className="sr-only"
-                          />
-                          <div className={`w-6 h-6 rounded-lg border-2 transition-all duration-300 ${
-                            characterData.isNsfw
-                              ? 'bg-gradient-to-r from-amber-500 to-orange-500 border-amber-500'
-                              : 'border-slate-500 bg-slate-800'
-                          }`}>
-                            {characterData.isNsfw && (
-                              <div className="w-full h-full rounded-md bg-gradient-to-r from-amber-400 to-orange-400 flex items-center justify-center">
-                                <div className="w-2 h-2 bg-white rounded-full"></div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <span className="text-amber-300 group-hover:text-amber-200 transition-colors">NSFW Content</span>
-                      </label>
-                      
-                      <label className="flex items-center space-x-3 cursor-pointer group">
-                        <div className="relative">
-                          <input
-                            type="checkbox"
                             checked={characterData.isPublic}
                             onChange={(e) => updateCharacterData({ isPublic: e.target.checked })}
                             className="sr-only"
@@ -962,37 +956,62 @@ const CreateCharacterEnhanced: React.FC = () => {
             </div>
             
             <div className="space-y-6">
-              {tagCategories
-                .filter((category: TagCategory) => category.id !== 'content-rating')
-                .map((category: TagCategory) => (
-                <div key={category.id} className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-semibold text-lime-400">{category.displayName}</h4>
-                    <Badge variant="secondary" className="bg-gray-700">
-                      {characterData.selectedTags[category.id as keyof typeof characterData.selectedTags]?.length || 0}
-                      {category.maxSelections && ` / ${category.maxSelections}`}
-                      {!category.maxSelections && ' (unlimited)'}
-                    </Badge>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {category.tags.map((tag) => (
-                      <Badge
-                        key={tag.id}
-                        variant={characterData.selectedTags[category.id as keyof typeof characterData.selectedTags]?.includes(tag.id) ? "default" : "outline"}
-                        className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
-                          characterData.selectedTags[category.id as keyof typeof characterData.selectedTags]?.includes(tag.id)
-                            ? 'bg-lime-500/20 border-lime-500 text-lime-400'
-                            : 'border-gray-600 hover:border-lime-500/50'
-                        }`}
-                        onClick={() => handleTagToggle(category.id, tag.id)}
-                      >
-                        {tag.emoji} {tag.displayName}
-                      </Badge>
-                    ))}
-                  </div>
+              {tagsLoading ? (
+                <div className="text-center py-8">
+                  <div className="text-lime-400">Loading tags...</div>
                 </div>
-              ))}
+              ) : (
+                tagCategories
+                  .filter((category) => category.category !== 'content-rating')
+                  .map((category) => {
+                    // Map category names to match the selectedTags structure
+                    const categoryMap: { [key: string]: string } = {
+                      'Character Type': 'character-type',
+                      'Genre': 'genre',
+                      'Personality': 'personality',
+                      'Appearance': 'appearance',
+                      'Origin': 'origin',
+                      'Fantasy': 'fantasy',
+                      'Ethnicity': 'ethnicity',
+                      'Profession': 'profession'
+                    };
+                    
+                    const mappedCategory = categoryMap[category.category] || category.category.toLowerCase().replace(/\s+/g, '-');
+                    const selectedTags = characterData.selectedTags[mappedCategory as keyof typeof characterData.selectedTags] || [];
+                    
+                    return (
+                      <div key={category.category} className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-semibold text-lime-400">{category.category}</h4>
+                          <Badge variant="secondary" className="bg-gray-700">
+                            {selectedTags.length} / 3
+                          </Badge>
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-2">
+                          {category.tags.map((tag) => {
+                            const isSelected = selectedTags.includes(tag.name);
+                            return (
+                              <Badge
+                                key={tag.name}
+                                variant={isSelected ? "default" : "outline"}
+                                className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
+                                  isSelected
+                                    ? 'bg-lime-500/20 border-lime-500 text-lime-400'
+                                    : 'border-gray-600 hover:border-lime-500/50'
+                                }`}
+                                onClick={() => handleTagToggle(category.category, tag.name)}
+                              >
+                                {tag.emoji && <span className="mr-1">{tag.emoji}</span>}
+                                {tag.displayName}
+                              </Badge>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })
+              )}
             </div>
           </div>
         );
@@ -1041,11 +1060,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                     )}
                     
                     <div className="flex flex-wrap gap-2">
-                      {characterData.isNsfw && (
-                        <Badge className="bg-red-500/20 border border-red-500/30 text-red-300">
-                          NSFW Content
-                        </Badge>
-                      )}
                       {characterData.isPublic && (
                         <Badge className="bg-green-500/20 border border-green-500/30 text-green-300">
                           Public Character

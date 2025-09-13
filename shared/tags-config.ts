@@ -35,12 +35,12 @@ export const SHARED_TAG_CATEGORIES: SharedTagCategory[] = [
     tags: [
       { id: 'female', name: 'female', displayName: 'Female', emoji: '👩', color: '#e84393', isNSFW: false, category: 'Character Type' },
       { id: 'male', name: 'male', displayName: 'Male', emoji: '👨', color: '#0984e3', isNSFW: false, category: 'Character Type' },
-      { id: 'non-binary', name: 'non-binary', displayName: 'Non-Binary', emoji: '🌈', color: '#fdcb6e', isNSFW: false, category: 'Character Type' },
       { id: 'android', name: 'android', displayName: 'Android', emoji: '🤖', color: '#636e72', isNSFW: false, category: 'Character Type' },
       { id: 'alien', name: 'alien', displayName: 'Alien', emoji: '👽', color: '#00b894', isNSFW: false, category: 'Character Type' },
-      { id: 'demon', name: 'demon', displayName: 'Demon', emoji: '😈', color: '#e17055', isNSFW: false, category: 'Character Type' },
       { id: 'angel', name: 'angel', displayName: 'Angel', emoji: '👼', color: '#ffeaa7', isNSFW: false, category: 'Character Type' },
-      { id: 'vampire', name: 'vampire', displayName: 'Vampire', emoji: '🧛', color: '#a29bfe', isNSFW: false, category: 'Character Type' }
+      { id: 'fairy', name: 'fairy', displayName: 'Fairy', emoji: '🧚', color: '#a29bfe', isNSFW: false, category: 'Character Type' },
+      { id: 'robot', name: 'robot', displayName: 'Robot', emoji: '🤖', color: '#636e72', isNSFW: false, category: 'Character Type' },
+      { id: 'animal', name: 'animal', displayName: 'Animal', emoji: '🐾', color: '#e17055', isNSFW: false, category: 'Character Type' }
     ]
   },
   {
@@ -88,9 +88,9 @@ export const SHARED_TAG_CATEGORIES: SharedTagCategory[] = [
       { id: 'short-hair', name: 'short-hair', displayName: 'Short Hair', emoji: '👩‍🦱', color: '#fd79a8', isNSFW: false, category: 'Appearance' },
       { id: 'colorful-hair', name: 'colorful-hair', displayName: 'Colorful Hair', emoji: '🌈', color: '#00b894', isNSFW: false, category: 'Appearance' },
       { id: 'glasses', name: 'glasses', displayName: 'Glasses', emoji: '👓', color: '#0984e3', isNSFW: false, category: 'Appearance' },
-      { id: 'tattoos', name: 'tattoos', displayName: 'Tattoos', emoji: '🎨', color: '#e17055', isNSFW: false, category: 'Appearance' },
-      { id: 'piercings', name: 'piercings', displayName: 'Piercings', emoji: '💍', color: '#636e72', isNSFW: false, category: 'Appearance' },
-      { id: 'scars', name: 'scars', displayName: 'Scars', emoji: '⚔️', color: '#2d3436', isNSFW: false, category: 'Appearance' },
+      { id: 'hat', name: 'hat', displayName: 'Hat', emoji: '🎩', color: '#e17055', isNSFW: false, category: 'Appearance' },
+      { id: 'smile', name: 'smile', displayName: 'Friendly Smile', emoji: '😊', color: '#636e72', isNSFW: false, category: 'Appearance' },
+      { id: 'wings', name: 'wings', displayName: 'Wings', emoji: '🕊️', color: '#2d3436', isNSFW: false, category: 'Appearance' },
       { id: 'glowing-eyes', name: 'glowing-eyes', displayName: 'Glowing Eyes', emoji: '👁️', color: '#6c5ce7', isNSFW: false, category: 'Appearance' }
     ]
   },
@@ -104,27 +104,11 @@ export const SHARED_TAG_CATEGORIES: SharedTagCategory[] = [
       { id: 'human', name: 'human', displayName: 'Human', emoji: '👤', color: '#6c5ce7', isNSFW: false, category: 'Origin' },
       { id: 'magical', name: 'magical', displayName: 'Magical', emoji: '✨', color: '#a29bfe', isNSFW: false, category: 'Origin' },
       { id: 'divine', name: 'divine', displayName: 'Divine', emoji: '👼', color: '#ffeaa7', isNSFW: false, category: 'Origin' },
-      { id: 'demonic', name: 'demonic', displayName: 'Demonic', emoji: '😈', color: '#e17055', isNSFW: false, category: 'Origin' },
       { id: 'alien', name: 'alien', displayName: 'Alien', emoji: '👽', color: '#00b894', isNSFW: false, category: 'Origin' },
       { id: 'artificial', name: 'artificial', displayName: 'Artificial', emoji: '🤖', color: '#636e72', isNSFW: false, category: 'Origin' },
       { id: 'mythical', name: 'mythical', displayName: 'Mythical', emoji: '🐉', color: '#fd79a8', isNSFW: false, category: 'Origin' },
-      { id: 'elemental', name: 'elemental', displayName: 'Elemental', emoji: '🔥', color: '#e84393', isNSFW: false, category: 'Origin' }
-    ]
-  },
-  {
-    id: 'sexuality',
-    name: 'sexuality',
-    displayName: 'Sexuality',
-    description: 'Character sexuality and orientation',
-    maxSelections: 1,
-    tags: [
-      { id: 'straight', name: 'straight', displayName: 'Straight', emoji: '💝', color: '#fd79a8', isNSFW: false, category: 'Sexuality' },
-      { id: 'gay', name: 'gay', displayName: 'Gay', emoji: '🏳️‍🌈', color: '#0984e3', isNSFW: false, category: 'Sexuality' },
-      { id: 'lesbian', name: 'lesbian', displayName: 'Lesbian', emoji: '🏳️‍🌈', color: '#e84393', isNSFW: false, category: 'Sexuality' },
-      { id: 'bisexual', name: 'bisexual', displayName: 'Bisexual', emoji: '💜', color: '#6c5ce7', isNSFW: false, category: 'Sexuality' },
-      { id: 'pansexual', name: 'pansexual', displayName: 'Pansexual', emoji: '💛', color: '#ffeaa7', isNSFW: false, category: 'Sexuality' },
-      { id: 'asexual', name: 'asexual', displayName: 'Asexual', emoji: '🖤', color: '#2d3436', isNSFW: false, category: 'Sexuality' },
-      { id: 'demisexual', name: 'demisexual', displayName: 'Demisexual', emoji: '💚', color: '#00b894', isNSFW: false, category: 'Sexuality' }
+      { id: 'nature', name: 'nature', displayName: 'Nature', emoji: '🌿', color: '#e84393', isNSFW: false, category: 'Origin' },
+      { id: 'cosmic', name: 'cosmic', displayName: 'Cosmic', emoji: '⭐', color: '#e17055', isNSFW: false, category: 'Origin' }
     ]
   },
   {
@@ -145,19 +129,6 @@ export const SHARED_TAG_CATEGORIES: SharedTagCategory[] = [
     ]
   },
   {
-    id: 'content-rating',
-    name: 'content-rating',
-    displayName: 'Content Rating',
-    description: 'Content appropriateness level',
-    maxSelections: 1,
-    required: true,
-    tags: [
-      { id: 'sfw', name: 'sfw', displayName: 'SFW', emoji: '✅', color: '#00b894', isNSFW: false, category: 'Content Rating' },
-      { id: 'nsfw', name: 'nsfw', displayName: 'NSFW', emoji: '🔞', color: '#e17055', isNSFW: true, category: 'Content Rating' },
-      { id: 'suggestive', name: 'suggestive', displayName: 'Suggestive', emoji: '😏', color: '#fdcb6e', isNSFW: false, category: 'Content Rating' }
-    ]
-  },
-  {
     id: 'ethnicity',
     name: 'ethnicity',
     displayName: 'Ethnicity',
@@ -175,20 +146,32 @@ export const SHARED_TAG_CATEGORIES: SharedTagCategory[] = [
     ]
   },
   {
-    id: 'scenario',
-    name: 'scenario',
-    displayName: 'Scenario',
-    description: 'Character scenarios and settings',
-    maxSelections: undefined, // unlimited
+    id: 'profession',
+    name: 'profession',
+    displayName: 'Profession',
+    description: 'Character professions and careers',
+    maxSelections: 3,
     tags: [
-      { id: 'school', name: 'school', displayName: 'School', emoji: '🏫', color: '#0984e3', isNSFW: false, category: 'Scenario' },
-      { id: 'workplace', name: 'workplace', displayName: 'Workplace', emoji: '🏢', color: '#636e72', isNSFW: false, category: 'Scenario' },
-      { id: 'fantasy-world', name: 'fantasy-world', displayName: 'Fantasy World', emoji: '🏰', color: '#6c5ce7', isNSFW: false, category: 'Scenario' },
-      { id: 'modern-city', name: 'modern-city', displayName: 'Modern City', emoji: '🏙️', color: '#00b894', isNSFW: false, category: 'Scenario' },
-      { id: 'space', name: 'space', displayName: 'Space', emoji: '🚀', color: '#2d3436', isNSFW: false, category: 'Scenario' },
-      { id: 'medieval', name: 'medieval', displayName: 'Medieval', emoji: '⚔️', color: '#e17055', isNSFW: false, category: 'Scenario' },
-      { id: 'apocalyptic', name: 'apocalyptic', displayName: 'Apocalyptic', emoji: '💥', color: '#e84393', isNSFW: false, category: 'Scenario' },
-      { id: 'peaceful', name: 'peaceful', displayName: 'Peaceful', emoji: '🌸', color: '#fd79a8', isNSFW: false, category: 'Scenario' }
+      { id: 'teacher', name: 'teacher', displayName: 'Teacher', emoji: '👩‍🏫', color: '#0984e3', isNSFW: false, category: 'Profession' },
+      { id: 'doctor', name: 'doctor', displayName: 'Doctor', emoji: '👩‍⚕️', color: '#e17055', isNSFW: false, category: 'Profession' },
+      { id: 'scientist', name: 'scientist', displayName: 'Scientist', emoji: '👩‍🔬', color: '#6c5ce7', isNSFW: false, category: 'Profession' },
+      { id: 'artist', name: 'artist', displayName: 'Artist', emoji: '🎨', color: '#fd79a8', isNSFW: false, category: 'Profession' },
+      { id: 'musician', name: 'musician', displayName: 'Musician', emoji: '🎵', color: '#ffeaa7', isNSFW: false, category: 'Profession' },
+      { id: 'writer', name: 'writer', displayName: 'Writer', emoji: '✍️', color: '#00b894', isNSFW: false, category: 'Profession' },
+      { id: 'engineer', name: 'engineer', displayName: 'Engineer', emoji: '⚙️', color: '#636e72', isNSFW: false, category: 'Profession' },
+      { id: 'chef', name: 'chef', displayName: 'Chef', emoji: '👨‍🍳', color: '#e84393', isNSFW: false, category: 'Profession' },
+      { id: 'pilot', name: 'pilot', displayName: 'Pilot', emoji: '✈️', color: '#2d3436', isNSFW: false, category: 'Profession' },
+      { id: 'astronaut', name: 'astronaut', displayName: 'Astronaut', emoji: '🚀', color: '#0984e3', isNSFW: false, category: 'Profession' },
+      { id: 'detective', name: 'detective', displayName: 'Detective', emoji: '🔍', color: '#6c5ce7', isNSFW: false, category: 'Profession' },
+      { id: 'librarian', name: 'librarian', displayName: 'Librarian', emoji: '📚', color: '#fd79a8', isNSFW: false, category: 'Profession' },
+      { id: 'gardener', name: 'gardener', displayName: 'Gardener', emoji: '🌱', color: '#00b894', isNSFW: false, category: 'Profession' },
+      { id: 'photographer', name: 'photographer', displayName: 'Photographer', emoji: '📸', color: '#e17055', isNSFW: false, category: 'Profession' },
+      { id: 'veterinarian', name: 'veterinarian', displayName: 'Veterinarian', emoji: '🐾', color: '#ffeaa7', isNSFW: false, category: 'Profession' },
+      { id: 'architect', name: 'architect', displayName: 'Architect', emoji: '🏗️', color: '#636e72', isNSFW: false, category: 'Profession' },
+      { id: 'dancer', name: 'dancer', displayName: 'Dancer', emoji: '💃', color: '#e84393', isNSFW: false, category: 'Profession' },
+      { id: 'athlete', name: 'athlete', displayName: 'Athlete', emoji: '🏃‍♀️', color: '#2d3436', isNSFW: false, category: 'Profession' },
+      { id: 'magician', name: 'magician', displayName: 'Magician', emoji: '🎩', color: '#6c5ce7', isNSFW: false, category: 'Profession' },
+      { id: 'explorer', name: 'explorer', displayName: 'Explorer', emoji: '🗺️', color: '#00b894', isNSFW: false, category: 'Profession' }
     ]
   }
 ];

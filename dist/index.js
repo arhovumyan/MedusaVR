@@ -190,7 +190,8 @@ var init_UserModel = __esm({
       {
         username: { type: String, required: true, unique: true },
         email: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
+        password: { type: String, required: false },
+        // Made optional to support OAuth users
         avatar: { type: String, default: null },
         // Deprecated - use avatarUrl
         avatarUrl: { type: String, default: null },
@@ -13057,17 +13058,39 @@ async function register(req, res) {
     } catch (folderError) {
       console.error(`Error creating Cloudinary folders for user ${newUser.username}:`, folderError);
     }
-    res.status(201).json({
-      success: true,
-      message: "Account created successfully! You can now log in.",
+    const { accessToken, refreshToken: refreshToken2, sessionId, expiresAt } = generateTokens(newUser._id.toString(), req);
+    res.cookie("accessToken", accessToken, {
+      ...SECURE_COOKIE_CONFIG,
+      maxAge: SECURE_COOKIE_CONFIG.maxAge
+    });
+    res.cookie("sessionId", sessionId, {
+      ...SECURE_COOKIE_CONFIG,
+      maxAge: SECURE_COOKIE_CONFIG.maxAge
+    });
+    console.log(`\u2705 Successful registration and auto-login: ${newUser.email} from ${req.ip} (Session: ${sessionId.substring(0, 8)}...)`);
+    const authResponse = {
+      accessToken,
+      refreshToken: refreshToken2,
       user: {
         id: newUser._id.toString(),
         email: newUser.email,
         username: newUser.username,
-        verified: true,
-        requiresEmailVerification: false
+        avatarUrl: newUser.avatarUrl || newUser.avatar,
+        isVerified: newUser.verified,
+        role: "user",
+        coins: newUser.coins || 0,
+        tier: newUser.tier || "free",
+        subscription: newUser.subscription || { status: "none" },
+        preferences: newUser.preferences || {
+          selectedTags: [],
+          nsfwEnabled: false,
+          completedOnboarding: false
+        },
+        createdAt: newUser.createdAt.toISOString(),
+        updatedAt: newUser.updatedAt.toISOString()
       }
-    });
+    };
+    res.status(201).json(authResponse);
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ message: "Registration failed" });
@@ -13088,9 +13111,13 @@ async function login(req, res) {
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid credentials" });
+    if (user.password) {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+    } else {
+      return res.status(401).json({ message: "This account uses Google sign-in. Please use Google to sign in." });
     }
     const { accessToken, refreshToken: refreshToken2, sessionId, expiresAt } = generateTokens(user._id.toString(), req);
     res.cookie("accessToken", accessToken, {
@@ -13330,10 +13357,29 @@ async function googleOAuthHandler(req, res) {
           email,
           username: finalUsername,
           avatar: picture,
-          password: "google-oauth",
-          verified: true
+          // No password for OAuth users - they authenticate via Google
+          verified: true,
+          coins: 15
+          // Give new OAuth users 15 coins to start (same as regular registration)
         });
         console.log("\u2705 New user created:", user._id, "with username:", finalUsername);
+        try {
+          const { CloudinaryFolderService: CloudinaryFolderService2 } = await Promise.resolve().then(() => (init_CloudinaryFolderService(), CloudinaryFolderService_exports));
+          if (CloudinaryFolderService2.isConfigured()) {
+            console.log("Cloudinary configured?", CloudinaryFolderService2.isConfigured());
+            console.log("Cloudinary name:", process.env.CLOUDINARY_CLOUD_NAME);
+            const folderCreated = await CloudinaryFolderService2.createUserFolders(user.username);
+            if (folderCreated) {
+              console.log(`\u2705 Successfully created Cloudinary folders for user ${user.username}`);
+            } else {
+              console.warn(`Failed to create Cloudinary folders for user ${user.username}, but user registration completed`);
+            }
+          } else {
+            console.log(`\u26A0\uFE0F Cloudinary not configured, skipping folder creation for user ${user.username}`);
+          }
+        } catch (folderError) {
+          console.error(`Error creating Cloudinary folders for user ${user.username}:`, folderError);
+        }
       } catch (createError) {
         console.error("\u274C Error creating user:", createError);
         return res.status(500).json({ message: "Failed to create user account" });
@@ -13346,7 +13392,15 @@ async function googleOAuthHandler(req, res) {
         console.log("\u{1F4F7} Updated user avatar from Google");
       }
     }
-    const { accessToken, refreshToken: refreshToken2 } = generateTokens(user._id.toString());
+    const { accessToken, refreshToken: refreshToken2, sessionId, expiresAt } = generateTokens(user._id.toString(), req);
+    res.cookie("accessToken", accessToken, {
+      ...SECURE_COOKIE_CONFIG,
+      maxAge: SECURE_COOKIE_CONFIG.maxAge
+    });
+    res.cookie("sessionId", sessionId, {
+      ...SECURE_COOKIE_CONFIG,
+      maxAge: SECURE_COOKIE_CONFIG.maxAge
+    });
     const authResponse = {
       accessToken,
       refreshToken: refreshToken2,
@@ -13369,6 +13423,7 @@ async function googleOAuthHandler(req, res) {
         updatedAt: (/* @__PURE__ */ new Date()).toISOString()
       }
     };
+    console.log(`\u2705 Successful Google OAuth login: ${user.email} from ${req.ip} (Session: ${sessionId.substring(0, 8)}...)`);
     console.log("\u2705 Google OAuth completed successfully for:", email);
     res.json(authResponse);
   } catch (err) {
@@ -19418,9 +19473,9 @@ var __dirname6 = path7.dirname(__filename6);
 dotenv3.config();
 var client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 cloudinary5.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "your-cloudinary-cloud-name",
+  api_key: process.env.CLOUDINARY_API_KEY || "your-cloudinary-api-key",
+  api_secret: process.env.CLOUDINARY_API_SECRET || "your-cloudinary-api-secret"
 });
 var storage2 = multer2.memoryStorage();
 var upload2 = multer2({
@@ -19463,11 +19518,11 @@ function buildApp() {
           "http://localhost:5175",
           "http://localhost:3000",
           "http://3.135.203.99",
-          "https://medusavr.art",
-          "https://www.medusavr.art",
-          "http://medusavr.art",
-          "http://www.medusavr.art",
-          "https://vrfansbackend.up.railway.app",
+          "https://your-domain.com",
+          "https://www.your-domain.com",
+          "http://your-domain.com",
+          "http://www.your-domain.com",
+          "https://your-backend-url.railway.app",
           process.env.FRONTEND_URL || ""
         ];
         const isVercelDomain = origin.endsWith(".vercel.app");
@@ -19650,9 +19705,8 @@ var __dirname8 = path9.dirname(__filename8);
 dotenv4.config({ path: path9.join(__dirname8, "../.env") });
 async function start() {
   try {
-    await mongoose11.connect(process.env.MONGODB_URI, {
-      dbName: "test"
-      // ensure you hit your 'test' database
+    await mongoose11.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/your-database", {
+      dbName: process.env.DB_NAME || "your-database"
     });
     console.log("MongoDB connected to", mongoose11.connection.name);
   } catch (err) {
@@ -19669,7 +19723,7 @@ async function start() {
     });
   });
   const server = createServer(app);
-  if (process.env.NODE_ENV === "development" && !process.env.DOCKER_ENV) {
+  if (process.env.NODE_ENV === "production" && !process.env.DOCKER_ENV) {
     try {
       console.log("Setting up Vite development server...");
       const viteModule = await Promise.resolve().then(() => (init_vite_server(), vite_server_exports)).catch(() => Promise.resolve().then(() => (init_vite_server(), vite_server_exports)));

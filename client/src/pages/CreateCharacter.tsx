@@ -11,8 +11,9 @@ import CharacterImageGenerator from '@/components/CharacterImageGenerator';
 import { personaTerms, type BroadTerm, type Trait } from '@/constants/personaTraits';
 import { imageGenSuggestions } from '@/constants/ImageGenSuggestions';
 import { checkProhibitedWords } from '@/lib/prohibitedWordsFilter';
+import { useTags } from '@/hooks/useTags';
 
-// Tags data - matching the server tags.json structure
+// Tags data - matching the server tags.json structure (fallback)
 const tagsData = [
   {
     category: "Character Type",
@@ -198,10 +199,10 @@ const tagsData = [
 ];
 
 const CreateCharacter = () => {
+  const { tagCategories, isLoading: tagsLoading } = useTags(); // Use the same tag system as signup
   const [characterData, setCharacterData] = useState({
     name: '',
     scenario: '',
-    isNsfw: false,
     isPublic: true,
     isNameLocked: false, // New state for the toggle
   });
@@ -1066,32 +1067,39 @@ const CreateCharacter = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
-              {tagsData.map((category) => (
-                <div key={category.category} className="space-y-3">
-                  <div>
-                    <Label className="text-sm font-medium text-gray-300">{category.category}</Label>
-                  </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-11 gap-2">
-                    {category.tags.map((tag) => {
-                      const isSelected = selectedTags.includes(tag.name);
-                      return (
-                        <button
-                          key={tag.name}
-                          type="button"
-                          onClick={() => handleTagToggle(tag.name)}
-                          className={`px-3 py-2 rounded-lg text-xs transition-all duration-200 border font-medium tag-button ${
-                            isSelected
-                              ? 'bg-lime-500/20 text-lime-300 border-lime-400 shadow-lg shadow-lime-500/30 glow-lime'
-                              : 'bg-gray-900/50 text-gray-300 border-lime-500/30 hover:border-lime-500/60 hover:text-lime-300 hover:bg-lime-500/10 hover:shadow-lime-500/20 hover:glow-lime-subtle'
-                          } hover:shadow-lg hover:scale-105`}
-                        >
-                          {tag.displayName}
-                        </button>
-                      );
-                    })}
-                  </div>
+              {tagsLoading ? (
+                <div className="text-center py-8">
+                  <div className="text-lime-400">Loading tags...</div>
                 </div>
-              ))}
+              ) : (
+                tagCategories.map((category) => (
+                  <div key={category.category} className="space-y-3">
+                    <div>
+                      <Label className="text-sm font-medium text-gray-300">{category.category}</Label>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-11 gap-2">
+                      {category.tags.map((tag) => {
+                        const isSelected = selectedTags.includes(tag.name);
+                        return (
+                          <button
+                            key={tag.name}
+                            type="button"
+                            onClick={() => handleTagToggle(tag.name)}
+                            className={`px-3 py-2 rounded-lg text-xs transition-all duration-200 border font-medium tag-button ${
+                              isSelected
+                                ? 'bg-lime-500/20 text-lime-300 border-lime-400 shadow-lg shadow-lime-500/30 glow-lime'
+                                : 'bg-gray-900/50 text-gray-300 border-lime-500/30 hover:border-lime-500/60 hover:text-lime-300 hover:bg-lime-500/10 hover:shadow-lime-500/20 hover:glow-lime-subtle'
+                            } hover:shadow-lg hover:scale-105`}
+                          >
+                            {tag.emoji && <span className="mr-1">{tag.emoji}</span>}
+                            {tag.displayName}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))
+              )}
             </CardContent>
           </Card>
 

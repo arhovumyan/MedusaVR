@@ -3,289 +3,296 @@
 /**
  * Test Character Creation Script
  * 
- * This script tests character creation using the proper flow:
- * 1. Creates "Mastermind Artist" user with icon subscription  
- * 2. Uses FastCharacterGenerationService with RunPod image generation
- * 3. Creates 2 test characters with 2-minute delays
- * 4. Uses "test" database not "vrfans_test"
+ * This script creates a test character using an existing image from the medusaVR_Photos folder
+ * without relying on RunPod image generation.
  */
 
-import 'dotenv/config';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import mongoose from 'mongoose';
+import * as fs from 'fs';
+import * as path from 'path';
+import dotenv from 'dotenv';
+import { CharacterModel } from '../db/models/CharacterModel.js';
 import { UserModel } from '../db/models/UserModel.js';
-import { FastCharacterGenerationService } from '../services/FastCharacterGenerationService.js';
-import type { FastGenerationOptions } from '../services/FastCharacterGenerationService.js';
+import { v2 as cloudinary } from 'cloudinary';
 
-class TestCharacterCreation {
-  private service: FastCharacterGenerationService;
-  private userId: string | null;
-  private username: string;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-  constructor() {
-    this.service = new FastCharacterGenerationService();
-    this.userId = null; // Will be set after creating user
-    this.username = "MastermindArtist";
-  }
+// Load environment variables
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-  /**
-   * Connect to test database
-   */
-  async connectToDatabase(): Promise<void> {
-    try {
-      // Use test database specifically  
-      const mongoUri = process.env.MONGODB_URI!.replace('vrfans_test', 'test');
-      await mongoose.connect(mongoUri);
-      console.log('✅ Connected to MongoDB test database:', mongoose.connection.name);
-    } catch (error) {
-      console.error('❌ MongoDB connection error:', error);
-      throw error;
-    }
-  }
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-  /**
-   * Create or find "Mastermind Artist" user with icon subscription
-   */
-  async createTestUser(): Promise<void> {
-    console.log('👤 Creating/finding test user "Mastermind Artist"...');
-    
-    try {
-      // Check if user already exists
-      let user = await UserModel.findOne({ username: this.username });
-      
-      if (user) {
-        console.log('✅ User already exists:', user._id);
-        this.userId = user._id.toString();
-        
-        // Update to icon subscription if not already
-        if (user.tier !== 'icon') {
-          console.log('⬆️ Upgrading user to icon subscription...');
-          user.tier = 'icon';
-          user.coins = 3000; // Icon tier coin allowance
-          user.subscription = {
-            status: 'active',
-            plan: 'icon',
-            startDate: new Date(),
-            endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year from now
-            paymentId: 'test_payment_icon',
-            autoRenew: true,
-            billingPeriod: 'yearly'
-          };
-          await user.save();
-          console.log('✅ User upgraded to icon subscription');
-        }
-      } else {
-        console.log('🆕 Creating new user...');
-        user = await UserModel.create({
-          username: this.username,
-          email: 'mastermind@artist.test',
-          password: 'test123456',
-          verified: true,
-          coins: 3000, // Icon tier allowance
-          tier: 'icon',
-          subscription: {
-            status: 'active',
-            plan: 'icon',
-            startDate: new Date(),
-            endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year from now
-            paymentId: 'test_payment_icon',
-            autoRenew: true,
-            billingPeriod: 'yearly'
-          }
-        });
-        
-        this.userId = user._id.toString();
-        console.log('✅ Created test user with ID:', this.userId);
-      }
-      
-      console.log('📊 User details:');
-      console.log(`  - Username: ${user.username}`);
-      console.log(`  - Tier: ${user.tier}`);
-      console.log(`  - Coins: ${user.coins}`);
-      console.log(`  - Subscription: ${user.subscription?.status} (${user.subscription?.plan})`);
-      
-    } catch (error) {
-      console.error('❌ Error creating test user:', error);
-      throw error;
-    }
-  }
+interface CharacterData {
+  name: string;
+  description: string;
+  quickSuggestion: string;
+  personalityTraits: {
+    mainTrait: string;
+    subTraits: string[];
+  };
+  artStyle: {
+    primaryStyle: string;
+  };
+  selectedTags: {
+    [key: string]: string[];
+  };
+  imagePath: string;
+}
 
-  /**
-   * Get test character templates
-   */
-  getTestCharacters(): FastGenerationOptions[] {
-    return [
-      {
-        characterName: "Luna Starweaver",
-        description: "A mystical elven mage with silver hair and glowing blue eyes. She commands the power of stars and moonlight, weaving spells that can heal or harm. Known for her wisdom and mysterious past.",
-        personalityTraits: {
-          mainTrait: "mysterious",
-          subTraits: ["wise", "caring", "magical"]
-        },
-        artStyle: { primaryStyle: "fantasy" },
-        selectedTags: {
-          'character-type': ["female"],
-          'genre': ["fantasy"],
-          'personality': ["mysterious", "wise", "caring"],
-          'appearance': ["long-hair", "blue-eyes", "silver-hair"],
-          'origin': ["magical", "elven"],
-          'content-rating': ["sfw"]
-        },
-        userId: this.userId!,
-        username: this.username,
-        isNsfw: false
-      },
-      {
-        characterName: "Zara Cybershade",
-        description: "A high-tech hacker from Neo-Tokyo with cybernetic implants and neon-pink hair. She navigates the digital underworld with unmatched skill and a rebellious spirit.",
-        personalityTraits: {
-          mainTrait: "rebellious",
-          subTraits: ["confident", "tech-savvy", "independent"]
-        },
-        artStyle: { primaryStyle: "anime" },
-        selectedTags: {
-          'character-type': ["female"],
-          'genre': ["sci-fi", "cyberpunk"],
-          'personality': ["rebellious", "confident"],
-          'appearance': ["colorful-hair", "cybernetic-implants"],
-          'origin': ["human"],
-          'content-rating': ["sfw"]
-        },
-        userId: this.userId!,
-        username: this.username,
-        isNsfw: false
-      }
-    ];
-  }
-
-  /**
-   * Test character creation with image generation
-   */
-  async testCharacterCreation(): Promise<any[]> {
-    console.log('🧪 Starting test character creation...\n');
-
-    const characters = this.getTestCharacters();
-    const results: any[] = [];
-    
-    for (let i = 0; i < characters.length; i++) {
-      const character = characters[i];
-      console.log(`\n[${i + 1}/${characters.length}] Testing: ${character.characterName}`);
-      console.log(`🎨 Art Style: ${character.artStyle.primaryStyle}`);
-      console.log(`🎭 Personality: ${character.personalityTraits.mainTrait}`);
-      console.log(`📝 Description: ${character.description.substring(0, 100)}...`);
-      
-      const startTime = Date.now();
-      
-      try {
-        console.log('🚀 Generating character with RunPod image generation...');
-        
-        const result = await this.service.generateCharacterFast(character);
-        
-        const endTime = Date.now();
-        const duration = ((endTime - startTime) / 1000).toFixed(1);
-        
-        if (result.success) {
-          console.log(`✅ Character "${character.characterName}" created successfully! (${duration}s)`);
-          console.log(`  - Character ID: ${result.character?.id}`);
-          console.log(`  - Avatar URL: ${result.imageUrl}`);
-          console.log(`  - Character Seed: ${result.characterSeed}`);
-          console.log(`  - NSFW: ${result.character?.nsfw || false}`);
-          console.log(`  - Art Style: ${result.character?.artStyle?.primaryStyle}`);
-          
-          results.push({
-            name: character.characterName,
-            success: true,
-            id: result.character?.id,
-            imageUrl: result.imageUrl,
-            duration: duration
-          });
-        } else {
-          console.log(`❌ Character "${character.characterName}" creation failed`);
-          console.log(`  - Error: ${result.error}`);
-          
-          results.push({
-            name: character.characterName,
-            success: false,
-            error: result.error,
-            duration: duration
-          });
-        }
-        
-        // Wait 2 minutes before next character (except for the last one)
-        if (i < characters.length - 1) {
-          console.log(`⏳ Waiting 2 minutes before next character...`);
-          await this.sleep(2 * 60 * 1000); // 2 minutes
-        }
-        
-      } catch (error) {
-        const endTime = Date.now();
-        const duration = ((endTime - startTime) / 1000).toFixed(1);
-        
-        console.error(`❌ Error creating character "${character.characterName}":`, error);
-        results.push({
-          name: character.characterName,
-          success: false,
-          error: error instanceof Error ? error.message : 'Unknown error',
-          duration: duration
-        });
-      }
-    }
-
-    return results;
-  }
-
-  /**
-   * Sleep utility
-   */
-  sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  /**
-   * Main test execution
-   */
-  async run(): Promise<void> {
-    try {
-      console.log('🤖 MedusaVR Test Character Creation\n');
-      
-      // Connect to test database
-      await this.connectToDatabase();
-      
-      // Create test user
-      await this.createTestUser();
-      
-      // Test character creation
-      const results = await this.testCharacterCreation();
-      
-      // Summary
-      console.log('\n🎉 Test completed! Summary:');
-      const successful = results.filter(r => r.success);
-      const failed = results.filter(r => !r.success);
-      
-      console.log(`✅ Successful: ${successful.length}`);
-      successful.forEach(r => {
-        console.log(`  - ${r.name} (ID: ${r.id}, ${r.duration}s)`);
-        console.log(`    Avatar: ${r.imageUrl}`);
-      });
-      
-      if (failed.length > 0) {
-        console.log(`❌ Failed: ${failed.length}`);
-        failed.forEach(r => {
-          console.log(`  - ${r.name}: ${r.error}`);
-        });
-      }
-      
-      console.log(`📈 Success rate: ${(successful.length / results.length * 100).toFixed(1)}%`);
-      
-    } catch (error) {
-      console.error('💥 Test failed:', error);
-      process.exit(1);
-    } finally {
-      await mongoose.connection.close();
-      console.log('\n📱 Database connection closed');
-    }
+async function connectToDatabase() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI!);
+    console.log('✅ Connected to MongoDB');
+  } catch (error) {
+    console.error('❌ Database connection failed:', error);
+    process.exit(1);
   }
 }
 
-// Run the test
-const test = new TestCharacterCreation();
-test.run().catch(console.error);
+async function setupTestUser() {
+  try {
+    // Find or create a test user
+    let testUser = await UserModel.findOne({ email: 'test@medusavr.com' });
+    
+    if (!testUser) {
+      testUser = new UserModel({
+        email: 'test@medusavr.com',
+        username: 'testuser',
+        displayName: 'Test User',
+        isEmailVerified: true,
+        subscriptionTier: 'free',
+        coins: 1000,
+        createdAt: new Date(),
+        lastActiveAt: new Date()
+      });
+      await testUser.save();
+      console.log('✅ Created test user');
+    } else {
+      console.log('✅ Found existing test user');
+    }
+    
+    return testUser;
+  } catch (error) {
+    console.error('❌ Failed to setup test user:', error);
+    throw error;
+  }
+}
+
+async function uploadImageToCloudinary(imagePath: string, publicId: string): Promise<string> {
+  try {
+    console.log(`🔄 Uploading ${imagePath} to Cloudinary...`);
+    
+    const result = await cloudinary.uploader.upload(imagePath, {
+      public_id: publicId,
+      folder: 'medusavr/test-characters',
+      resource_type: 'image',
+      transformation: [
+        { width: 512, height: 768, crop: 'fill', gravity: 'face' },
+        { quality: 'auto:good' }
+      ]
+    });
+    
+    console.log(`✅ Image uploaded successfully: ${result.secure_url}`);
+    return result.secure_url;
+  } catch (error) {
+    console.error('❌ Error uploading to Cloudinary:', error);
+    throw error;
+  }
+}
+
+async function createTestCharacter(characterData: CharacterData, userId: string): Promise<any> {
+  try {
+    console.log(`🎯 Creating test character: ${characterData.name}`);
+    
+    // Check if character already exists
+    const existingCharacter = await CharacterModel.findOne({ name: characterData.name });
+    if (existingCharacter) {
+      console.log(`⚠️ Character "${characterData.name}" already exists, skipping...`);
+      return { success: false, error: 'Character already exists', skipped: true };
+    }
+
+    // Check if image exists
+    if (!fs.existsSync(characterData.imagePath)) {
+      throw new Error(`Image not found: ${characterData.imagePath}`);
+    }
+    
+    console.log(`📁 Using image: ${characterData.imagePath}`);
+    
+    // Upload image to Cloudinary
+    const publicId = `${characterData.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${Date.now()}`;
+    const cloudinaryUrl = await uploadImageToCloudinary(characterData.imagePath, publicId);
+    
+    // Create character data
+    const character = new CharacterModel({
+      id: Math.floor(Math.random() * 1000000), // Generate random ID
+      avatar: cloudinaryUrl,
+      name: characterData.name,
+      description: characterData.description,
+      quickSuggestion: characterData.quickSuggestion,
+      rating: "4.5",
+      nsfw: false,
+      chatCount: 0,
+      likes: 0,
+      commentsCount: 0,
+      creatorId: userId,
+      personalityTraits: characterData.personalityTraits,
+      artStyle: characterData.artStyle,
+      selectedTags: characterData.selectedTags,
+      imageMetadata: {
+        cloudinaryPublicId: publicId,
+        uploadedAt: new Date(),
+        originalFilename: path.basename(characterData.imagePath),
+        generationType: 'uploaded' as const,
+        originalImageUrl: cloudinaryUrl,
+        thumbnailUrl: cloudinaryUrl,
+        altVersions: []
+      },
+      creationProcess: {
+        stepCompleted: 5,
+        totalSteps: 5,
+        isDraft: false,
+        lastSavedAt: new Date(),
+        timeSpent: 300
+      }
+    });
+    
+    await character.save();
+    
+    console.log('✅ Character created successfully!');
+    console.log('📊 Character Details:');
+    console.log(`   ID: ${character.id}`);
+    console.log(`   Name: ${character.name}`);
+    console.log(`   Avatar: ${character.avatar}`);
+    console.log(`   Creator: ${character.creatorId}`);
+    
+    return { success: true, character };
+    
+  } catch (error) {
+    console.error(`❌ Failed to create character "${characterData.name}":`, error);
+    return { success: false, error: String(error) };
+  }
+}
+
+async function main() {
+  console.log('🚀 Starting Test Character Creation');
+  
+  // Connect to database
+  console.log('🔌 Connecting to database...');
+  await connectToDatabase();
+  
+  // Setup test user
+  console.log('👤 Setting up test user...');
+  const testUser = await setupTestUser();
+  
+  // Get available images
+  const photosDir = path.join(__dirname, '../../guidesAndPhotos/medusaVR_Photos');
+  const availableImages = fs.readdirSync(photosDir)
+    .filter(file => /\.(jpg|jpeg|png)$/i.test(file))
+    .slice(0, 5); // Take first 5 images
+  
+  console.log(`📂 Found ${availableImages.length} available images`);
+  
+  // Create test characters
+  const testCharacters: CharacterData[] = [
+    {
+      name: "Test Character Luna",
+      description: "A mysterious and elegant character with a calm demeanor. She enjoys reading books and stargazing on quiet nights.",
+      quickSuggestion: "Would you like to join me for some stargazing tonight?",
+      personalityTraits: {
+        mainTrait: "calm",
+        subTraits: ["mysterious", "intelligent", "peaceful"]
+      },
+      artStyle: {
+        primaryStyle: "anime"
+      },
+      selectedTags: {
+        'character-type': ["female"],
+        'genre': ["fantasy", "anime"],
+        'personality': ["calm", "mysterious", "intelligent"],
+        'appearance': ["elegant", "long-hair"],
+        'origin': ["original-character"],
+        'sexuality': ["straight"],
+        'fantasy': ["romance"],
+        'content-rating': ["sfw"],
+        'ethnicity': ["asian"],
+        'scenario': ["modern", "romance"]
+      },
+      imagePath: path.join(photosDir, availableImages[0] || '33075020.jpeg')
+    },
+    {
+      name: "Test Character Kai",
+      description: "An adventurous and energetic character who loves exploring new places and meeting new people.",
+      quickSuggestion: "Ready for an adventure? Let's explore something new together!",
+      personalityTraits: {
+        mainTrait: "adventurous",
+        subTraits: ["energetic", "friendly", "curious"]
+      },
+      artStyle: {
+        primaryStyle: "anime"
+      },
+      selectedTags: {
+        'character-type': ["male"],
+        'genre': ["adventure", "anime"],
+        'personality': ["adventurous", "energetic", "friendly"],
+        'appearance': ["athletic", "short-hair"],
+        'origin': ["original-character"],
+        'sexuality': ["straight"],
+        'fantasy': ["adventure"],
+        'content-rating': ["sfw"],
+        'ethnicity': ["asian"],
+        'scenario': ["modern", "adventure"]
+      },
+      imagePath: path.join(photosDir, availableImages[1] || '37994261.jpeg')
+    }
+  ];
+  
+  console.log(`\n🎬 Creating ${testCharacters.length} test character(s)...\n`);
+  
+  let successCount = 0;
+  let skipCount = 0;
+  let errorCount = 0;
+  
+  for (let i = 0; i < testCharacters.length; i++) {
+    const character = testCharacters[i];
+    console.log(`\n--- Processing ${i + 1}/${testCharacters.length}: ${character.name} ---`);
+    
+    const result = await createTestCharacter(character, testUser._id.toString());
+    
+    if (result.success) {
+      successCount++;
+      console.log(`✅ Character "${character.name}" created successfully!`);
+    } else if (result.skipped) {
+      skipCount++;
+      console.log(`⏭️ Character "${character.name}" skipped (already exists)`);
+    } else {
+      errorCount++;
+      console.error(`❌ Failed to create "${character.name}": ${result.error}`);
+    }
+    
+    // Add a small delay between characters
+    if (i < testCharacters.length - 1) {
+      console.log('⏳ Waiting 2 seconds before next character...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+  
+  console.log('\n🎉 Test Character Creation Complete!');
+  console.log(`✅ Successfully created: ${successCount} characters`);
+  console.log(`⏭️ Skipped (already exist): ${skipCount} characters`);
+  console.log(`❌ Failed: ${errorCount} characters`);
+  
+  // Cleanup
+  await mongoose.connection.close();
+  console.log('🔌 Disconnected from MongoDB');
+}
+
+// Run the script
+main().catch(console.error);

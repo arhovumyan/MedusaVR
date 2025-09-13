@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, ArrowLeft, ArrowRight, Wand2, Sparkles, ChevronRight, ChevronLeft, Stars, Zap, AlertTriangle } from 'lucide-react';
+import { Save, ArrowLeft, ArrowRight, Wand2, Sparkles, ChevronRight, ChevronLeft, Stars, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -539,7 +539,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                     />
                     {contentWarnings.name && (
                       <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
-                        <AlertTriangle size={14} />
                         <span>{contentWarnings.name}</span>
                       </div>
                     )}
@@ -588,7 +587,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                     />
                     {contentWarnings.age && (
                       <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
-                        <AlertTriangle size={14} />
                         <span>{contentWarnings.age}</span>
                       </div>
                     )}
@@ -622,7 +620,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                     />
                     {contentWarnings.quickSuggestion && (
                       <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
-                        <AlertTriangle size={14} />
                         <span>{contentWarnings.quickSuggestion}</span>
                       </div>
                     )}
@@ -670,7 +667,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                     />
                     {contentWarnings.description && (
                       <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
-                        <AlertTriangle size={14} />
                         <span>{contentWarnings.description}</span>
                       </div>
                     )}
@@ -699,7 +695,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                     />
                     {contentWarnings.positivePrompt && (
                       <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
-                        <AlertTriangle size={14} />
                         <span>{contentWarnings.positivePrompt}</span>
                       </div>
                     )}
@@ -728,7 +723,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                     />
                     {contentWarnings.negativePrompt && (
                       <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
-                        <AlertTriangle size={14} />
                         <span>{contentWarnings.negativePrompt}</span>
                       </div>
                     )}
@@ -1243,21 +1237,6 @@ const CreateCharacterEnhanced: React.FC = () => {
           </div>
         </div>
 
-        {/* User Responsibility Disclaimer */}
-        <div className="mb-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-red-900/20 border border-red-700 p-4 rounded-lg">
-              <h3 className="text-red-400 font-semibold mb-2 flex items-center gap-2">
-                ⚠️ User Responsibility Notice
-              </h3>
-              <p className="text-gray-300 text-sm">
-                <strong>You are 100% responsible</strong> for all characters you create and any content they generate. 
-                Ensure your character complies with all applicable laws. MedusaVR bear NO responsibility 
-                for user-created characters or any consequences of their use.
-              </p>
-            </div>
-          </div>
-        </div>
 
         {/* Progress Section */}
         <div className="mb-12">
@@ -1409,7 +1388,6 @@ const CreateCharacterEnhanced: React.FC = () => {
                         </>
                       ) : Object.values(hasContentViolations).some(violation => violation) ? (
                         <>
-                          <AlertTriangle className="w-5 h-5 mr-2" />
                           Content Violations Detected
                         </>
                       ) : (

@@ -230,15 +230,6 @@ export default function ForYouPage() {
                 </p>
               </div>
 
-              {/* User Responsibility Disclaimer */}
-              <div className="text-center p-4 bg-red-900/20 border border-red-700/30 rounded-lg">
-                <p className="text-xs text-red-300">
-                  <strong>18+ Content Warning:</strong> Users are 100% responsible for all generated content and interactions. 
-                  <a href="/legal/liability-disclaimer" className="text-red-400 hover:text-red-300 underline ml-1">
-                    View full disclaimer
-                  </a>
-                </p>
-              </div>
             </div>
           </details>
         </section>

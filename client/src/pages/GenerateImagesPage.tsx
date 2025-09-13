@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Coins, Sparkles, Image as ImageIcon, Zap, ZapOff, ChevronUp, MoreHorizontal, Download, X, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Coins, Sparkles, Image as ImageIcon, Download, X, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useAuth } from '@/hooks/useAuth';
@@ -15,8 +13,6 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Link, useLocation } from 'wouter';
 import GeneratedImages from '@/components/ui/GeneratedImages';
 import HorizontalImageCarousel from '@/components/ui/HorizontalImageCarousel';
-import { AVAILABLE_LORA_MODELS, CHAT_LORA_OPTIONS } from '@/config/loraConfig';
-import { ChatLoRAOption } from '@/types/lora';
 import { filterContent, filterContentLenient, ViolationSeverity } from '@shared/content-filter';
 import { violationTracker } from '@shared/violation-tracker';
 import { useToast } from '@/hooks/use-toast';
@@ -41,9 +37,6 @@ const GenerateImagesPage = () => {
   const [contentWarning, setContentWarning] = useState<string | null>(null);
   const [hasContentViolation, setHasContentViolation] = useState(false);
 
-  // LoRA state management
-  const [selectedLoras, setSelectedLoras] = useState<Array<{ id: string; name: string; strength: number }>>([]);
-  const [isLoraMenuOpen, setIsLoraMenuOpen] = useState(false);
 
   // Image modal state management
   const [selectedImage, setSelectedImage] = useState<{ image: { url: string; id?: string; filename?: string }, groupImages: { url: string; id?: string; filename?: string }[], index: number } | null>(null);
@@ -259,11 +252,6 @@ const GenerateImagesPage = () => {
       console.log('🤖 Using character model:', characterModel);
       console.log(`🖼️ Generating ${numberOfImages} images...`);
 
-      // Prepare LoRAs for API request - use filenames
-      const lorasForRequest = selectedLoras.map(lora => ({
-        name: lora.name, // This is already the filename from handleLoraToggle
-        strength: lora.strength
-      }));
 
       // Send a single request with the quantity parameter for batch generation
       const response = await apiRequest('POST', '/api/image-generation/generate', {
@@ -395,27 +383,6 @@ const GenerateImagesPage = () => {
 
   const currentCost = pricing[numberOfImages as keyof typeof pricing];
 
-  // LoRA selection handlers - Single LoRA selection with 100% strength
-  const handleLoraToggle = (loraModel: any, checked: boolean) => {
-    if (checked) {
-      // Only allow one LoRA at a time - replace any existing selection
-      setSelectedLoras([{ 
-        id: loraModel.id, 
-        name: loraModel.filename, // Use filename instead of display name
-        strength: 1.0 // 100% strength
-      }]);
-    } else {
-      setSelectedLoras([]);
-    }
-  };
-
-  const isLoraSelected = (loraId: string) => {
-    return selectedLoras.some(l => l.id === loraId);
-  };
-
-  const getSelectedLora = (loraId: string) => {
-    return selectedLoras.find(l => l.id === loraId);
-  };
 
   // Image modal functions
   const downloadImage = async (imageUrl: string, filename: string) => {
@@ -672,122 +639,6 @@ const GenerateImagesPage = () => {
                   />
                 </div> */}
 
-                {/* LoRA Selection Section */}
-                <div>
-                  <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-orange-400" />
-                    LoRA Selection
-                  </h3>
-                  
-                  {/* LoRA Menu Button */}
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setIsLoraMenuOpen(!isLoraMenuOpen)}
-                      disabled={!selectedCharacterId}
-                      className={`w-full p-2 rounded-lg border-2 transition-all duration-200 flex items-center justify-between ${
-                        selectedLoras.length > 0
-                          ? 'border-orange-500 bg-orange-500/20 text-orange-300'
-                          : 'border-zinc-600 hover:border-orange-400 text-zinc-400 hover:text-orange-400'
-                      } ${!selectedCharacterId ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Zap size={14} />
-                        <span className="text-xs">
-                          {selectedLoras.length > 0 
-                            ? `${selectedLoras[0]?.name ? AVAILABLE_LORA_MODELS.find(m => m.id === selectedLoras[0].id)?.name : 'LoRA'} selected`
-                            : 'Select a LoRA for image generation'
-                          }
-                        </span>
-                      </div>
-                      {isLoraMenuOpen ? <ChevronUp size={14} /> : <MoreHorizontal size={14} />}
-                    </button>
-
-                    {/* LoRA Selection Menu */}
-                    {isLoraMenuOpen && (
-                      <div className="absolute top-full left-0 right-0 mt-2 bg-gradient-to-br from-zinc-800/95 to-zinc-900/95 backdrop-blur-xl border border-orange-500/30 rounded-lg shadow-xl shadow-orange-500/20 z-50 max-h-64 overflow-y-auto">
-                        <div className="p-3">
-                          <div className="text-xs text-zinc-400 mb-2 flex items-center space-x-1">
-                            <Zap size={12} />
-                            <span>Available LoRAs ({AVAILABLE_LORA_MODELS.length})</span>
-                          </div>
-                          
-                          <div className="space-y-1">
-                            {AVAILABLE_LORA_MODELS.map((loraModel) => {
-                              const isSelected = isLoraSelected(loraModel.id);
-                              
-                              return (
-                                <div key={loraModel.id} className="space-y-1">
-                                  <div className="flex items-center space-x-2">
-                                    <Checkbox
-                                      id={`lora-${loraModel.id}`}
-                                      checked={isSelected}
-                                      onCheckedChange={(checked) => handleLoraToggle(loraModel, checked as boolean)}
-                                      disabled={!selectedCharacterId}
-                                      className="scale-90"
-                                    />
-                                    <Label htmlFor={`lora-${loraModel.id}`} className="text-xs font-medium cursor-pointer">
-                                      {loraModel.name}
-                                    </Label>
-                                  </div>
-                                  
-                                  <div className="text-xs text-zinc-400 ml-6 mb-2">
-                                    {loraModel.description}
-                                  </div>
-                                  
-                                  {isSelected && (
-                                    <div className="ml-6 mb-2">
-                                      <div className="flex items-center justify-between text-xs">
-                                        <span className="text-zinc-400">Strength:</span>
-                                        <span className="text-orange-400">100%</span>
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                          
-                          {selectedLoras.length > 0 && (
-                            <div className="border-t border-zinc-700/50 mt-3 pt-3">
-                              <button
-                                onClick={() => setSelectedLoras([])}
-                                className="w-full text-left px-2 py-1.5 rounded text-xs text-zinc-400 hover:bg-red-500/20 hover:text-red-300 transition-all duration-200 flex items-center space-x-1"
-                              >
-                                <ZapOff size={10} />
-                                <span>Clear All LoRAs</span>
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Selected LoRAs Display */}
-                  {selectedLoras.length > 0 && (
-                    <div className="mt-2 space-y-1">
-                      <div className="text-xs text-zinc-400">Selected LoRA:</div>
-                      <div className="flex flex-wrap gap-1">
-                        {selectedLoras.map((lora) => (
-                          <div
-                            key={lora.id}
-                            className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-orange-500/20 border border-orange-500/30 rounded text-xs"
-                          >
-                            <span className="text-orange-300">{AVAILABLE_LORA_MODELS.find(m => m.id === lora.id)?.name || lora.name}</span>
-                            <span className="text-zinc-400">(100%)</span>
-                            <button
-                              onClick={() => handleLoraToggle({ id: lora.id, name: lora.name }, false)}
-                              className="text-zinc-400 hover:text-red-400 transition-colors ml-1"
-                            >
-                              ×
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
 
                 {/* Number of Images & Generate */}
                 <div>

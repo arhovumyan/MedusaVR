@@ -67,11 +67,11 @@ async function connectToDatabase() {
 async function setupBatchUser() {
   try {
     // Find or create a batch user
-    let batchUser = await UserModel.findOne({ email: 'batch@medusa-vrfriendly.vercel.app' });
+    let batchUser = await UserModel.findOne({ email: 'batch@medusavr-production.up.railway.app' });
     
     if (!batchUser) {
       batchUser = new UserModel({
-        email: 'batch@medusa-vrfriendly.vercel.app',
+        email: 'batch@medusavr-production.up.railway.app',
         username: 'batchuser',
         displayName: 'Batch User',
         isEmailVerified: true,

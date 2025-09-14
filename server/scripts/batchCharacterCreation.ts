@@ -49,7 +49,7 @@ function generateAuthToken(): string {
     uid: BATCH_USER_ID,
     _id: BATCH_USER_ID,
     username: "BatchCreator",
-    email: "batch@medusa-vrfriendly.vercel.app",
+    email: "batch@medusavr-production.up.railway.app",
     type: "access"
   };
 
@@ -83,7 +83,7 @@ async function setupBatchUser(): Promise<void> {
       console.log('🆕 Creating batch user...');
       user = await UserModel.create({
         username,
-        email: 'batch@medusa-vrfriendly.vercel.app',
+        email: 'batch@medusavr-production.up.railway.app',
         password: 'batch123456',
         verified: true,
         coins: 10000,

@@ -12841,7 +12841,7 @@ import crypto6 from "crypto";
 var EmailVerificationService = class {
   constructor() {
     this.isConfigured = false;
-    this.fromEmail = process.env.EMAIL_FROM || "noreply@medusa-vrfriendly.vercel.app";
+    this.fromEmail = process.env.EMAIL_FROM || "noreply@medusavr-production.up.railway.app";
     this.baseUrl = process.env.BASE_URL || "https://medusa-vrfriendly.vercel.app";
     this.initializeSendGrid();
   }

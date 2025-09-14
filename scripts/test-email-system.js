@@ -131,7 +131,7 @@ async function sendTestEmail(testEmail = 'test@example.com') {
   const msg = {
     to: testEmail,
     from: {
-      email: process.env.EMAIL_FROM || 'noreply@medusa-vrfriendly.vercel.app',
+      email: process.env.EMAIL_FROM || 'noreply@medusavr-production.up.railway.app',
       name: 'MedusaVR Test'
     },
     subject: 'MedusaVR Email System Test',
@@ -143,7 +143,7 @@ This is a test email from the MedusaVR email system.
 If you received this email, the email configuration is working correctly!
 
 Configuration Details:
-- From: ${process.env.EMAIL_FROM || 'noreply@medusa-vrfriendly.vercel.app'}
+- From: ${process.env.EMAIL_FROM || 'noreply@medusavr-production.up.railway.app'}
 - Base URL: ${process.env.BASE_URL || 'http://localhost:5002'}
 - Timestamp: ${new Date().toISOString()}
 
@@ -177,7 +177,7 @@ MedusaVR Email System Test
     
     <div class="details">
       <strong>Configuration Details:</strong><br>
-      From: ${process.env.EMAIL_FROM || 'noreply@medusa-vrfriendly.vercel.app'}<br>
+      From: ${process.env.EMAIL_FROM || 'noreply@medusavr-production.up.railway.app'}<br>
       Base URL: ${process.env.BASE_URL || 'http://localhost:5002'}<br>
       Timestamp: ${new Date().toISOString()}
     </div>

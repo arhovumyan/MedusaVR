@@ -22,7 +22,7 @@ Add these environment variables to your `.env` file:
 SENDGRID_API_KEY=your_sendgrid_api_key_here
 
 # Email Settings
-EMAIL_FROM=noreply@medusa-vrfriendly.vercel.app
+EMAIL_FROM=noreply@medusavr-production.up.railway.app
 BASE_URL=https://medusa-vrfriendly.vercel.app
 ```
 
@@ -175,7 +175,7 @@ EMAIL_FROM=noreply@yourdomain.com
 BASE_URL=https://yourdomain.com
 
 # Optional (defaults shown)
-# EMAIL_FROM defaults to noreply@medusa-vrfriendly.vercel.app
+# EMAIL_FROM defaults to noreply@medusavr-production.up.railway.app
 # BASE_URL defaults to https://medusa-vrfriendly.vercel.app
 ```
 

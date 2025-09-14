@@ -59,7 +59,7 @@ console.log('================================');
 const emailConfigBlock = `
 # Email Configuration (Add these lines to your server/.env file)
 SENDGRID_API_KEY=your_sendgrid_api_key_here
-EMAIL_FROM=noreply@medusa-vrfriendly.vercel.app
+EMAIL_FROM=noreply@medusavr-production.up.railway.app
 BASE_URL=http://localhost:5002`;
 
 console.log(emailConfigBlock);

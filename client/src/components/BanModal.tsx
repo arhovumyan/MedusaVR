@@ -66,7 +66,7 @@ export function BanModal({
 
   const handleContactSupport = () => {
     // Open email client or support form
-    window.location.href = 'mailto:support@medusa-vrfriendly.vercel.app?subject=Account Ban Appeal&body=Please describe your appeal here.';
+    window.location.href = 'mailto:support@medusavr-production.up.railway.app?subject=Account Ban Appeal&body=Please describe your appeal here.';
   };
 
   const handleClose = () => {

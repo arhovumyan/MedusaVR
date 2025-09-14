@@ -138,9 +138,9 @@ The following activities will result in immediate account suspension or terminat
 
 ### 11. Contact Information
 
-**For policy questions:** legal@medusa-vrfriendly.vercel.app
-**For compliance matters:** compliance@medusa-vrfriendly.vercel.app
-**For law enforcement:** legal@medusa-vrfriendly.vercel.app
+**For policy questions:** legal@medusavr-production.up.railway.app
+**For compliance matters:** compliance@medusavr-production.up.railway.app
+**For law enforcement:** legal@medusavr-production.up.railway.app
 
 ### 12. Policy Updates
 

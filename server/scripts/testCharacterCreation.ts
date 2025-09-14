@@ -60,11 +60,11 @@ async function connectToDatabase() {
 async function setupTestUser() {
   try {
     // Find or create a test user
-    let testUser = await UserModel.findOne({ email: 'test@medusa-vrfriendly.vercel.app' });
+    let testUser = await UserModel.findOne({ email: 'test@medusavr-production.up.railway.app' });
     
     if (!testUser) {
       testUser = new UserModel({
-        email: 'test@medusa-vrfriendly.vercel.app',
+        email: 'test@medusavr-production.up.railway.app',
         username: 'testuser',
         displayName: 'Test User',
         isEmailVerified: true,

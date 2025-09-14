@@ -91,23 +91,25 @@ export function buildApp() {
         console.log("Request Origin:", req.headers.origin);
         next();
     });
-    // 6. CORS - Enhanced configuration for production
+    // 6. CORS - Simplified and robust configuration
+    const allowedOrigins = [
+        "http://localhost",
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:3000",
+        "http://3.135.203.99",
+        "https://medusavr-production.up.railway.app",
+        "https://medusa-vrfriendly.vercel.app",
+    ];
     app.use(cors({
         origin: function (origin, callback) {
             // Allow requests with no origin (like mobile apps or curl requests)
-            if (!origin)
+            if (!origin) {
+                console.log(`🌐 CORS: No origin provided, allowing`);
                 return callback(null, true);
+            }
             console.log(`🌐 CORS request from origin: ${origin}`);
-            const allowedOrigins = [
-                "http://localhost",
-                "http://localhost:5173",
-                "http://localhost:5174",
-                "http://localhost:5175",
-                "http://localhost:3000",
-                "http://3.135.203.99",
-                "https://medusavr-production.up.railway.app",
-                "https://medusa-vrfriendly.vercel.app",
-            ];
             // Allow any Vercel domain (including preview deployments)
             const isVercelDomain = origin.endsWith('.vercel.app') || origin.includes('vercel.app');
             // Allow medusa-vrfriendly.vercel.app domains
@@ -135,16 +137,31 @@ export function buildApp() {
         ],
         exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
         preflightContinue: false,
-        optionsSuccessStatus: 200, // Changed from 204 to 200 for better compatibility
-        maxAge: 86400 // Cache preflight for 24 hours
+        optionsSuccessStatus: 200,
+        maxAge: 86400
     }));
-    // Additional CORS handling for preflight requests
-    app.options('*', (req, res) => {
-        console.log(`🔄 Handling preflight request for: ${req.url}`);
-        res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    // Manual CORS headers for all responses
+    app.use((req, res, next) => {
+        const origin = req.headers.origin;
+        if (origin && (allowedOrigins.includes(origin) || origin.includes('vercel.app'))) {
+            res.header('Access-Control-Allow-Origin', origin);
+            res.header('Access-Control-Allow-Credentials', 'true');
+        }
         res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-CSRF-Token, X-XSRF-Token, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers');
-        res.header('Access-Control-Allow-Credentials', 'true');
+        res.header('Access-Control-Max-Age', '86400');
+        next();
+    });
+    // Handle preflight requests explicitly
+    app.options('*', (req, res) => {
+        console.log(`🔄 Handling preflight request for: ${req.url} from origin: ${req.headers.origin}`);
+        const origin = req.headers.origin;
+        if (origin && (allowedOrigins.includes(origin) || origin.includes('vercel.app'))) {
+            res.header('Access-Control-Allow-Origin', origin);
+            res.header('Access-Control-Allow-Credentials', 'true');
+        }
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-CSRF-Token, X-XSRF-Token, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers');
         res.header('Access-Control-Max-Age', '86400');
         res.sendStatus(200);
     });

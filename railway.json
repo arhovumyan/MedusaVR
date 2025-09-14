@@ -3,22 +3,15 @@
   "services": [
     {
       "name": "backend",
-      "rootDirectory": ".",
+      "rootDirectory": "server",
       "build": {
-        "builder": "DOCKERFILE",
-        "dockerfile": "Dockerfile.backend"
+        "builder": "NIXPACKS"
       },
       "deploy": {
+        "startCommand": "npm start",
         "healthcheckPath": "/health",
         "healthcheckTimeout": 300,
         "restartPolicy": "Always"
-      }
-    },
-    {
-      "name": "frontend",
-      "rootDirectory": "client",
-      "build": {
-        "builder": "NIXPACKS"
       }
     }
   ]

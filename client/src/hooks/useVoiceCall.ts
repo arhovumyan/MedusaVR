@@ -123,13 +123,13 @@ export function useVoiceCall({
       return 'http://localhost:5002';
     }
     
-    // Production URLs - fix the backend URL
+    // Production URLs - use relative URLs to leverage Vercel proxy
     if (hostname === 'medusa-vrfriendly.vercel.app' || hostname.includes('vercel.app')) {
-      return 'https://medusavr-production.up.railway.app';
+      return '';
     }
     
     // Default fallback
-    return 'https://medusavr-production.up.railway.app';
+    return '';
   };
 
   // Get socket URL

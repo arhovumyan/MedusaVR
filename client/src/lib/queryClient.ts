@@ -20,9 +20,9 @@ function getApiBaseUrl(): string {
     return '';
   }
   
-  // For production on Vercel, use the Railway backend URL
+  // For production on Vercel, use relative URLs to leverage Vercel's proxy
   if (hostname.includes('vercel.app') || hostname.includes('medusa-vrfriendly.vercel.app')) {
-    return 'https://medusavr-production.up.railway.app';
+    return '';
   }
   
   // For Docker environments or production, use relative URLs

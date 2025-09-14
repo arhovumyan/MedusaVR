@@ -1787,7 +1787,7 @@ var init_TextualInversionService = __esm({
           if (listResult.success && listResult.files) {
             const safetensorsFile = listResult.files.find((file) => file.endsWith(".safetensors"));
             if (safetensorsFile) {
-              return `https://medusavr.art/${embeddingsFolder}/${safetensorsFile}`;
+              return `https://medusa-vrfriendly.vercel.app/${embeddingsFolder}/${safetensorsFile}`;
             }
           }
           return null;
@@ -6211,7 +6211,51 @@ import fs from "fs";
 import path from "path";
 var CharacterEmbeddingService = class {
   constructor() {
-    this.runpodUrl = process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || process.env.RUNPOD_WEBUI_URL || "https://4mm1jblh0l3mv2-7861.proxy.runpod.net";
+    this.runpodUrl = this.getWebUIUrlForStyle("fantasy");
+  }
+  /**
+   * Get the appropriate WebUI URL based on art style
+   * anime/cartoon/fantasy → 7861, realistic → 7860
+   */
+  getWebUIUrlForStyle(style) {
+    console.log(`\u{1F50D} Getting WebUI URL for style: "${style}"`);
+    console.log(`\u{1F527} Environment variables:`, {
+      RUNPOD_ANIME_CARTOON_FANTASY_URL: process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || "NOT SET",
+      RUNPOD_REALISTIC_URL: process.env.RUNPOD_REALISTIC_URL || "NOT SET",
+      RUNPOD_WEBUI_URL: process.env.RUNPOD_WEBUI_URL || "NOT SET"
+    });
+    if (!style) {
+      const fallbackUrl = process.env.RUNPOD_WEBUI_URL || process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || "https://4mm1jblh0l3mv2-7861.proxy.runpod.net";
+      console.log(`\u26A0\uFE0F No style provided, using fallback URL: ${fallbackUrl}`);
+      return fallbackUrl;
+    }
+    switch (style.toLowerCase()) {
+      case "realistic":
+        const realisticUrl = process.env.RUNPOD_REALISTIC_URL || process.env.RUNPOD_WEBUI_URL || process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || "https://vkfydhwbdpn6pq-7860.proxy.runpod.net";
+        console.log(`\u{1F3A8} Using realistic checkpoint: ${realisticUrl}`);
+        return realisticUrl;
+      case "anime":
+      case "cartoon":
+      case "fantasy":
+      default:
+        const animeUrl = process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || process.env.RUNPOD_WEBUI_URL || "https://4mm1jblh0l3mv2-7861.proxy.runpod.net";
+        console.log(`\u{1F3A8} Using anime/cartoon/fantasy checkpoint: ${animeUrl}`);
+        return animeUrl;
+    }
+  }
+  /**
+   * Get the appropriate model checkpoint based on art style
+   */
+  getModelForArtStyle(style) {
+    switch (style.toLowerCase()) {
+      case "realistic":
+        return "realistic.safetensors";
+      case "anime":
+      case "cartoon":
+      case "fantasy":
+      default:
+        return "diving.safetensors";
+    }
   }
   /**
    * Get the next sequential image number for a character
@@ -6248,6 +6292,11 @@ var CharacterEmbeddingService = class {
   async generateEmbeddingImages(options) {
     console.log(`\u{1F3AD} Starting embedding image generation for character: ${options.characterName}`);
     try {
+      const artStyle = options.artStyle?.primaryStyle || "fantasy";
+      this.runpodUrl = this.getWebUIUrlForStyle(artStyle);
+      console.log(`\u{1F517} Using RunPod URL for ${artStyle} style: ${this.runpodUrl}`);
+      const model10 = this.getModelForArtStyle(artStyle);
+      console.log(`\u{1F527} Using model: ${model10}`);
       const imageVariations = [
         {
           name: "portrait_front",
@@ -6349,10 +6398,11 @@ var CharacterEmbeddingService = class {
           console.log(`\u{1F3B2} Variation seed: ${variationSeed}`);
           console.log(`\u{1F4C1} Filename: ${embeddingImageFilename}`);
           const workflow = {
+            client_id: `${Date.now()}_${Math.random().toString(36).substring(7)}`,
             "prompt": {
               "0": {
                 "class_type": "CheckpointLoaderSimple",
-                "inputs": { "ckpt_name": "diving.safetensors" }
+                "inputs": { "ckpt_name": model10 }
               },
               "1": {
                 "class_type": "CLIPTextEncode",
@@ -6383,12 +6433,13 @@ var CharacterEmbeddingService = class {
                   "positive": ["1", 0],
                   "negative": ["2", 0],
                   "latent_image": ["3", 0],
-                  "steps": 30,
-                  "cfg": 7,
-                  "sampler_name": "euler",
-                  "scheduler": "normal",
+                  "steps": 25,
+                  "cfg": 6,
+                  "sampler_name": "dpmpp_2m",
+                  "scheduler": "karras",
                   "denoise": 1,
-                  "seed": variationSeed
+                  "seed": variationSeed,
+                  "force_full_denoise": "enable"
                 }
               },
               "5": {
@@ -6405,21 +6456,51 @@ var CharacterEmbeddingService = class {
               }
             }
           };
-          const response = await fetch5(`${this.runpodUrl}/prompt`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(workflow)
-          });
-          if (!response.ok) {
-            throw new Error(`RunPod request failed: ${response.status} ${response.statusText}`);
+          let retryCount = 0;
+          const maxRetries = 3;
+          let responseData = null;
+          while (retryCount < maxRetries) {
+            try {
+              const runpodPromptUrl = this.runpodUrl.endsWith("/") ? `${this.runpodUrl}prompt` : `${this.runpodUrl}/prompt`;
+              console.log(`\u{1F4E4} Submitting workflow to: ${runpodPromptUrl} (attempt ${retryCount + 1}/${maxRetries})`);
+              console.log(`\u{1F4CB} Workflow preview:`, JSON.stringify(workflow, null, 2).substring(0, 500) + "...");
+              const response = await fetch5(runpodPromptUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(workflow)
+              });
+              if (!response.ok) {
+                throw new Error(`RunPod request failed: ${response.status} ${response.statusText}`);
+              }
+              responseData = await response.json();
+              console.log(`\u{1F4E5} RunPod response data:`, JSON.stringify(responseData, null, 2));
+              if (responseData.exec_info && responseData.exec_info.queue_remaining === 0) {
+                console.warn(`\u26A0\uFE0F RunPod server overloaded - queue is full. Retrying in ${(retryCount + 1) * 5} seconds...`);
+                retryCount++;
+                if (retryCount < maxRetries) {
+                  await new Promise((resolve) => setTimeout(resolve, retryCount * 5e3));
+                  continue;
+                } else {
+                  throw new Error("RunPod server overloaded - max retries exceeded. Please try again later.");
+                }
+              }
+              if (!responseData.prompt_id) {
+                console.error(`\u274C No prompt_id in response. Full response:`, responseData);
+                throw new Error("No prompt_id received from RunPod");
+              }
+              console.log(`\u2705 Workflow submitted. Prompt ID: ${responseData.prompt_id}`);
+              break;
+            } catch (error) {
+              retryCount++;
+              if (retryCount >= maxRetries) {
+                throw error;
+              }
+              console.warn(`\u26A0\uFE0F Attempt ${retryCount} failed, retrying in ${retryCount * 5} seconds...`, error);
+              await new Promise((resolve) => setTimeout(resolve, retryCount * 5e3));
+            }
           }
-          const responseData = await response.json();
-          if (!responseData.prompt_id) {
-            throw new Error("No prompt_id received from RunPod");
-          }
-          console.log(`\u2705 Workflow submitted. Prompt ID: ${responseData.prompt_id}`);
           console.log(`\u23F3 Waiting for generation...`);
           const maxWaitTime = 6e4;
           const pollInterval = 2e3;
@@ -6543,22 +6624,7 @@ var CharacterEmbeddingService = class {
         if (bunnyUrls.length >= 5) {
           console.log(`\u{1F9E0} Training textual inversion embedding with ${bunnyUrls.length} images...`);
           const { default: textualInversionService } = await Promise.resolve().then(() => (init_TextualInversionService(), TextualInversionService_exports));
-          textualInversionService.trainTextualInversionEmbedding({
-            characterId: options.characterId,
-            characterName: options.characterName,
-            username: options.username,
-            embeddingImages: bunnyUrls,
-            steps: 1e3,
-            learningRate: 5e-3
-          }).then((result) => {
-            if (result.success) {
-              console.log(`\u{1F389} Textual inversion training completed for ${options.characterName}: ${result.embeddingName}`);
-            } else {
-              console.warn(`\u26A0\uFE0F Textual inversion training failed for ${options.characterName}: ${result.error}`);
-            }
-          }).catch((error) => {
-            console.warn(`\u26A0\uFE0F Textual inversion training error for ${options.characterName}:`, error);
-          });
+          console.log(`\u26A0\uFE0F Textual inversion training temporarily disabled for ${options.characterName} - TextualInversionTraining node not available`);
           console.log(`\u{1F9E0} Textual inversion training started in background...`);
         } else {
           console.log(`\u26A0\uFE0F Not enough images for textual inversion training (need 5+, have ${bunnyUrls.length})`);
@@ -17709,7 +17775,7 @@ router22.get("/sitemap.xml", async (req, res) => {
     staticPages.forEach((page) => {
       sitemap += `
   <url>
-    <loc>https://medusavr.art${page.url}</loc>
+    <loc>https://medusa-vrfriendly.vercel.app${page.url}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
@@ -17719,7 +17785,7 @@ router22.get("/sitemap.xml", async (req, res) => {
     exampleCharacterIds.forEach((id) => {
       sitemap += `
   <url>
-    <loc>https://medusavr.art/characters/${id}</loc>
+    <loc>https://medusa-vrfriendly.vercel.app/characters/${id}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -17741,7 +17807,7 @@ router22.get("/sitemap.xml", async (req, res) => {
     popularTags.forEach((tag) => {
       sitemap += `
   <url>
-    <loc>https://medusavr.art/tags/${encodeURIComponent(tag)}</loc>
+    <loc>https://medusa-vrfriendly.vercel.app/tags/${encodeURIComponent(tag)}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -17755,7 +17821,7 @@ router22.get("/sitemap.xml", async (req, res) => {
     const basicSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://medusavr.art/</loc>
+    <loc>https://medusa-vrfriendly.vercel.app/</loc>
     <lastmod>${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -19386,8 +19452,8 @@ import { URL as URL2 } from "url";
 var ALLOWED_DOMAINS = [
   "localhost",
   "127.0.0.1",
-  "medusavr.art",
-  "www.medusavr.art",
+  "medusa-vrfriendly.vercel.app",
+  "www.medusa-vrfriendly.vercel.app",
   "vercel.app",
   // For development
   process.env.FRONTEND_URL
@@ -19518,15 +19584,12 @@ function buildApp() {
           "http://localhost:5175",
           "http://localhost:3000",
           "http://3.135.203.99",
-          "https://your-domain.com",
-          "https://www.your-domain.com",
-          "http://your-domain.com",
-          "http://www.your-domain.com",
-          "https://your-backend-url.railway.app",
+          "https://medusavr-production.up.railway.app",
           process.env.FRONTEND_URL || ""
         ];
-        const isVercelDomain = origin.endsWith(".vercel.app");
-        if (allowedOrigins.includes(origin) || isVercelDomain) {
+        const isVercelDomain = origin.endsWith(".vercel.app") || origin.includes("vercel.app");
+        const isMedusavrDomain = origin.includes("medusa-vrfriendly.vercel.app");
+        if (allowedOrigins.includes(origin) || isVercelDomain || isMedusavrDomain) {
           console.log(`\u2705 CORS allowed for origin: ${origin}`);
           return callback(null, true);
         }
@@ -19535,9 +19598,11 @@ function buildApp() {
         return callback(new Error("Not allowed by CORS"));
       },
       credentials: true,
-      methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-CSRF-Token", "X-XSRF-Token"],
-      exposedHeaders: ["X-Total-Count", "X-Page-Count"]
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-CSRF-Token", "X-XSRF-Token", "Accept", "Origin"],
+      exposedHeaders: ["X-Total-Count", "X-Page-Count"],
+      preflightContinue: false,
+      optionsSuccessStatus: 204
     })
   );
   app.use(cookieParser());

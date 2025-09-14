@@ -95,12 +95,12 @@ export function useSocket(
             return import.meta.env.VITE_API_URL;
           }
           
-          // 5. Production fallback: use Railway backend URL
+          // 5. Production fallback: use relative URLs to leverage Vercel proxy
           if (hostname.includes('vercel.app') || !isLocalhost) {
             if (import.meta.env.DEV || import.meta.env.VITE_APP_ENV === 'development') {
-              console.log('✅ Using production Railway URL');
+              console.log('✅ Using relative URLs for Vercel proxy');
             }
-            return 'https://medusavr-production.up.railway.app';
+            return '';
           }
           
           // 6. Last resort: use localhost with port

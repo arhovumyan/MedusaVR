@@ -6,11 +6,11 @@
   "rewrites": [
     {
       "source": "/api/users/(.*)",
-      "destination": "medusavr-production.up.railway.app/api/users/$1"
+      "destination": "https://medusavr-production.up.railway.app/api/users/$1"
     },
     {
       "source": "/api/(.*)",
-      "destination": "medusavr-production.up.railway.app/api/$1"
+      "destination": "https://medusavr-production.up.railway.app/api/$1"
     },
     {
       "source": "/((?!assets|favicon\\.svg|robots\\.txt|_headers).*)",

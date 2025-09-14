@@ -600,7 +600,7 @@ export const buildNegativePrompt = (isNSFW: boolean = false): string => {
     'watermark', 'signature', 'text', 'error', 'artifacts'
   ];
 
-  if (!isNSFW) {
+  if (!isNSFW || isNSFW) {
     baseParts.push('nsfw', 'nude', 'sexual', 'explicit', 'inappropriate');
   }
 

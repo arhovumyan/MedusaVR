@@ -13,13 +13,13 @@ const FeaturesPage = () => {
     },
     {
       icon: <Image className="w-8 h-8 text-pink-400" />,
-      title: "NSFW Image Generation",
-      description: "Create custom adult content and NSFW images with AI characters. Generate high-quality artwork with advanced AI technology for mature audiences."
+      title: "AI Image Generation",
+      description: "Create custom images with AI characters. Generate high-quality artwork with advanced AI technology for all audiences."
     },
     {
       icon: <Heart className="w-8 h-8 text-red-400" />,
-      title: "AI Girlfriend Experience",
-      description: "Build meaningful relationships with AI companions. Experience romance, intimacy, and emotional connections with personalized AI girlfriends."
+      title: "AI Companion Experience",
+      description: "Build meaningful relationships with AI companions. Experience romance, friendship, and emotional connections with personalized AI companions."
     },
     {
       icon: <Users className="w-8 h-8 text-blue-400" />,
@@ -29,12 +29,12 @@ const FeaturesPage = () => {
     {
       icon: <Sparkles className="w-8 h-8 text-purple-400" />,
       title: "Advanced AI Roleplay",
-      description: "Explore unlimited roleplay scenarios with intelligent AI. From casual conversations to intimate encounters, create any story you imagine."
+      description: "Explore unlimited roleplay scenarios with intelligent AI. From casual conversations to meaningful encounters, create any story you imagine."
     },
     {
       icon: <Shield className="w-8 h-8 text-green-400" />,
-      title: "Age-Verified Adult Content",
-      description: "Safe and secure access to adult content with proper age verification. All NSFW features are restricted to verified 18+ users only."
+      title: "Age-Verified Content",
+      description: "Safe and secure access to content with proper age verification. All mature features are restricted to verified 18+ users only."
     },
     {
       icon: <Zap className="w-8 h-8 text-yellow-400" />,
@@ -54,8 +54,8 @@ const FeaturesPage = () => {
       answer: "MedusaVR is an AI-powered platform where you can chat with AI characters, create custom companions, and generate personalized images. Our advanced AI technology enables natural conversations and high-quality content creation for both casual and adult interactions."
     },
     {
-      question: "Is NSFW content really available and safe?",
-      answer: "Yes, we offer NSFW content for verified 18+ users only. All adult features require age verification, and we maintain strict content moderation policies. Your privacy and safety are our top priorities with enterprise-grade security."
+      question: "Is mature content really available and safe?",
+      answer: "Yes, we offer mature content for verified 18+ users only. All mature features require age verification, and we maintain strict content moderation policies. Your privacy and safety are our top priorities with enterprise-grade security."
     },
     {
       question: "How do I create my own AI character?",
@@ -63,7 +63,7 @@ const FeaturesPage = () => {
     },
     {
       question: "What makes MedusaVR different from other AI chat platforms?",
-      answer: "MedusaVR combines advanced AI chat with image generation, offering both SFW and NSFW content. We provide character memory, personality customization, and real-time image creation - all in one platform with proper age verification."
+      answer: "MedusaVR combines advanced AI chat with image generation, offering both general and mature content. We provide character memory, personality customization, and real-time image creation - all in one platform with proper age verification."
     },
     {
       question: "How much does MedusaVR cost?",
@@ -91,9 +91,9 @@ const FeaturesPage = () => {
   return (
     <>
       <SEOHead 
-        title="AI Character Platform Features - NSFW Generator & AI Chat | MedusaVR"
-        description="Discover MedusaVR's advanced features: AI character chat, NSFW image generation, custom AI companions, adult roleplay, and premium AI technology. Learn how our platform works."
-        keywords="AI character features, NSFW AI generator features, AI companion capabilities, adult AI chat features, character customization, AI roleplay features"
+        title="AI Character Platform Features - Image Generator & AI Chat | MedusaVR"
+        description="Discover MedusaVR's advanced features: AI character chat, image generation, custom AI companions, roleplay, and premium AI technology. Learn how our platform works."
+        keywords="AI character features, AI generator features, AI companion capabilities, AI chat features, character customization, AI roleplay features"
         url="https://medusa-vrfriendly.vercel.app/features"
         structuredData={faqStructuredData}
       />
@@ -105,14 +105,14 @@ const FeaturesPage = () => {
             AI Character Platform Features
           </h1>
           <p className="text-xl text-zinc-300 max-w-4xl mx-auto mb-8">
-            Discover why MedusaVR is the ultimate AI companion platform. Create custom AI characters, generate NSFW content, 
+            Discover why MedusaVR is the ultimate AI companion platform. Create custom AI characters, generate custom content, 
             and enjoy unlimited chat experiences with advanced artificial intelligence technology.
           </p>
           <div className="flex flex-wrap justify-center gap-4 text-sm">
             <span className="bg-zinc-800 px-4 py-2 rounded-full text-orange-300">#AI Character Chat</span>
-            <span className="bg-zinc-800 px-4 py-2 rounded-full text-pink-300">#NSFW Generator</span>
-            <span className="bg-zinc-800 px-4 py-2 rounded-full text-blue-300">#AI Girlfriend</span>
-            <span className="bg-zinc-800 px-4 py-2 rounded-full text-purple-300">#Adult AI Chat</span>
+            <span className="bg-zinc-800 px-4 py-2 rounded-full text-pink-300">#Image Generator</span>
+            <span className="bg-zinc-800 px-4 py-2 rounded-full text-blue-300">#AI Companion</span>
+            <span className="bg-zinc-800 px-4 py-2 rounded-full text-purple-300">#AI Chat</span>
           </div>
         </div>
 

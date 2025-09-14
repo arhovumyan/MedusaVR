@@ -31,7 +31,6 @@ export default function SubscribePage() {
         { icon: Coins, text: "400 free coins each month", color: "text-amber-400" },
         { icon: CheckCircle, text: "Chat History", color: "text-green-400" },
         { icon: Star, text: "Premium Models", color: "text-purple-400" },
-        { icon: Zap, text: "NSFW Content", color: "text-red-400" },
         { icon: Image, text: "Custom Characters", color: "text-indigo-400" },
         { icon: Image, text: "In-Chat Pictures", color: "text-pink-400" },
         { icon: Bot, text: "Enhanced AI Responses", color: "text-cyan-400" },
@@ -50,12 +49,10 @@ export default function SubscribePage() {
       originalYearlyPrice: 294,
       monthlyPriceId: 'price_virtuoso_monthly',
       yearlyPriceId: 'price_virtuoso_yearly',
-      description: "All-access - Premium + uncensored NSFW chats. Bestseller for a reason 😈",
       features: [
         { icon: Coins, text: "1200 free coins each month", color: "text-amber-400" },
         { icon: CheckCircle, text: "Chat History", color: "text-green-400" },
         { icon: Star, text: "Premium Models", color: "text-purple-400" },
-        { icon: Zap, text: "NSFW Content", color: "text-red-400" },
         { icon: Mic, text: "Voice Calls (beta)", color: "text-green-400" },
         { icon: Image, text: "Custom Characters", color: "text-indigo-400" },
         { icon: Brain, text: "8K Memory Context", color: "text-purple-400" },
@@ -85,7 +82,6 @@ export default function SubscribePage() {
         { icon: Crown, text: "Elite Roleplay Engine", color: "text-amber-400" },
         { icon: CheckCircle, text: "Chat History", color: "text-green-400" },
         { icon: Star, text: "Premium Models", color: "text-purple-400" },
-        { icon: Zap, text: "NSFW Content", color: "text-red-400" },
         { icon: Phone, text: "Voice Calls (Beta)", color: "text-green-400" },
         { icon: Image, text: "Custom Characters", color: "text-indigo-400" },
         { icon: Brain, text: "16K Memory Context", color: "text-purple-400" },
@@ -226,7 +222,7 @@ export default function SubscribePage() {
               <Shield className="w-4 sm:w-6 h-4 sm:h-6 text-green-500 mr-1 sm:mr-2" />
               <span className="text-lg sm:text-2xl font-bold">Both</span>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-400">Both NSFW and SFW</p>
+            <p className="text-xs sm:text-sm text-zinc-400">Both realistic and fantasy</p>
           </div>
         </div>
       </div>

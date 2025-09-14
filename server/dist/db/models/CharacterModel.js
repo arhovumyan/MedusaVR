@@ -14,7 +14,7 @@ const CharacterSchema = new Schema({
         } }, // Character age - MUST be 18 or above
     quickSuggestion: { type: String, maxlength: 1000 }, // Quick character interaction suggestion
     rating: { type: String },
-    nsfw: { type: Boolean, default: false },
+    mature: { type: Boolean, default: false },
     chatCount: { type: Number, default: 0 },
     likes: { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },

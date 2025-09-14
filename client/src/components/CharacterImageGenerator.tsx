@@ -18,7 +18,7 @@ interface CharacterImageGeneratorProps {
   characterName?: string;
   characterPersona?: string;
   characterId?: string;
-  isNsfw?: boolean;
+  isMature?: boolean;
   onImageSelect?: (imageUrl: string) => void;
   className?: string;
 }
@@ -35,7 +35,7 @@ export function CharacterImageGenerator({
   characterName = '',
   characterPersona = '',
   characterId,
-  isNsfw = false,
+  isMature = false,
   onImageSelect,
   className = ''
 }: CharacterImageGeneratorProps) {
@@ -81,7 +81,7 @@ export function CharacterImageGenerator({
       characterName: characterName || undefined,
       characterPersona: characterPersona || undefined,
       characterId: characterId || undefined,
-      nsfw: isNsfw,
+      mature: isMature,
       quantity: quantity,
       negativePrompt: showAdvanced ? negativePrompt : undefined,
       steps: showAdvanced ? steps : undefined,

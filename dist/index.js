@@ -36,7 +36,7 @@ var init_CharacterModel = __esm({
       quickSuggestion: { type: String, maxlength: 1e3 },
       // Quick character interaction suggestion
       rating: { type: String },
-      nsfw: { type: Boolean, default: false },
+      mature: { type: Boolean, default: false },
       chatCount: { type: Number, default: 0 },
       likes: { type: Number, default: 0 },
       commentsCount: { type: Number, default: 0 },

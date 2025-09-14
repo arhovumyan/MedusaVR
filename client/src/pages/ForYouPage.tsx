@@ -45,12 +45,7 @@ export default function ForYouPage() {
         </section>
 
       <SEOHead 
-        title="MedusaVR - Advanced AI Character Chat & NSFW Roleplay Platform | Uncensored AI Companions"
-        description="Experience uncensored AI character chat with lifelike NSFW companions. Create custom AI girlfriends, enjoy intimate roleplay, and generate personalized adult content. Premium AI chat platform with no restrictions or filters."
-        keywords="AI character chat, NSFW AI chat, AI girlfriend, uncensored AI roleplay, AI companions, adult AI chat, AI porn chat, custom AI characters, AI sexting, NSFW AI generator, AI fantasy roleplay, intimate AI conversations"
-        url="https://medusa-vrfriendly.vercel.app/"
-        canonicalUrl="https://medusa-vrfriendly.vercel.app/"
-        tags={["AI chat", "NSFW", "roleplay", "AI companions", "adult content", "character creation"]}
+         canonicalUrl="https://medusa-vrfriendly.vercel.app/"
         structuredData={{
           "@context": "https://schema.org",
           "@graph": [
@@ -65,7 +60,7 @@ export default function ForYouPage() {
                 "width": 512,
                 "height": 512
               },
-              "description": "Advanced AI character chat platform featuring uncensored NSFW roleplay, custom companion creation, and immersive adult conversations",
+              "description": "Advanced AI character chat platform featuring custom companion creation and immersive conversations",
               "foundingDate": "2024",
               "sameAs": [
                 "https://twitter.com/MedusaVR"
@@ -76,7 +71,7 @@ export default function ForYouPage() {
               "@id": "https://medusa-vrfriendly.vercel.app/#website",
               "url": "https://medusa-vrfriendly.vercel.app/",
               "name": "MedusaVR",
-              "description": "Advanced AI character chat platform featuring uncensored NSFW roleplay, custom companion creation, and immersive adult conversations",
+              "description": "Advanced AI character chat platform featuring custom companion creation and immersive conversations",
               "publisher": {
                 "@id": "https://medusa-vrfriendly.vercel.app/#organization"
               },
@@ -93,10 +88,10 @@ export default function ForYouPage() {
               "@type": "WebApplication",
               "@id": "https://medusa-vrfriendly.vercel.app/#webapp",
               "name": "MedusaVR - AI Character Chat Platform",
-              "description": "Advanced AI character chat platform featuring uncensored NSFW roleplay, custom companion creation, and immersive adult conversations",
+              "description": "Advanced AI character chat platform featuring custom companion creation and immersive conversations",
               "url": "https://medusa-vrfriendly.vercel.app/",
               "applicationCategory": "EntertainmentApplication",
-              "genre": "AI Chat, Adult Entertainment",
+              "genre": "AI Chat, Entertainment",
               "operatingSystem": "Web Browser",
               "browserRequirements": "Requires JavaScript. Requires HTML5.",
               "offers": {
@@ -107,7 +102,6 @@ export default function ForYouPage() {
               },
               "featureList": [
                 "Uncensored AI Chat",
-                "NSFW AI Image Generation", 
                 "Custom Character Creation",
                 "Interactive Roleplay",
                 "Community Characters",
@@ -128,7 +122,6 @@ export default function ForYouPage() {
                   "name": "What is MedusaVR?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "MedusaVR is an advanced AI character chat platform that allows users to create and interact with custom AI companions for uncensored conversations and NSFW roleplay scenarios."
                   }
                 },
                 {
@@ -171,7 +164,6 @@ export default function ForYouPage() {
             
             <div className="mt-8 animate-in slide-in-from-top-4 duration-300">
               <p className="text-center text-zinc-400 max-w-3xl mx-auto mb-8">
-                Experience the future of AI intimacy with our advanced platform featuring uncensored chat, custom character creation, and immersive NSFW roleplay scenarios.
               </p>
               
               <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -179,16 +171,16 @@ export default function ForYouPage() {
                   <div className="text-orange-400 mb-4 flex justify-center">
                     <div className="h-6 w-6 rounded-full bg-orange-400/20 flex items-center justify-center">💬</div>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Uncensored AI Chat</h3>
-                  <p className="text-zinc-400">Engage in intimate conversations with AI companions who understand your desires. No filters, no restrictions - just pure, authentic connection.</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">Advanced AI Chat</h3>
+                  <p className="text-zinc-400">Engage in meaningful conversations with AI companions who understand your preferences. Natural, authentic connection with intelligent AI.</p>
                 </div>
                 
                 <div className="text-center p-6 bg-zinc-800/50 rounded-lg border border-zinc-700/30">
                   <div className="text-orange-400 mb-4 flex justify-center">
                     <div className="h-6 w-6 rounded-full bg-orange-400/20 flex items-center justify-center">🖼️</div>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">NSFW AI Image Generation</h3>
-                  <p className="text-zinc-400">Visualize your fantasies with our advanced AI art generator. Create custom NSFW imagery that brings your characters to life.</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">AI Image Generation</h3>
+                  <p className="text-zinc-400">Visualize your characters with our advanced AI art generator. Create custom imagery that brings your characters to life.</p>
                 </div>
                 
                 <div className="text-center p-6 bg-zinc-800/50 rounded-lg border border-zinc-700/30">
@@ -196,7 +188,7 @@ export default function ForYouPage() {
                     <div className="h-6 w-6 rounded-full bg-orange-400/20 flex items-center justify-center">✨</div>
                   </div>
                   <h3 className="text-lg font-semibold text-white mb-2">Custom Character Creation</h3>
-                  <p className="text-zinc-400">Design your perfect AI companion from scratch. Customize appearance, personality, and behavior to match your deepest desires.</p>
+                  <p className="text-zinc-400">Design your perfect AI companion from scratch. Customize appearance, personality, and behavior to match your preferences.</p>
                 </div>
               </div>
 
@@ -205,7 +197,7 @@ export default function ForYouPage() {
                 <div className="p-6 bg-gradient-to-br from-orange-500/10 to-amber-500/10 rounded-lg border border-orange-500/20">
                   <h3 className="text-lg font-semibold text-orange-300 mb-3">Experience Your Perfect AI Companion</h3>
                   <ul className="text-sm text-zinc-400 space-y-2">
-                    <li>• Judgment-free intimate conversations available 24/7</li>
+                    <li>• Judgment-free conversations available 24/7</li>
                     <li>• Community-created characters and scenarios</li>
                     <li>• No timeouts or restrictions on your interactions</li>
                     <li>• Custom AI companions that learn and evolve with you</li>
@@ -213,7 +205,7 @@ export default function ForYouPage() {
                 </div>
                 
                 <div className="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-lg border border-purple-500/20">
-                  <h3 className="text-lg font-semibold text-purple-300 mb-3">Advanced NSFW Roleplay Features</h3>
+                  <h3 className="text-lg font-semibold text-purple-300 mb-3">Advanced Roleplay Features</h3>
                   <ul className="text-sm text-zinc-400 space-y-2">
                     <li>• Personalized fantasy scenarios and storytelling</li>
                     <li>• Evolving narratives that adapt to your preferences</li>
@@ -224,9 +216,9 @@ export default function ForYouPage() {
               </div>
 
               <div className="text-center p-6 bg-zinc-900/50 rounded-lg border border-zinc-600/30 mb-6">
-                <h3 className="text-lg font-semibold text-white mb-3">Safe, Private Digital Intimacy</h3>
+                <h3 className="text-lg font-semibold text-white mb-3">Safe, Private Digital Interaction</h3>
                 <p className="text-sm text-zinc-400 max-w-2xl mx-auto">
-                  MedusaVR provides a secure, discreet environment to explore your digital desires. Our platform is designed for comfort and privacy, offering a welcoming space to engage with lifelike AI characters without fear or judgment. Whether you're curious or experienced, discover a new world of AI-powered intimacy.
+                  MedusaVR provides a secure, discreet environment to explore AI interactions. Our platform is designed for comfort and privacy, offering a welcoming space to engage with lifelike AI characters without fear or judgment. Whether you're curious or experienced, discover a new world of AI-powered conversation.
                 </p>
               </div>
 
@@ -244,16 +236,16 @@ export default function ForYouPage() {
       <section aria-labelledby="platform-description">
         <div className="text-center mb-4">
           <h2 id="platform-description" className="text-lg sm:text-xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent mb-2">
-            MedusaVR – Advanced AI Character Chat & NSFW Roleplay Platform
+            MedusaVR – Advanced AI Character Chat & Roleplay Platform
           </h2>
           <h3 className="text-xs sm:text-sm font-semibold text-orange-300 mb-3">
-            Uncensored AI Chat with Lifelike Characters & Custom Fantasy Roleplay
+            Advanced AI Chat with Lifelike Characters & Custom Roleplay
           </h3>
           <p className="text-xs sm:text-sm text-zinc-300 mx-auto leading-relaxed mb-4">
-            Welcome to MedusaVR, the premier platform for AI character chat where your fantasies come to life with realistic, customizable AI companions. Whether you're seeking romance, intimate conversations, or immersive roleplay, our AI chat platform offers an uncensored, judgment-free experience powered by cutting-edge artificial intelligence.
+            Welcome to MedusaVR, the premier platform for AI character chat where your ideas come to life with realistic, customizable AI companions. Whether you're seeking romance, meaningful conversations, or immersive roleplay, our AI chat platform offers an advanced, judgment-free experience powered by cutting-edge artificial intelligence.
           </p>
           <p className="text-xs text-zinc-400 mx-auto leading-relaxed">
-            Enjoy deep conversations, stunning AI-generated imagery, and personalized roleplay with characters you create or discover from our community. Experience complete freedom of expression in your intimate AI conversations.
+            Enjoy deep conversations, stunning AI-generated imagery, and personalized roleplay with characters you create or discover from our community. Experience complete freedom of expression in your AI conversations.
           </p>
         </div>
         <div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-500/30 to-transparent my-6"></div>

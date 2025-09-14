@@ -182,7 +182,7 @@ export function useChat({ characterId, characterName }: UseChatOptions): UseChat
           if (import.meta.env.DEV || import.meta.env.VITE_APP_ENV === 'development') {
             console.log('✅ Using production Railway URL');
           }
-          return 'https://vrfansbackend.up.railway.app';
+          return 'medusavr-production.up.railway.app';
         }
         
         // 5. Last resort: direct connection to backend

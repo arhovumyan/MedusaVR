@@ -100,7 +100,7 @@ export function useSocket(
             if (import.meta.env.DEV || import.meta.env.VITE_APP_ENV === 'development') {
               console.log('✅ Using production Railway URL');
             }
-            return 'https://vrfansbackend.up.railway.app';
+            return 'https://medusavr-production.up.railway.app';
           }
           
           // 6. Last resort: use localhost with port

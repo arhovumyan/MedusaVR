@@ -124,12 +124,12 @@ export function useVoiceCall({
     }
     
     // Production URLs - fix the backend URL
-    if (hostname === 'medusavr.art') {
-      return 'https://vrfansbackend.up.railway.app';
+    if (hostname === 'medusavr.art' || hostname.includes('vercel.app')) {
+      return 'https://medusavr-production.up.railway.app';
     }
     
     // Default fallback
-    return 'https://vrfansbackend.up.railway.app';
+    return 'https://medusavr-production.up.railway.app';
   };
 
   // Get socket URL

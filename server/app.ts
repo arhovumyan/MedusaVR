@@ -145,18 +145,17 @@ export function buildApp(): express.Express {
           "http://localhost:5175",
           "http://localhost:3000",
           "http://3.135.203.99",
-          "https://your-domain.com",
-          "https://www.your-domain.com",
-          "http://your-domain.com",
-          "http://www.your-domain.com",
-          "https://your-backend-url.railway.app",
+          "https://medusavr-production.up.railway.app",
           process.env.FRONTEND_URL || ""
         ];
         
-        // Allow any Vercel domain
-        const isVercelDomain = origin.endsWith('.vercel.app');
+        // Allow any Vercel domain (including preview deployments)
+        const isVercelDomain = origin.endsWith('.vercel.app') || origin.includes('vercel.app');
         
-        if (allowedOrigins.includes(origin) || isVercelDomain) {
+        // Allow medusavr.art domains
+        const isMedusavrDomain = origin.includes('medusavr.art');
+        
+        if (allowedOrigins.includes(origin) || isVercelDomain || isMedusavrDomain) {
           console.log(`✅ CORS allowed for origin: ${origin}`);
           return callback(null, true);
         }
@@ -166,9 +165,11 @@ export function buildApp(): express.Express {
         return callback(new Error('Not allowed by CORS'));
       },
       credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token', 'X-XSRF-Token'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token', 'X-XSRF-Token', 'Accept', 'Origin'],
       exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
+      preflightContinue: false,
+      optionsSuccessStatus: 204
     })
   );
 

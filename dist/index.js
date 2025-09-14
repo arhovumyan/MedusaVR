@@ -19585,7 +19585,7 @@ function buildApp() {
           "http://localhost:3000",
           "http://3.135.203.99",
           "https://medusavr-production.up.railway.app",
-          process.env.FRONTEND_URL || ""
+          "https://medusa-vrfriendly.vercel.app"
         ];
         const isVercelDomain = origin.endsWith(".vercel.app") || origin.includes("vercel.app");
         const isMedusavrDomain = origin.includes("medusa-vrfriendly.vercel.app");

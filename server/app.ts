@@ -146,7 +146,7 @@ export function buildApp(): express.Express {
           "http://localhost:3000",
           "http://3.135.203.99",
           "https://medusavr-production.up.railway.app",
-          process.env.FRONTEND_URL || ""
+          "https://medusa-vrfriendly.vercel.app",
         ];
         
         // Allow any Vercel domain (including preview deployments)

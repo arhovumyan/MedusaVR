@@ -94,7 +94,7 @@ const FeaturesPage = () => {
         title="AI Character Platform Features - NSFW Generator & AI Chat | MedusaVR"
         description="Discover MedusaVR's advanced features: AI character chat, NSFW image generation, custom AI companions, adult roleplay, and premium AI technology. Learn how our platform works."
         keywords="AI character features, NSFW AI generator features, AI companion capabilities, adult AI chat features, character customization, AI roleplay features"
-        url="https://medusavr.art/features"
+        url="https://medusa-vrfriendly.vercel.app/features"
         structuredData={faqStructuredData}
       />
       <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-orange-900/20 text-white">

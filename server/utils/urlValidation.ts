@@ -4,8 +4,8 @@ import { URL } from 'url';
 const ALLOWED_DOMAINS = [
   'localhost',
   '127.0.0.1',
-  'medusavr.art',
-  'www.medusavr.art',
+  'medusa-vrfriendly.vercel.app',
+  'www.medusa-vrfriendly.vercel.app',
   'vercel.app', // For development
   process.env.FRONTEND_URL, // Environment-based domain
 ].filter(Boolean);

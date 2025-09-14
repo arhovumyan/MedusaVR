@@ -256,12 +256,12 @@ export default function BlogPostPage() {
       "name": "MedusaVR",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://medusavr.art/medusaSnake.png"
+        "url": "https://medusa-vrfriendly.vercel.app/medusaSnake.png"
       }
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://medusavr.art/guides/${post.slug}`
+      "@id": `https://medusa-vrfriendly.vercel.app/guides/${post.slug}`
     },
     "keywords": post.tags.join(', '),
     "articleSection": post.category,
@@ -303,7 +303,7 @@ export default function BlogPostPage() {
         keywords={post.tags.join(', ')}
         structuredData={articleSchema}
         type="article"
-        canonicalUrl={`https://medusavr.art/guides/${post.slug}`}
+        canonicalUrl={`https://medusa-vrfriendly.vercel.app/guides/${post.slug}`}
       />
       
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-orange-900/20 text-white">

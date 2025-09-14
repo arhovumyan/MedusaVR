@@ -3,7 +3,7 @@
  * Manages client-side file operations and URL generation for Bunny CDN
  */
 export class BunnyStorageService {
-  private static publicDomain = 'medusavr.art'; // The public CDN domain
+  private static publicDomain = 'medusa-vrfriendly.vercel.app'; // The public CDN domain
 
   /**
    * Generate the public URL for a file
@@ -59,7 +59,7 @@ export class BunnyStorageService {
    * @param bunnyUrl - The full Bunny CDN URL
    */
   static parseBunnyUrl(bunnyUrl: string) {
-    // Example URL: https://medusavr.art/username/characters/character-name/images/image.jpg
+    // Example URL: https://medusa-vrfriendly.vercel.app/username/characters/character-name/images/image.jpg
     const url = new URL(bunnyUrl);
     const pathParts = url.pathname.substring(1).split('/'); // Remove leading slash
     

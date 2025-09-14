@@ -10,7 +10,7 @@ If RINTERIOR DBA or MEDUSAVR merges with, or is acquired by, another company or 
 We have appointed a Controller who is responsible for overseeing questions in relation to this Privacy Policy. If you have any questions about this Privacy Policy, including any requests to exercise your legal rights, please contact the Controller using the details set out below.
 
 **Email:** legal@rinterior.com  
-**Address:** RINTERIOR DBA, USAe collect, use, and safeguard your personal information when you use the MEDUSAVR website at https://www.medusavr.art/ (the "Website"), the MEDUSAVR mobile application available through Apple's App Store or Google Play Store (the "App(s)"), and the AI character interaction services available through the Website and App(s) (the "Services").
+**Address:** RINTERIOR DBA, USAe collect, use, and safeguard your personal information when you use the MEDUSAVR website at https://www.medusa-vrfriendly.vercel.app/ (the "Website"), the MEDUSAVR mobile application available through Apple's App Store or Google Play Store (the "App(s)"), and the AI character interaction services available through the Website and App(s) (the "Services").
 
 Please read this Privacy Policy carefully to understand our policies and practices regarding your personal information. By accessing or using the Website, App(s), or Services, you agree to this Privacy Policy.
 

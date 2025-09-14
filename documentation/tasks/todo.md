@@ -144,7 +144,7 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://medusavr.art/#organization",
+      "@id": "https://medusa-vrfriendly.vercel.app/#organization",
       "name": "MedusaVR",
       "logo": { "@type": "ImageObject", "url": "..." },
       "description": "...",
@@ -152,8 +152,8 @@
     },
     {
       "@type": "WebSite",
-      "@id": "https://medusavr.art/#website",
-      "url": "https://medusavr.art/",
+      "@id": "https://medusa-vrfriendly.vercel.app/#website",
+      "url": "https://medusa-vrfriendly.vercel.app/",
       "potentialAction": {
         "@type": "SearchAction",
         "target": { "@type": "EntryPoint", "urlTemplate": "..." }
@@ -161,13 +161,13 @@
     },
     {
       "@type": "WebApplication",
-      "@id": "https://medusavr.art/#webapp",
+      "@id": "https://medusa-vrfriendly.vercel.app/#webapp",
       "featureList": ["Uncensored AI Chat", "NSFW AI Image Generation", ...],
       "softwareVersion": "1.0"
     },
     {
       "@type": "FAQPage",
-      "@id": "https://medusavr.art/#faq",
+      "@id": "https://medusa-vrfriendly.vercel.app/#faq",
       "mainEntity": [...]
     }
   ]

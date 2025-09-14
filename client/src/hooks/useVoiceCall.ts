@@ -124,7 +124,7 @@ export function useVoiceCall({
     }
     
     // Production URLs - fix the backend URL
-    if (hostname === 'medusavr.art' || hostname.includes('vercel.app')) {
+    if (hostname === 'medusa-vrfriendly.vercel.app' || hostname.includes('vercel.app')) {
       return 'https://medusavr-production.up.railway.app';
     }
     

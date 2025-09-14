@@ -71,13 +71,13 @@ const SearchPage = () => {
           "Search through thousands of AI characters and companions. Find anime personalities, AI girlfriends, NSFW characters, and custom AI companions for chat and roleplay."
         }
         keywords="search AI characters, find AI companions, AI character search, anime character search, NSFW AI search, AI girlfriend search, character finder"
-        url={`https://medusavr.art/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`}
+        url={`https://medusa-vrfriendly.vercel.app/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`}
         structuredData={{
           "@context": "https://schema.org",
           "@type": "SearchResultsPage",
           "name": searchQuery ? `Search Results for "${searchQuery}"` : "AI Character Search",
           "description": "Search and discover AI characters and companions",
-          "url": `https://medusavr.art/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`
+          "url": `https://medusa-vrfriendly.vercel.app/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`
         }}
       />
       <div className='text-white'>

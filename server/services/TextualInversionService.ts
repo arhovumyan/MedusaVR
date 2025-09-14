@@ -189,7 +189,7 @@ export class TextualInversionService {
       if (listResult.success && listResult.files) {
         const safetensorsFile = listResult.files.find(file => file.endsWith('.safetensors'));
         if (safetensorsFile) {
-          return `https://medusavr.art/${embeddingsFolder}/${safetensorsFile}`;
+          return `https://medusa-vrfriendly.vercel.app/${embeddingsFolder}/${safetensorsFile}`;
         }
       }
       

@@ -152,8 +152,8 @@ export function buildApp(): express.Express {
         // Allow any Vercel domain (including preview deployments)
         const isVercelDomain = origin.endsWith('.vercel.app') || origin.includes('vercel.app');
         
-        // Allow medusavr.art domains
-        const isMedusavrDomain = origin.includes('medusavr.art');
+        // Allow medusa-vrfriendly.vercel.app domains
+        const isMedusavrDomain = origin.includes('medusa-vrfriendly.vercel.app');
         
         if (allowedOrigins.includes(origin) || isVercelDomain || isMedusavrDomain) {
           console.log(`✅ CORS allowed for origin: ${origin}`);

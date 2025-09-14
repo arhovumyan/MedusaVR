@@ -224,7 +224,7 @@ export default function GuidesPage() {
     "@type": "Blog",
     "name": "MedusaVR Guides & Blog",
     "description": "Expert guides, tutorials, and insights for AI character creation, conversations, and digital companionship.",
-    "url": "https://medusavr.art/guides",
+    "url": "https://medusa-vrfriendly.vercel.app/guides",
     "author": {
       "@type": "Organization",
       "name": "MedusaVR"
@@ -233,7 +233,7 @@ export default function GuidesPage() {
       "@type": "BlogPosting",
       "headline": post.title,
       "description": post.excerpt,
-      "url": `https://medusavr.art/guides/${post.slug}`,
+      "url": `https://medusa-vrfriendly.vercel.app/guides/${post.slug}`,
       "datePublished": post.publishedAt,
       "author": {
         "@type": "Person",

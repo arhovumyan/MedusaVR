@@ -11,7 +11,7 @@ Add this to your `index.html` in the `<head>` section for rich search results:
   "@type": "WebApplication",
   "name": "MedusaVR",
   "description": "AI-powered virtual reality experiences with interactive characters and immersive environments",
-  "url": "https://medusavr.art",
+  "url": "https://medusa-vrfriendly.vercel.app",
   "applicationCategory": "EntertainmentApplication",
   "operatingSystem": "Any",
   "browserRequirements": "Requires JavaScript. Requires HTML5.",
@@ -22,12 +22,12 @@ Add this to your `index.html` in the `<head>` section for rich search results:
   "author": {
     "@type": "Organization",
     "name": "MedusaVR",
-    "url": "https://medusavr.art"
+    "url": "https://medusa-vrfriendly.vercel.app"
   },
   "provider": {
     "@type": "Organization",
     "name": "MedusaVR",
-    "url": "https://medusavr.art"
+    "url": "https://medusa-vrfriendly.vercel.app"
   }
 }
 </script>

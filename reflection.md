@@ -122,7 +122,7 @@ Chat image generation now provides near-instant results, dramatically improving 
 
 ### Root Cause Analysis
 **Avatar Issue**: `ReferenceError: __filename is not defined` - ES modules require manual derivation from `import.meta.url`
-**CDN Issue**: `www.medusavr.art` was configured for website hosting, not file serving
+**CDN Issue**: `www.medusa-vrfriendly.vercel.app` was configured for website hosting, not file serving
 **Embedding Storage**: Images were being stored in `images` folder instead of `embeddings` folder per requirements
 
 ### What Worked Well
@@ -211,7 +211,7 @@ Character generation now works end-to-end:
 ## CSRF Login Fix - August 13, 2025
 
 ### Problem Solved
-Successfully resolved production login issues caused by CSRF token validation errors at medusavr.art.
+Successfully resolved production login issues caused by CSRF token validation errors at medusa-vrfriendly.vercel.app.
 
 ### What Worked Well
 1. **Systematic debugging approach** - Identified the specific CSRF configuration issues step by step

@@ -63,8 +63,8 @@ services:
       context: .
       dockerfile: Dockerfile.client.prod
       args:
-        VITE_API_URL: "https://medusavr.art/api"
-        VITE_SOCKET_URL: "https://medusavr.art"
+        VITE_API_URL: "https://medusa-vrfriendly.vercel.app/api"
+        VITE_SOCKET_URL: "https://medusa-vrfriendly.vercel.app"
         VITE_FIREBASE_API_KEY: ${VITE_FIREBASE_API_KEY}
         VITE_FIREBASE_AUTH_DOMAIN: ${VITE_FIREBASE_AUTH_DOMAIN}
         VITE_FIREBASE_PROJECT_ID: ${VITE_FIREBASE_PROJECT_ID}
@@ -168,6 +168,6 @@ networks:
 # Security: Add secrets management
 secrets:
   ssl_cert:
-    file: ./ssl/medusavr.art.crt
+    file: ./ssl/medusa-vrfriendly.vercel.app.crt
   ssl_key:
-    file: ./ssl/medusavr.art.key
+    file: ./ssl/medusa-vrfriendly.vercel.app.key

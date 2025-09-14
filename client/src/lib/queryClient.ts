@@ -21,7 +21,7 @@ function getApiBaseUrl(): string {
   }
   
   // For production on Vercel, use the Railway backend URL
-  if (hostname.includes('vercel.app') || hostname.includes('medusavr.art')) {
+  if (hostname.includes('vercel.app') || hostname.includes('medusa-vrfriendly.vercel.app')) {
     return 'https://medusavr-production.up.railway.app';
   }
   

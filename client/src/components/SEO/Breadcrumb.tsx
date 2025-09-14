@@ -22,7 +22,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className = "" })
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      ...(item.href && { "item": `https://medusavr.art${item.href}` })
+      ...(item.href && { "item": `https://medusa-vrfriendly.vercel.app${item.href}` })
     }))
   };
 

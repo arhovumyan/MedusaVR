@@ -34,7 +34,7 @@ router.get('/sitemap.xml', async (req, res) => {
     staticPages.forEach(page => {
       sitemap += `
   <url>
-    <loc>https://medusavr.art${page.url}</loc>
+    <loc>https://medusa-vrfriendly.vercel.app${page.url}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
@@ -46,7 +46,7 @@ router.get('/sitemap.xml', async (req, res) => {
     exampleCharacterIds.forEach(id => {
       sitemap += `
   <url>
-    <loc>https://medusavr.art/characters/${id}</loc>
+    <loc>https://medusa-vrfriendly.vercel.app/characters/${id}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -62,7 +62,7 @@ router.get('/sitemap.xml', async (req, res) => {
     popularTags.forEach(tag => {
       sitemap += `
   <url>
-    <loc>https://medusavr.art/tags/${encodeURIComponent(tag)}</loc>
+    <loc>https://medusa-vrfriendly.vercel.app/tags/${encodeURIComponent(tag)}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -81,7 +81,7 @@ router.get('/sitemap.xml', async (req, res) => {
     const basicSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://medusavr.art/</loc>
+    <loc>https://medusa-vrfriendly.vercel.app/</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>

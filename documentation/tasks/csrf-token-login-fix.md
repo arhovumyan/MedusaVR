@@ -1,7 +1,7 @@
 # CSRF Token Login Fix - Production Issue
 
 ## Problem Analysis
-User is unable to log in on production (medusavr.art) due to CSRF token error:
+User is unable to log in on production (medusa-vrfriendly.vercel.app) due to CSRF token error:
 ```
 🚨 Error occurred: {
   message: 'invalid csrf token',
@@ -75,4 +75,4 @@ This fix will resolve the production login issue by ensuring CSRF tokens are pro
 3. **Re-enable CSRF protection** - Once root cause is fixed, restore full CSRF security
 4. **Update client-side CSRF handling** - May need improvements to ensure consistent token usage
 
-The production login issue should now be resolved. Users should be able to log in successfully at medusavr.art.
+The production login issue should now be resolved. Users should be able to log in successfully at medusa-vrfriendly.vercel.app.

@@ -3,12 +3,12 @@
 ## Problem Analysis
 The avatar images are being uploaded successfully to Bunny CDN storage, but the public URLs are not working because:
 
-1. **Current URL**: `https://www.medusavr.art/vrfans/characters/test17/avatar/test17_avatar.png`
-2. **Issue**: `www.medusavr.art` is configured as a website domain (serving React app), not a CDN domain
+1. **Current URL**: `https://www.medusa-vrfriendly.vercel.app/vrfans/characters/test17/avatar/test17_avatar.png`
+2. **Issue**: `www.medusa-vrfriendly.vercel.app` is configured as a website domain (serving React app), not a CDN domain
 3. **Result**: All requests to file paths return the website's `index.html` instead of the actual files
 
 ## Root Cause
-The BunnyStorageService is using `www.medusavr.art` as the public domain for files, but this domain is set up for website hosting, not file serving.
+The BunnyStorageService is using `www.medusa-vrfriendly.vercel.app` as the public domain for files, but this domain is set up for website hosting, not file serving.
 
 ## Tasks to Complete
 
@@ -21,7 +21,7 @@ The BunnyStorageService is using `www.medusavr.art` as the public domain for fil
 ## ✅ COMPLETED SUCCESSFULLY
 
 ### Root Cause Fixed
-- **Issue**: `www.medusavr.art` was configured for website hosting, not file serving
+- **Issue**: `www.medusa-vrfriendly.vercel.app` was configured for website hosting, not file serving
 - **Solution**: Updated to use `medusavr.b-cdn.net` (standard Bunny CDN domain)
 
 ### Test Results

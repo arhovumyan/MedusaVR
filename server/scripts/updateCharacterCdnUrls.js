@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Script to update existing character avatar URLs from old www.medusavr.art to new medusavr.b-cdn.net
+ * Script to update existing character avatar URLs from old www.medusa-vrfriendly.vercel.app to new medusavr.b-cdn.net
  */
 
 import 'dotenv/config';
@@ -30,7 +30,7 @@ async function updateCharacterUrls() {
     let updated = 0;
     for (const character of charactersWithOldUrls) {
       const oldUrl = character.avatar;
-      const newUrl = oldUrl.replace('https://www.medusavr.art/', 'https://medusavr.b-cdn.net/');
+      const newUrl = oldUrl.replace('https://www.medusa-vrfriendly.vercel.app/', 'https://medusavr.b-cdn.net/');
       
       console.log(`🔄 Updating ${character.name}:`);
       console.log(`   Old: ${oldUrl}`);
@@ -43,7 +43,7 @@ async function updateCharacterUrls() {
             avatar: newUrl,
             // Also update imageMetadata fields if they exist
             ...(character.imageMetadata?.thumbnailUrl && {
-              'imageMetadata.thumbnailUrl': character.imageMetadata.thumbnailUrl.replace('https://www.medusavr.art/', 'https://medusavr.b-cdn.net/')
+              'imageMetadata.thumbnailUrl': character.imageMetadata.thumbnailUrl.replace('https://www.medusa-vrfriendly.vercel.app/', 'https://medusavr.b-cdn.net/')
             })
           }
         }

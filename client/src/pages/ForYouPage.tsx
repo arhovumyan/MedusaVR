@@ -48,20 +48,20 @@ export default function ForYouPage() {
         title="MedusaVR - Advanced AI Character Chat & NSFW Roleplay Platform | Uncensored AI Companions"
         description="Experience uncensored AI character chat with lifelike NSFW companions. Create custom AI girlfriends, enjoy intimate roleplay, and generate personalized adult content. Premium AI chat platform with no restrictions or filters."
         keywords="AI character chat, NSFW AI chat, AI girlfriend, uncensored AI roleplay, AI companions, adult AI chat, AI porn chat, custom AI characters, AI sexting, NSFW AI generator, AI fantasy roleplay, intimate AI conversations"
-        url="https://medusavr.art/"
-        canonicalUrl="https://medusavr.art/"
+        url="https://medusa-vrfriendly.vercel.app/"
+        canonicalUrl="https://medusa-vrfriendly.vercel.app/"
         tags={["AI chat", "NSFW", "roleplay", "AI companions", "adult content", "character creation"]}
         structuredData={{
           "@context": "https://schema.org",
           "@graph": [
             {
               "@type": "Organization",
-              "@id": "https://medusavr.art/#organization",
+              "@id": "https://medusa-vrfriendly.vercel.app/#organization",
               "name": "MedusaVR",
-              "url": "https://medusavr.art/",
+              "url": "https://medusa-vrfriendly.vercel.app/",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://medusavr.art/medusaSnake.png",
+                "url": "https://medusa-vrfriendly.vercel.app/medusaSnake.png",
                 "width": 512,
                 "height": 512
               },
@@ -73,28 +73,28 @@ export default function ForYouPage() {
             },
             {
               "@type": "WebSite",
-              "@id": "https://medusavr.art/#website",
-              "url": "https://medusavr.art/",
+              "@id": "https://medusa-vrfriendly.vercel.app/#website",
+              "url": "https://medusa-vrfriendly.vercel.app/",
               "name": "MedusaVR",
               "description": "Advanced AI character chat platform featuring uncensored NSFW roleplay, custom companion creation, and immersive adult conversations",
               "publisher": {
-                "@id": "https://medusavr.art/#organization"
+                "@id": "https://medusa-vrfriendly.vercel.app/#organization"
               },
               "potentialAction": {
                 "@type": "SearchAction",
                 "target": {
                   "@type": "EntryPoint",
-                  "urlTemplate": "https://medusavr.art/search?q={search_term_string}"
+                  "urlTemplate": "https://medusa-vrfriendly.vercel.app/search?q={search_term_string}"
                 },
                 "query-input": "required name=search_term_string"
               }
             },
             {
               "@type": "WebApplication",
-              "@id": "https://medusavr.art/#webapp",
+              "@id": "https://medusa-vrfriendly.vercel.app/#webapp",
               "name": "MedusaVR - AI Character Chat Platform",
               "description": "Advanced AI character chat platform featuring uncensored NSFW roleplay, custom companion creation, and immersive adult conversations",
-              "url": "https://medusavr.art/",
+              "url": "https://medusa-vrfriendly.vercel.app/",
               "applicationCategory": "EntertainmentApplication",
               "genre": "AI Chat, Adult Entertainment",
               "operatingSystem": "Web Browser",
@@ -113,15 +113,15 @@ export default function ForYouPage() {
                 "Community Characters",
                 "Real-time Conversations"
               ],
-              "screenshot": "https://medusavr.art/medusaSnake.png",
+              "screenshot": "https://medusa-vrfriendly.vercel.app/medusaSnake.png",
               "softwareVersion": "1.0",
               "author": {
-                "@id": "https://medusavr.art/#organization"
+                "@id": "https://medusa-vrfriendly.vercel.app/#organization"
               }
             },
             {
               "@type": "FAQPage",
-              "@id": "https://medusavr.art/#faq",
+              "@id": "https://medusa-vrfriendly.vercel.app/#faq",
               "mainEntity": [
                 {
                   "@type": "Question",

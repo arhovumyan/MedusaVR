@@ -129,7 +129,7 @@ export function buildApp(): express.Express {
   });
 
   
-  // 6. CORS
+  // 6. CORS - Enhanced configuration for production
   app.use(
     cors({
       origin: function (origin, callback) {
@@ -166,12 +166,34 @@ export function buildApp(): express.Express {
       },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token', 'X-XSRF-Token', 'Accept', 'Origin'],
+      allowedHeaders: [
+        'Content-Type', 
+        'Authorization', 
+        'X-Requested-With', 
+        'X-CSRF-Token', 
+        'X-XSRF-Token', 
+        'Accept', 
+        'Origin',
+        'Access-Control-Request-Method',
+        'Access-Control-Request-Headers'
+      ],
       exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
       preflightContinue: false,
-      optionsSuccessStatus: 204
+      optionsSuccessStatus: 200, // Changed from 204 to 200 for better compatibility
+      maxAge: 86400 // Cache preflight for 24 hours
     })
   );
+
+  // Additional CORS handling for preflight requests
+  app.options('*', (req, res) => {
+    console.log(`🔄 Handling preflight request for: ${req.url}`);
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-CSRF-Token, X-XSRF-Token, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Max-Age', '86400');
+    res.sendStatus(200);
+  });
 
   // 7. Cookie parser for session management
   app.use(cookieParser());

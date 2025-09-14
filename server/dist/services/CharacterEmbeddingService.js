@@ -8,9 +8,54 @@ import fs from 'fs';
 import path from 'path';
 export class CharacterEmbeddingService {
     constructor() {
-        this.runpodUrl = process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL ||
-            process.env.RUNPOD_WEBUI_URL ||
-            'https://4mm1jblh0l3mv2-7861.proxy.runpod.net';
+        // Use the same URL routing logic as FastCharacterGenerationService
+        this.runpodUrl = this.getWebUIUrlForStyle('fantasy'); // Default to fantasy/anime URL
+    }
+    /**
+     * Get the appropriate WebUI URL based on art style
+     * anime/cartoon/fantasy → 7861, realistic → 7860
+     */
+    getWebUIUrlForStyle(style) {
+        console.log(`🔍 Getting WebUI URL for style: "${style}"`);
+        console.log(`🔧 Environment variables:`, {
+            RUNPOD_ANIME_CARTOON_FANTASY_URL: process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || 'NOT SET',
+            RUNPOD_REALISTIC_URL: process.env.RUNPOD_REALISTIC_URL || 'NOT SET',
+            RUNPOD_WEBUI_URL: process.env.RUNPOD_WEBUI_URL || 'NOT SET'
+        });
+        // If no style provided, use fallback URL
+        if (!style) {
+            const fallbackUrl = process.env.RUNPOD_WEBUI_URL || process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || 'https://4mm1jblh0l3mv2-7861.proxy.runpod.net';
+            console.log(`⚠️ No style provided, using fallback URL: ${fallbackUrl}`);
+            return fallbackUrl;
+        }
+        // Map art styles to URLs (same logic as FastCharacterGenerationService)
+        switch (style.toLowerCase()) {
+            case 'realistic':
+                const realisticUrl = process.env.RUNPOD_REALISTIC_URL || process.env.RUNPOD_WEBUI_URL || process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || 'https://vkfydhwbdpn6pq-7860.proxy.runpod.net';
+                console.log(`🎨 Using realistic checkpoint: ${realisticUrl}`);
+                return realisticUrl;
+            case 'anime':
+            case 'cartoon':
+            case 'fantasy':
+            default:
+                const animeUrl = process.env.RUNPOD_ANIME_CARTOON_FANTASY_URL || process.env.RUNPOD_WEBUI_URL || 'https://4mm1jblh0l3mv2-7861.proxy.runpod.net';
+                console.log(`🎨 Using anime/cartoon/fantasy checkpoint: ${animeUrl}`);
+                return animeUrl;
+        }
+    }
+    /**
+     * Get the appropriate model checkpoint based on art style
+     */
+    getModelForArtStyle(style) {
+        switch (style.toLowerCase()) {
+            case 'realistic':
+                return 'realistic.safetensors';
+            case 'anime':
+            case 'cartoon':
+            case 'fantasy':
+            default:
+                return 'diving.safetensors';
+        }
     }
     /**
      * Get the next sequential image number for a character
@@ -55,6 +100,13 @@ export class CharacterEmbeddingService {
     async generateEmbeddingImages(options) {
         console.log(`🎭 Starting embedding image generation for character: ${options.characterName}`);
         try {
+            // Get the correct RunPod URL based on the character's art style
+            const artStyle = options.artStyle?.primaryStyle || 'fantasy';
+            this.runpodUrl = this.getWebUIUrlForStyle(artStyle);
+            console.log(`🔗 Using RunPod URL for ${artStyle} style: ${this.runpodUrl}`);
+            // Get the appropriate model for this art style
+            const model = this.getModelForArtStyle(artStyle);
+            console.log(`🔧 Using model: ${model}`);
             // Define 10 different image variations for comprehensive embedding
             const imageVariations = [
                 {
@@ -170,10 +222,11 @@ export class CharacterEmbeddingService {
                     console.log(`📁 Filename: ${embeddingImageFilename}`);
                     // Build ComfyUI workflow for this variation
                     const workflow = {
+                        client_id: `${Date.now()}_${Math.random().toString(36).substring(7)}`,
                         "prompt": {
                             "0": {
                                 "class_type": "CheckpointLoaderSimple",
-                                "inputs": { "ckpt_name": "diving.safetensors" }
+                                "inputs": { "ckpt_name": model }
                             },
                             "1": {
                                 "class_type": "CLIPTextEncode",
@@ -204,12 +257,13 @@ export class CharacterEmbeddingService {
                                     "positive": ["1", 0],
                                     "negative": ["2", 0],
                                     "latent_image": ["3", 0],
-                                    "steps": 30,
-                                    "cfg": 7,
-                                    "sampler_name": "euler",
-                                    "scheduler": "normal",
+                                    "steps": 25,
+                                    "cfg": 6,
+                                    "sampler_name": "dpmpp_2m",
+                                    "scheduler": "karras",
                                     "denoise": 1.0,
-                                    "seed": variationSeed
+                                    "seed": variationSeed,
+                                    "force_full_denoise": "enable"
                                 }
                             },
                             "5": {
@@ -226,22 +280,56 @@ export class CharacterEmbeddingService {
                             }
                         }
                     };
-                    // Submit workflow to RunPod
-                    const response = await fetch(`${this.runpodUrl}/prompt`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(workflow)
-                    });
-                    if (!response.ok) {
-                        throw new Error(`RunPod request failed: ${response.status} ${response.statusText}`);
+                    // Retry mechanism for RunPod server overload
+                    let retryCount = 0;
+                    const maxRetries = 3;
+                    let responseData = null;
+                    while (retryCount < maxRetries) {
+                        try {
+                            // Submit workflow to RunPod
+                            const runpodPromptUrl = this.runpodUrl.endsWith('/') ? `${this.runpodUrl}prompt` : `${this.runpodUrl}/prompt`;
+                            console.log(`📤 Submitting workflow to: ${runpodPromptUrl} (attempt ${retryCount + 1}/${maxRetries})`);
+                            console.log(`📋 Workflow preview:`, JSON.stringify(workflow, null, 2).substring(0, 500) + '...');
+                            const response = await fetch(runpodPromptUrl, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(workflow)
+                            });
+                            if (!response.ok) {
+                                throw new Error(`RunPod request failed: ${response.status} ${response.statusText}`);
+                            }
+                            responseData = await response.json();
+                            console.log(`📥 RunPod response data:`, JSON.stringify(responseData, null, 2));
+                            // Check if this is an error response
+                            if (responseData.exec_info && responseData.exec_info.queue_remaining === 0) {
+                                console.warn(`⚠️ RunPod server overloaded - queue is full. Retrying in ${(retryCount + 1) * 5} seconds...`);
+                                retryCount++;
+                                if (retryCount < maxRetries) {
+                                    await new Promise(resolve => setTimeout(resolve, (retryCount) * 5000)); // Exponential backoff
+                                    continue;
+                                }
+                                else {
+                                    throw new Error('RunPod server overloaded - max retries exceeded. Please try again later.');
+                                }
+                            }
+                            if (!responseData.prompt_id) {
+                                console.error(`❌ No prompt_id in response. Full response:`, responseData);
+                                throw new Error('No prompt_id received from RunPod');
+                            }
+                            console.log(`✅ Workflow submitted. Prompt ID: ${responseData.prompt_id}`);
+                            break; // Success, exit retry loop
+                        }
+                        catch (error) {
+                            retryCount++;
+                            if (retryCount >= maxRetries) {
+                                throw error;
+                            }
+                            console.warn(`⚠️ Attempt ${retryCount} failed, retrying in ${retryCount * 5} seconds...`, error);
+                            await new Promise(resolve => setTimeout(resolve, retryCount * 5000));
+                        }
                     }
-                    const responseData = await response.json();
-                    if (!responseData.prompt_id) {
-                        throw new Error('No prompt_id received from RunPod');
-                    }
-                    console.log(`✅ Workflow submitted. Prompt ID: ${responseData.prompt_id}`);
                     // Wait for generation with improved polling
                     console.log(`⏳ Waiting for generation...`);
                     const maxWaitTime = 60000; // 60 seconds max wait time
@@ -367,24 +455,26 @@ export class CharacterEmbeddingService {
                     console.log(`🧠 Training textual inversion embedding with ${bunnyUrls.length} images...`);
                     // Import and use TextualInversionService
                     const { default: textualInversionService } = await import('./TextualInversionService.js');
+                    // TEMPORARILY DISABLED: TextualInversionTraining node not available in ComfyUI
+                    // TODO: Install ComfyUI custom nodes for textual inversion training
+                    console.log(`⚠️ Textual inversion training temporarily disabled for ${options.characterName} - TextualInversionTraining node not available`);
                     // Start training in background (can take 10-30 minutes)
-                    textualInversionService.trainTextualInversionEmbedding({
-                        characterId: options.characterId,
-                        characterName: options.characterName,
-                        username: options.username,
-                        embeddingImages: bunnyUrls,
-                        steps: 1000,
-                        learningRate: 0.005
-                    }).then(result => {
-                        if (result.success) {
-                            console.log(`🎉 Textual inversion training completed for ${options.characterName}: ${result.embeddingName}`);
-                        }
-                        else {
-                            console.warn(`⚠️ Textual inversion training failed for ${options.characterName}: ${result.error}`);
-                        }
-                    }).catch(error => {
-                        console.warn(`⚠️ Textual inversion training error for ${options.characterName}:`, error);
-                    });
+                    // textualInversionService.trainTextualInversionEmbedding({
+                    //   characterId: options.characterId,
+                    //   characterName: options.characterName,
+                    //   username: options.username,
+                    //   embeddingImages: bunnyUrls,
+                    //   steps: 1000,
+                    //   learningRate: 0.005
+                    // }).then(result => {
+                    //   if (result.success) {
+                    //     console.log(`🎉 Textual inversion training completed for ${options.characterName}: ${result.embeddingName}`);
+                    //   } else {
+                    //     console.warn(`⚠️ Textual inversion training failed for ${options.characterName}: ${result.error}`);
+                    //   }
+                    // }).catch(error => {
+                    //   console.warn(`⚠️ Textual inversion training error for ${options.characterName}:`, error);
+                    // });
                     console.log(`🧠 Textual inversion training started in background...`);
                 }
                 else {

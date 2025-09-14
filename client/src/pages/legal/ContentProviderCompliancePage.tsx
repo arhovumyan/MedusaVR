@@ -181,7 +181,7 @@ const ContentProviderCompliancePage: React.FC = () => {
             </p>
             <div className="space-y-2 text-gray-300">
               <p><strong>Company:</strong> RINTERIOR</p>
-              <p><strong>Website:</strong> medusavr.com</p>
+              <p><strong>Website:</strong> medusa-vrfriendly.vercel.app</p>
               <p><strong>Email:</strong> <a href="mailto:vrfans11@gmail.com" className="text-blue-400 hover:text-blue-300">vrfans11@gmail.com</a></p>
               <p><strong>Compliance Contact:</strong> <a href="mailto:vrfans11@gmail.com" className="text-blue-400 hover:text-blue-300">vrfans11@gmail.com</a></p>
             </div>

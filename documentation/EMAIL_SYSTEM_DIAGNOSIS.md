@@ -103,7 +103,7 @@ These are now properly configured in `server/.env`:
 ```bash
 # Email Configuration
 SENDGRID_API_KEY=your_sendgrid_api_key_here  # ⚠️ Update this!
-EMAIL_FROM=noreply@medusavr.com              # ✅ Configured
+EMAIL_FROM=noreply@medusa-vrfriendly.vercel.app              # ✅ Configured
 BASE_URL=http://localhost:5002               # ✅ Configured
 ```
 

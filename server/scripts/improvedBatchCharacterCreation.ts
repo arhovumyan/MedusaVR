@@ -108,7 +108,7 @@ class ImprovedBatchCharacterCreation {
         console.log('🆕 Creating batch user...');
         user = await UserModel.create({
           username,
-          email: 'batch@medusavr.com',
+          email: 'batch@medusa-vrfriendly.vercel.app',
           password: 'batch123456',
           verified: true,
           coins: 50000, // Lots of coins for batch creation

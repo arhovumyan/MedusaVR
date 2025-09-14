@@ -44,7 +44,7 @@ At any time, please refer to the following definitions:
 
 **Visitor**: means anyone browsing the Website without a valid Subscription;
 
-**Website**: means the MEDUSAVR website available at: https://www.medusavr.com/.
+**Website**: means the MEDUSAVR website available at: https://medusa-vrfriendly.vercel.app/.
 
 **2. Purpose of Personal Data Processing**
 **When visiting the Website**

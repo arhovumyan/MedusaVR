@@ -4,8 +4,8 @@ import { UserModel } from '../db/models/UserModel.js';
 class EmailVerificationService {
     constructor() {
         this.isConfigured = false;
-        this.fromEmail = process.env.EMAIL_FROM || 'noreply@medusavr.com';
-        this.baseUrl = process.env.BASE_URL || 'https://medusavr.com';
+        this.fromEmail = process.env.EMAIL_FROM || 'noreply@medusa-vrfriendly.vercel.app';
+        this.baseUrl = process.env.BASE_URL || 'https://medusa-vrfriendly.vercel.app';
         this.initializeSendGrid();
     }
     initializeSendGrid() {

@@ -178,7 +178,7 @@ VITE_CLOUDINARY_UPLOAD_PRESET=your-upload-preset
 VITE_APP_ENV=development
 ```
 
-## 🐳 **Docker Deployment**
+##  **Docker Deployment**
 
 ### **Development**
 ```bash
@@ -393,21 +393,12 @@ npm run test:integration  # Integration tests
 - [Character Generation Guide](documentation/CHARACTER_GENERATION_GUIDE.md)
 - [Research Paper](documentation/research/MedusaVR_Research_Paper.md)
 
-##  **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ##  **Support**
 
 ### **Getting Help**
 - Check the [documentation](documentation/) for detailed guides
 - Review [common issues](documentation/troubleshooting.md)
-- Open an issue for bugs or feature requests
-
-### **Community**
-- Join our Discord community
-- Follow updates on Twitter
-- Contribute to the project
+- Open an issue for bugs or feature requests         
 
 ---
 

@@ -11,7 +11,6 @@ RUN npm install
 # Copy the client source code
 COPY client/ ./client/
 COPY shared/ ./shared/
-COPY vite.config.ts ./
 COPY tsconfig.json ./
 COPY tailwind.config.js ./
 COPY postcss.config.js ./

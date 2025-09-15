@@ -39,7 +39,7 @@ export function getOptimizedCardImageUrl(originalUrl: string | undefined, width:
 }
 
 export function buildSrcSet(originalUrl: string | undefined, widths: number[]): string | undefined {
-  if (!originalUrl) return undefined;
+  if (!originalUrl || typeof originalUrl !== 'string') return undefined;
   
   // Filter out invalid URLs and ensure we have valid widths
   const validWidths = widths.filter(w => w > 0 && Number.isInteger(w));
@@ -49,8 +49,12 @@ export function buildSrcSet(originalUrl: string | undefined, widths: number[]): 
     const srcsetParts = validWidths
       .map((w) => {
         const optimizedUrl = getOptimizedCardImageUrl(originalUrl, w);
-        // Only include if we got a valid URL back
-        if (optimizedUrl && optimizedUrl !== originalUrl || optimizedUrl === originalUrl) {
+        // Only include if we got a valid URL back and it's not the fallback
+        if (optimizedUrl && 
+            optimizedUrl !== "/fallback.jpg" && 
+            typeof optimizedUrl === 'string' &&
+            optimizedUrl.length > 0 &&
+            optimizedUrl.startsWith('http')) { // Ensure it's a valid HTTP URL
           return `${optimizedUrl} ${w}w`;
         }
         return null;

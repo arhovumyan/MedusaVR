@@ -28,7 +28,7 @@ export function setupSocket(server: HttpServer) {
               "https://ai-companion-alpha-nine.vercel.app",
               // Allow preview deployments
               /https:\/\/.*\.vercel\.app$/,
-              // Keep existing URLs
+              // Keep existing URL
               "http://3.135.203.99/",
             ]
           : [
@@ -371,7 +371,7 @@ export function setupSocket(server: HttpServer) {
             tagNames.forEach(tag => {
               const lowerTag = tag.toLowerCase();
               
-              // Detailed personality traits mapping
+              // Detailed personality traits mapping, I dont care if it looks like pirate software code, it works!!!!>:(
               if (lowerTag.includes('shy') || lowerTag.includes('timid') || lowerTag.includes('dandere')) {
                 personalityTraits.push('shy and reserved');
                 behaviorInstructions.push('speak softly with short responses, often hesitating or trailing off');
@@ -499,13 +499,13 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
         const result = await openRouterWithFallback(requestBody);
 
         if (!result.success) {
-          console.error('❌ All OpenRouter models failed:', result.error);
+          console.error(' All OpenRouter models failed:', result.error);
           socket.emit("error", { message: "AI service temporarily unavailable. Please try again later." });
           return;
         }
 
         const response = result.response!;
-        console.log(`✅ Connected using model: ${result.modelUsed}`);
+        console.log(` Connected using model: ${result.modelUsed}`);
 
         if (!response.body) {
           throw new Error("No response body received");
@@ -527,7 +527,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
               if (line.startsWith('data: ')) {
                 const json = line.replace('data: ', '').trim();
                 if (json === '[DONE]') {
-                  console.log('🏁 Stream completed with [DONE] signal');
+                  console.log(' Stream completed with [DONE] signal');
                   continue;
                 }
 
@@ -542,15 +542,15 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
                   // Check for finish reason
                   const finishReason = parsed.choices?.[0]?.finish_reason;
                   if (finishReason) {
-                    console.log(`🏁 Stream finished with reason: ${finishReason}`);
+                    console.log(` Stream finished with reason: ${finishReason}`);
                     if (finishReason === 'content_filter') {
-                      console.error('❌ Content filtered by AI service');
+                      console.error(' Content filtered by AI service');
                       socket.emit('error', { message: 'Response was filtered. Try different message.' });
                       return;
                     }
                   }
                 } catch (e) {
-                  console.warn('⚠️ Malformed JSON chunk:', line.substring(0, 100));
+                  console.warn(' Malformed JSON chunk:', line.substring(0, 100));
                 }
               }
             }
@@ -559,14 +559,14 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           // Wait for stream completion
           await new Promise((resolve, reject) => {
             response.body!.on('end', () => {
-              console.log(`🏁 Stream ended. Message length: ${fullMessage.length} chars`);
+              console.log(` Stream ended. Message length: ${fullMessage.length} chars`);
               
               // ===== ENHANCED AI RESPONSE FILTERING =====
               // Filter the AI response for age-related violations
               const filterResult = AIResponseFilterService.filterAIResponse(fullMessage, character.name);
               
               if (filterResult.violations.length > 0) {
-                console.error('🚨 AI RESPONSE FILTERED - Violations detected:', filterResult.violations);
+                console.error(' AI RESPONSE FILTERED - Violations detected:', filterResult.violations);
                 
                 // Log security incident for AI attempting to comply with manipulation
                 ContentModerationService.logSecurityIncident({
@@ -586,29 +586,29 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
                 
                 // Use the filtered response instead of the original
                 fullMessage = filterResult.filteredResponse;
-                console.log(`🛡️ Response replaced with safe alternative: "${fullMessage}"`);
+                console.log(` Response replaced with safe alternative: "${fullMessage}"`);
               }
               // ===== END AI RESPONSE FILTERING =====
               
               // Only log if there are issues or successful completion
               if (!fullMessage.trim()) {
-                console.error('❌ Empty AI response received');
+                console.error(' Empty AI response received');
                 socket.emit('error', { message: 'Empty response from AI' });
               } else if (fullMessage.trim() === '!!!!!!!!!!') {
-                console.error('❌ Placeholder response - likely filtered');
+                console.error(' Placeholder response - likely filtered');
                 socket.emit('error', { message: 'Response filtered. Try different message.' });
               } else if (fullMessage.length < 50) {
-                console.warn(`⚠️ Unusually short response (${fullMessage.length} chars): "${fullMessage}"`);
-                console.log(`✅ ${character.name} → ${username}: "${fullMessage.trim()}" (${fullMessage.length} chars)`);
+                console.warn(` Unusually short response (${fullMessage.length} chars): "${fullMessage}"`);
+                console.log(` ${character.name} → ${username}: "${fullMessage.trim()}" (${fullMessage.length} chars)`);
               } else {
-                console.log(`✅ ${character.name} → ${username}: "${fullMessage.trim()}" (${fullMessage.length} chars)`);
+                console.log(` ${character.name} → ${username}: "${fullMessage.trim()}" (${fullMessage.length} chars)`);
               }
               resolve(null);
             });
             
             response.body!.on('error', (err: Error) => {
-              console.error('❌ Stream error:', err.message);
-              console.error('❌ Stream error details:', err);
+              console.error(' Stream error:', err.message);
+              console.error(' Stream error details:', err);
               reject(err);
             });
           });
@@ -631,7 +631,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           }
 
         } catch (error) {
-          console.error('❌ AI request failed:', error instanceof Error ? error.message : 'Unknown error');
+          console.error(' AI request failed:', error instanceof Error ? error.message : 'Unknown error');
           socket.emit("error", { message: "AI service temporarily unavailable." });
         }
       });
@@ -644,14 +644,14 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           // Input validation
           if (!characterId) {
             const error = 'Missing characterId for voice room join';
-            console.error('❌ Voice join error:', error);
+            console.error(' Voice join error:', error);
             if (callback) callback({ success: false, error });
             return;
           }
 
           const sessionKey = `${userId}-${characterId}`;
           
-          console.log(`🎤 User joining voice room: ${sessionKey}`);
+          console.log(` User joining voice room: ${sessionKey}`);
           socket.join(`voice-${sessionKey}`);
           
           // Enhanced response with connection details
@@ -667,7 +667,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           if (callback) callback(response);
           
         } catch (error) {
-          console.error('❌ Error joining voice room:', error);
+          console.error(' Error joining voice room:', error);
           const errorResponse = { success: false, error: error.message };
           if (callback) callback(errorResponse);
           socket.emit('voice-error', errorResponse);
@@ -680,7 +680,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           
           if (!characterId) {
             const error = 'Missing characterId for voice room leave';
-            console.error('❌ Voice leave error:', error);
+            console.error(' Voice leave error:', error);
             if (callback) callback({ success: false, error });
             return;
           }
@@ -700,7 +700,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           if (callback) callback(response);
           
         } catch (error) {
-          console.error('❌ Error leaving voice room:', error);
+          console.error(' Error leaving voice room:', error);
           const errorResponse = { success: false, error: error.message };
           if (callback) callback(errorResponse);
           socket.emit('voice-error', errorResponse);
@@ -713,7 +713,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           
           // Input validation
           if (!characterId || !audioData) {
-            console.warn('⚠️ Invalid voice audio data: missing characterId or audioData');
+            console.warn(' Invalid voice audio data: missing characterId or audioData');
             return;
           }
           
@@ -731,7 +731,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
             // Handle array of numbers (from frontend Uint8Array) - most common case
             audioBuffer = Buffer.from(audioData);
           } else {
-            console.warn('⚠️ Invalid audio data format received:', typeof audioData);
+            console.warn(' Invalid audio data format received:', typeof audioData);
             socket.emit('voice-error', { 
               message: 'Invalid audio data format', 
               sessionKey 
@@ -743,7 +743,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           try {
             handleVoiceAudio(sessionKey, audioBuffer);
           } catch (audioError) {
-            console.error('❌ Error processing voice audio:', audioError);
+            console.error(' Error processing voice audio:', audioError);
             socket.emit('voice-error', { 
               message: 'Audio processing failed', 
               sessionKey,
@@ -752,7 +752,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           }
           
         } catch (error) {
-          console.error('❌ Error handling voice audio data:', error);
+          console.error(' Error handling voice audio data:', error);
           socket.emit('voice-error', { 
             message: 'Voice audio handling failed', 
             error: error.message 
@@ -766,14 +766,14 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           
           if (!characterId || typeof muted !== 'boolean') {
             const error = 'Invalid mute data: missing characterId or muted boolean';
-            console.error('❌ Voice mute error:', error);
+            console.error(' Voice mute error:', error);
             if (callback) callback({ success: false, error });
             return;
           }
 
           const sessionKey = `${userId}-${characterId}`;
           
-          console.log(`🔇 User ${muted ? 'muted' : 'unmuted'} in session: ${sessionKey}`);
+          console.log(` User ${muted ? 'muted' : 'unmuted'} in session: ${sessionKey}`);
           
           const muteData = {
             userId,
@@ -789,7 +789,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           }
           
         } catch (error) {
-          console.error('❌ Error handling voice mute:', error);
+          console.error(' Error handling voice mute:', error);
           const errorResponse = { success: false, error: error.message };
           if (callback) callback(errorResponse);
           socket.emit('voice-error', errorResponse);
@@ -811,14 +811,14 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
             });
           }
         } catch (error) {
-          console.error('❌ Error handling voice ping:', error);
+          console.error(' Error handling voice ping:', error);
           if (callback) callback({ success: false, error: error.message });
         }
       });
 
       socket.on('disconnect', async (reason) => {
-        console.log(`❌ User ${userId} disconnected from character ${characterId}: ${reason}`);
-        console.log('📊 Disconnect details:', {
+        console.log(` User ${userId} disconnected from character ${characterId}: ${reason}`);
+        console.log(' Disconnect details:', {
           socketId: socket.id,
           reason,
           userId,
@@ -838,12 +838,12 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
             // Clean up any active voice sessions for this user-character combination
             if (handleVoiceSessionCleanup) {
               handleVoiceSessionCleanup(sessionKey, reason);
-              console.log(`🔇 Voice session cleanup completed for: ${sessionKey}`);
+              console.log(` Voice session cleanup completed for: ${sessionKey}`);
             } else {
-              console.warn('⚠️ Voice session cleanup function not available');
+              console.warn(' Voice session cleanup function not available');
             }
           } catch (error) {
-            console.error('❌ Error during voice session cleanup:', error);
+            console.error(' Error during voice session cleanup:', error);
           }
         }
       });
@@ -873,11 +873,11 @@ function setupImageResponseHandler(io: Server) {
   // Listen for image generation completion
   console.log('Setting up jobCompleted event listener...');
   asyncImageGenerationService.on('jobCompleted', async (job) => {
-    console.log(`🎯 Received jobCompleted event for job ${job.id}`);
+    console.log(` Received jobCompleted event for job ${job.id}`);
     try {
       // Skip if no valid request data
       if (!job.request || !job.request.characterId || !job.result?.imageUrl) {
-        console.log('⚠️ Skipping image response - missing character or image data');
+        console.log(' Skipping image response - missing character or image data');
         return;
       }
 
@@ -885,7 +885,7 @@ function setupImageResponseHandler(io: Server) {
       const { imageUrl } = job.result;
       const userId = job.userId;
 
-      console.log(`🔍 DEBUG - Image job data:`, {
+      console.log(` DEBUG - Image job data:`, {
         characterId: characterId,
         characterIdType: typeof characterId,
         userId: userId,
@@ -893,7 +893,7 @@ function setupImageResponseHandler(io: Server) {
         prompt: prompt?.substring(0, 50)
       });
 
-      console.log(`🖼️ Image generated for character ${characterName} (${characterId}) - generating AI response...`);
+      console.log(` Image generated for character ${characterName} (${characterId}) - generating AI response...`);
 
       // Generate contextual AI response
       const aiResponse = await ImageResponseService.generateImageResponse(
@@ -902,10 +902,10 @@ function setupImageResponseHandler(io: Server) {
         userId
       );
 
-      console.log(`💬 Generated image response: "${aiResponse.substring(0, 100)}..."`);
+      console.log(` Generated image response: "${aiResponse.substring(0, 100)}..."`);
 
       // Find or create the chat to add the AI response
-      console.log(`🔍 DEBUG - Looking for chat with:`, {
+      console.log(` DEBUG - Looking for chat with:`, {
         userId: userId,
         characterId: typeof characterId === 'string' ? parseInt(characterId) : characterId,
         characterIdOriginal: characterId
@@ -916,11 +916,11 @@ function setupImageResponseHandler(io: Server) {
         characterId: typeof characterId === 'string' ? parseInt(characterId) : characterId
       });
       
-      console.log(`🔍 DEBUG - Chat found:`, !!chat);
+      console.log(` DEBUG - Chat found:`, !!chat);
 
       // If no chat exists, create one for the image response
       if (!chat) {
-        console.log(`📝 Creating new chat for user ${userId} and character ${characterId}`);
+        console.log(` Creating new chat for user ${userId} and character ${characterId}`);
         chat = new ChatsModel({
           userId,
           characterId: typeof characterId === 'string' ? parseInt(characterId) : characterId,
@@ -928,7 +928,7 @@ function setupImageResponseHandler(io: Server) {
           lastActivity: new Date()
         });
         await chat.save();
-        console.log(`✅ Created new chat for image response`);
+        console.log(` Created new chat for image response`);
       }
 
       // Create AI response message
@@ -951,7 +951,7 @@ function setupImageResponseHandler(io: Server) {
       const userSockets = await io.in(`user-${userId}`).fetchSockets();
       if (userSockets.length > 0) {
         userSockets.forEach(socket => {
-          console.log(`📡 Sending image response to user ${userId} via socket`);
+          console.log(` Sending image response to user ${userId} via socket`);
           socket.emit('ai-image-response', {
             characterId,
             characterName: characterName || 'Character',
@@ -960,12 +960,12 @@ function setupImageResponseHandler(io: Server) {
           });
         });
       } else {
-        console.log(`⚠️ No active socket found for user ${userId} - response saved to chat only`);
+        console.log(` No active socket found for user ${userId} - response saved to chat only`);
       }
 
-      console.log(`✅ Image response sent for character ${characterName}: "${aiResponse.substring(0, 50)}..."`);
+      console.log(` Image response sent for character ${characterName}: "${aiResponse.substring(0, 50)}..."`);
     } catch (error) {
-      console.error('❌ Error handling image completion:', error);
+      console.error(' Error handling image completion:', error);
     }
   });
 

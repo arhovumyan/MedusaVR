@@ -59,7 +59,7 @@ const CharacterCard = memo(({
               imageLoaded ? 'opacity-100' : 'opacity-0'
             } ${shouldBlurNSFW(char.nsfw) ? 'filter blur-md' : ''}`}
             sizes="(max-width: 640px) 50vw, 240px"
-            srcSet={buildSrcSet(char.avatar, [200, 320, 480]) || undefined}
+            {...(buildSrcSet(char.avatar, [200, 320, 480]) && { srcSet: buildSrcSet(char.avatar, [200, 320, 480]) })}
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageLoaded(true)}
           />

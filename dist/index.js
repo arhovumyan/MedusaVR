@@ -18356,7 +18356,7 @@ function setupSocket(server) {
           "https://ai-companion-alpha-nine.vercel.app",
           // Allow preview deployments
           /https:\/\/.*\.vercel\.app$/,
-          // Keep existing URLs
+          // Keep existing URL
           "http://3.135.203.99/"
         ] : [
           "http://localhost",
@@ -18717,12 +18717,12 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           console.log(`\u{1F3AF} AI Request: ${conversationMessages.length} messages, user: ${username}, character: ${character.name}`);
           const result = await openRouterWithFallback(requestBody);
           if (!result.success) {
-            console.error("\u274C All OpenRouter models failed:", result.error);
+            console.error(" All OpenRouter models failed:", result.error);
             socket.emit("error", { message: "AI service temporarily unavailable. Please try again later." });
             return;
           }
           const response = result.response;
-          console.log(`\u2705 Connected using model: ${result.modelUsed}`);
+          console.log(` Connected using model: ${result.modelUsed}`);
           if (!response.body) {
             throw new Error("No response body received");
           }
@@ -18738,7 +18738,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
               if (line.startsWith("data: ")) {
                 const json = line.replace("data: ", "").trim();
                 if (json === "[DONE]") {
-                  console.log("\u{1F3C1} Stream completed with [DONE] signal");
+                  console.log(" Stream completed with [DONE] signal");
                   continue;
                 }
                 try {
@@ -18750,25 +18750,25 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
                   }
                   const finishReason = parsed.choices?.[0]?.finish_reason;
                   if (finishReason) {
-                    console.log(`\u{1F3C1} Stream finished with reason: ${finishReason}`);
+                    console.log(` Stream finished with reason: ${finishReason}`);
                     if (finishReason === "content_filter") {
-                      console.error("\u274C Content filtered by AI service");
+                      console.error(" Content filtered by AI service");
                       socket.emit("error", { message: "Response was filtered. Try different message." });
                       return;
                     }
                   }
                 } catch (e) {
-                  console.warn("\u26A0\uFE0F Malformed JSON chunk:", line.substring(0, 100));
+                  console.warn(" Malformed JSON chunk:", line.substring(0, 100));
                 }
               }
             }
           });
           await new Promise((resolve, reject) => {
             response.body.on("end", () => {
-              console.log(`\u{1F3C1} Stream ended. Message length: ${fullMessage.length} chars`);
+              console.log(` Stream ended. Message length: ${fullMessage.length} chars`);
               const filterResult = AIResponseFilterService.filterAIResponse(fullMessage, character.name);
               if (filterResult.violations.length > 0) {
-                console.error("\u{1F6A8} AI RESPONSE FILTERED - Violations detected:", filterResult.violations);
+                console.error(" AI RESPONSE FILTERED - Violations detected:", filterResult.violations);
                 ContentModerationService.logSecurityIncident({
                   type: "age_violation",
                   userId: socket.data.userId.toString(),
@@ -18784,25 +18784,25 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
                   }
                 });
                 fullMessage = filterResult.filteredResponse;
-                console.log(`\u{1F6E1}\uFE0F Response replaced with safe alternative: "${fullMessage}"`);
+                console.log(` Response replaced with safe alternative: "${fullMessage}"`);
               }
               if (!fullMessage.trim()) {
-                console.error("\u274C Empty AI response received");
+                console.error(" Empty AI response received");
                 socket.emit("error", { message: "Empty response from AI" });
               } else if (fullMessage.trim() === "!!!!!!!!!!") {
-                console.error("\u274C Placeholder response - likely filtered");
+                console.error(" Placeholder response - likely filtered");
                 socket.emit("error", { message: "Response filtered. Try different message." });
               } else if (fullMessage.length < 50) {
-                console.warn(`\u26A0\uFE0F Unusually short response (${fullMessage.length} chars): "${fullMessage}"`);
-                console.log(`\u2705 ${character.name} \u2192 ${username}: "${fullMessage.trim()}" (${fullMessage.length} chars)`);
+                console.warn(` Unusually short response (${fullMessage.length} chars): "${fullMessage}"`);
+                console.log(` ${character.name} \u2192 ${username}: "${fullMessage.trim()}" (${fullMessage.length} chars)`);
               } else {
-                console.log(`\u2705 ${character.name} \u2192 ${username}: "${fullMessage.trim()}" (${fullMessage.length} chars)`);
+                console.log(` ${character.name} \u2192 ${username}: "${fullMessage.trim()}" (${fullMessage.length} chars)`);
               }
               resolve(null);
             });
             response.body.on("error", (err) => {
-              console.error("\u274C Stream error:", err.message);
-              console.error("\u274C Stream error details:", err);
+              console.error(" Stream error:", err.message);
+              console.error(" Stream error details:", err);
               reject(err);
             });
           });
@@ -18819,7 +18819,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
             ioInstance.to(`character-${characterId}`).emit("receive-message", aiMessage);
           }
         } catch (error) {
-          console.error("\u274C AI request failed:", error instanceof Error ? error.message : "Unknown error");
+          console.error(" AI request failed:", error instanceof Error ? error.message : "Unknown error");
           socket.emit("error", { message: "AI service temporarily unavailable." });
         }
       });
@@ -18828,12 +18828,12 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           const { characterId: characterId2 } = data;
           if (!characterId2) {
             const error = "Missing characterId for voice room join";
-            console.error("\u274C Voice join error:", error);
+            console.error(" Voice join error:", error);
             if (callback) callback({ success: false, error });
             return;
           }
           const sessionKey = `${userId}-${characterId2}`;
-          console.log(`\u{1F3A4} User joining voice room: ${sessionKey}`);
+          console.log(` User joining voice room: ${sessionKey}`);
           socket.join(`voice-${sessionKey}`);
           const response = {
             success: true,
@@ -18845,7 +18845,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           socket.emit("voice-room-joined", response);
           if (callback) callback(response);
         } catch (error) {
-          console.error("\u274C Error joining voice room:", error);
+          console.error(" Error joining voice room:", error);
           const errorResponse = { success: false, error: error.message };
           if (callback) callback(errorResponse);
           socket.emit("voice-error", errorResponse);
@@ -18856,7 +18856,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           const { characterId: characterId2 } = data;
           if (!characterId2) {
             const error = "Missing characterId for voice room leave";
-            console.error("\u274C Voice leave error:", error);
+            console.error(" Voice leave error:", error);
             if (callback) callback({ success: false, error });
             return;
           }
@@ -18871,7 +18871,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           socket.emit("voice-room-left", response);
           if (callback) callback(response);
         } catch (error) {
-          console.error("\u274C Error leaving voice room:", error);
+          console.error(" Error leaving voice room:", error);
           const errorResponse = { success: false, error: error.message };
           if (callback) callback(errorResponse);
           socket.emit("voice-error", errorResponse);
@@ -18881,7 +18881,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
         try {
           const { characterId: characterId2, audioData } = data;
           if (!characterId2 || !audioData) {
-            console.warn("\u26A0\uFE0F Invalid voice audio data: missing characterId or audioData");
+            console.warn(" Invalid voice audio data: missing characterId or audioData");
             return;
           }
           const sessionKey = `${userId}-${characterId2}`;
@@ -18893,7 +18893,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           } else if (Array.isArray(audioData)) {
             audioBuffer = Buffer.from(audioData);
           } else {
-            console.warn("\u26A0\uFE0F Invalid audio data format received:", typeof audioData);
+            console.warn(" Invalid audio data format received:", typeof audioData);
             socket.emit("voice-error", {
               message: "Invalid audio data format",
               sessionKey
@@ -18903,7 +18903,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           try {
             handleVoiceAudio(sessionKey, audioBuffer);
           } catch (audioError) {
-            console.error("\u274C Error processing voice audio:", audioError);
+            console.error(" Error processing voice audio:", audioError);
             socket.emit("voice-error", {
               message: "Audio processing failed",
               sessionKey,
@@ -18911,7 +18911,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
             });
           }
         } catch (error) {
-          console.error("\u274C Error handling voice audio data:", error);
+          console.error(" Error handling voice audio data:", error);
           socket.emit("voice-error", {
             message: "Voice audio handling failed",
             error: error.message
@@ -18923,12 +18923,12 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
           const { characterId: characterId2, muted } = data;
           if (!characterId2 || typeof muted !== "boolean") {
             const error = "Invalid mute data: missing characterId or muted boolean";
-            console.error("\u274C Voice mute error:", error);
+            console.error(" Voice mute error:", error);
             if (callback) callback({ success: false, error });
             return;
           }
           const sessionKey = `${userId}-${characterId2}`;
-          console.log(`\u{1F507} User ${muted ? "muted" : "unmuted"} in session: ${sessionKey}`);
+          console.log(` User ${muted ? "muted" : "unmuted"} in session: ${sessionKey}`);
           const muteData = {
             userId,
             muted,
@@ -18940,7 +18940,7 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
             callback({ success: true, muted, timestamp: muteData.timestamp });
           }
         } catch (error) {
-          console.error("\u274C Error handling voice mute:", error);
+          console.error(" Error handling voice mute:", error);
           const errorResponse = { success: false, error: error.message };
           if (callback) callback(errorResponse);
           socket.emit("voice-error", errorResponse);
@@ -18959,13 +18959,13 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
             });
           }
         } catch (error) {
-          console.error("\u274C Error handling voice ping:", error);
+          console.error(" Error handling voice ping:", error);
           if (callback) callback({ success: false, error: error.message });
         }
       });
       socket.on("disconnect", async (reason) => {
-        console.log(`\u274C User ${userId} disconnected from character ${characterId}: ${reason}`);
-        console.log("\u{1F4CA} Disconnect details:", {
+        console.log(` User ${userId} disconnected from character ${characterId}: ${reason}`);
+        console.log(" Disconnect details:", {
           socketId: socket.id,
           reason,
           userId,
@@ -18979,12 +18979,12 @@ Remember: Your goal is to create an engaging, flowing conversation that makes ${
             const handleVoiceSessionCleanup2 = voiceModule.handleVoiceSessionCleanup;
             if (handleVoiceSessionCleanup2) {
               handleVoiceSessionCleanup2(sessionKey, reason);
-              console.log(`\u{1F507} Voice session cleanup completed for: ${sessionKey}`);
+              console.log(` Voice session cleanup completed for: ${sessionKey}`);
             } else {
-              console.warn("\u26A0\uFE0F Voice session cleanup function not available");
+              console.warn(" Voice session cleanup function not available");
             }
           } catch (error) {
-            console.error("\u274C Error during voice session cleanup:", error);
+            console.error(" Error during voice session cleanup:", error);
           }
         }
       });
@@ -19002,30 +19002,30 @@ function setupImageResponseHandler(io) {
   console.log("Setting up image response handler...");
   console.log("Setting up jobCompleted event listener...");
   AsyncImageGenerationService_default.on("jobCompleted", async (job) => {
-    console.log(`\u{1F3AF} Received jobCompleted event for job ${job.id}`);
+    console.log(` Received jobCompleted event for job ${job.id}`);
     try {
       if (!job.request || !job.request.characterId || !job.result?.imageUrl) {
-        console.log("\u26A0\uFE0F Skipping image response - missing character or image data");
+        console.log(" Skipping image response - missing character or image data");
         return;
       }
       const { characterId, prompt, characterName } = job.request;
       const { imageUrl } = job.result;
       const userId = job.userId;
-      console.log(`\u{1F50D} DEBUG - Image job data:`, {
+      console.log(` DEBUG - Image job data:`, {
         characterId,
         characterIdType: typeof characterId,
         userId,
         userIdType: typeof userId,
         prompt: prompt?.substring(0, 50)
       });
-      console.log(`\u{1F5BC}\uFE0F Image generated for character ${characterName} (${characterId}) - generating AI response...`);
+      console.log(` Image generated for character ${characterName} (${characterId}) - generating AI response...`);
       const aiResponse = await ImageResponseService.generateImageResponse(
         prompt || "Image generated",
         characterId,
         userId
       );
-      console.log(`\u{1F4AC} Generated image response: "${aiResponse.substring(0, 100)}..."`);
-      console.log(`\u{1F50D} DEBUG - Looking for chat with:`, {
+      console.log(` Generated image response: "${aiResponse.substring(0, 100)}..."`);
+      console.log(` DEBUG - Looking for chat with:`, {
         userId,
         characterId: typeof characterId === "string" ? parseInt(characterId) : characterId,
         characterIdOriginal: characterId
@@ -19034,9 +19034,9 @@ function setupImageResponseHandler(io) {
         userId,
         characterId: typeof characterId === "string" ? parseInt(characterId) : characterId
       });
-      console.log(`\u{1F50D} DEBUG - Chat found:`, !!chat);
+      console.log(` DEBUG - Chat found:`, !!chat);
       if (!chat) {
-        console.log(`\u{1F4DD} Creating new chat for user ${userId} and character ${characterId}`);
+        console.log(` Creating new chat for user ${userId} and character ${characterId}`);
         chat = new ChatsModel({
           userId,
           characterId: typeof characterId === "string" ? parseInt(characterId) : characterId,
@@ -19044,7 +19044,7 @@ function setupImageResponseHandler(io) {
           lastActivity: /* @__PURE__ */ new Date()
         });
         await chat.save();
-        console.log(`\u2705 Created new chat for image response`);
+        console.log(` Created new chat for image response`);
       }
       const aiMessage = {
         id: (Date.now() + 1).toString(),
@@ -19061,7 +19061,7 @@ function setupImageResponseHandler(io) {
       const userSockets = await io.in(`user-${userId}`).fetchSockets();
       if (userSockets.length > 0) {
         userSockets.forEach((socket) => {
-          console.log(`\u{1F4E1} Sending image response to user ${userId} via socket`);
+          console.log(` Sending image response to user ${userId} via socket`);
           socket.emit("ai-image-response", {
             characterId,
             characterName: characterName || "Character",
@@ -19070,11 +19070,11 @@ function setupImageResponseHandler(io) {
           });
         });
       } else {
-        console.log(`\u26A0\uFE0F No active socket found for user ${userId} - response saved to chat only`);
+        console.log(` No active socket found for user ${userId} - response saved to chat only`);
       }
-      console.log(`\u2705 Image response sent for character ${characterName}: "${aiResponse.substring(0, 50)}..."`);
+      console.log(` Image response sent for character ${characterName}: "${aiResponse.substring(0, 50)}..."`);
     } catch (error) {
-      console.error("\u274C Error handling image completion:", error);
+      console.error(" Error handling image completion:", error);
     }
   });
   console.log("Image response handler setup complete");
@@ -19572,21 +19572,24 @@ function buildApp() {
     console.log("Request Origin:", req.headers.origin);
     next();
   });
+  const allowedOrigins = [
+    "http://localhost",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    "http://localhost:3000",
+    "http://3.135.203.99",
+    "https://medusavr-production.up.railway.app",
+    "https://medusa-vrfriendly.vercel.app"
+  ];
   app.use(
     cors({
       origin: function(origin, callback) {
-        if (!origin) return callback(null, true);
+        if (!origin) {
+          console.log(`\u{1F310} CORS: No origin provided, allowing`);
+          return callback(null, true);
+        }
         console.log(`\u{1F310} CORS request from origin: ${origin}`);
-        const allowedOrigins = [
-          "http://localhost",
-          "http://localhost:5173",
-          "http://localhost:5174",
-          "http://localhost:5175",
-          "http://localhost:3000",
-          "http://3.135.203.99",
-          "https://medusavr-production.up.railway.app",
-          "https://medusa-vrfriendly.vercel.app"
-        ];
         const isVercelDomain = origin.endsWith(".vercel.app") || origin.includes("vercel.app");
         const isMedusavrDomain = origin.includes("medusa-vrfriendly.vercel.app");
         if (allowedOrigins.includes(origin) || isVercelDomain || isMedusavrDomain) {
@@ -19599,12 +19602,46 @@ function buildApp() {
       },
       credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-CSRF-Token", "X-XSRF-Token", "Accept", "Origin"],
+      allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "X-Requested-With",
+        "X-CSRF-Token",
+        "X-XSRF-Token",
+        "Accept",
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
       exposedHeaders: ["X-Total-Count", "X-Page-Count"],
       preflightContinue: false,
-      optionsSuccessStatus: 204
+      optionsSuccessStatus: 200,
+      maxAge: 86400
     })
   );
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && (allowedOrigins.includes(origin) || origin.includes("vercel.app"))) {
+      res.header("Access-Control-Allow-Origin", origin);
+      res.header("Access-Control-Allow-Credentials", "true");
+    }
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-CSRF-Token, X-XSRF-Token, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers");
+    res.header("Access-Control-Max-Age", "86400");
+    next();
+  });
+  app.options("*", (req, res) => {
+    console.log(`\u{1F504} Handling preflight request for: ${req.url} from origin: ${req.headers.origin}`);
+    const origin = req.headers.origin;
+    if (origin && (allowedOrigins.includes(origin) || origin.includes("vercel.app"))) {
+      res.header("Access-Control-Allow-Origin", origin);
+      res.header("Access-Control-Allow-Credentials", "true");
+    }
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-CSRF-Token, X-XSRF-Token, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers");
+    res.header("Access-Control-Max-Age", "86400");
+    res.sendStatus(200);
+  });
   app.use(cookieParser());
   app.use("/api/payments/webhook", express7.raw({ type: "application/json" }));
   app.use(express7.json({ limit: "10mb" }));

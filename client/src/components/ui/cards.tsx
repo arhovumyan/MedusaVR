@@ -81,9 +81,9 @@ const CharacterCard = memo(({
           }}
           loading={fetchPriority === 'high' ? 'eager' : 'lazy'}
           decoding="async"
-          fetchPriority={fetchPriority}
+          fetchpriority={fetchPriority}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px"
-          srcSet={buildSrcSet(char.avatar, [240, 360, 480, 640]) || undefined}
+          {...(buildSrcSet(char.avatar, [240, 360, 480, 640]) && { srcSet: buildSrcSet(char.avatar, [240, 360, 480, 640]) })}
           onLoad={() => setImageLoaded(true)}
           onError={(e) => {
             const target = e.target as HTMLImageElement;

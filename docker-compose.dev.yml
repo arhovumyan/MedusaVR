@@ -17,7 +17,7 @@ services:
     env_file: .env
     command: >
       sh -c "
-        npm run dev
+        npm run dev:server
       "
     networks:
       - medusavr-network
@@ -31,8 +31,8 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://backend:5002
-      - VITE_SOCKET_URL=ws://backend:5002
+      - VITE_API_URL=http://localhost:5002
+      - VITE_SOCKET_URL=ws://localhost:5002
       - NODE_ENV=development
     volumes:
       - ./client:/app/client
@@ -45,7 +45,7 @@ services:
     restart: always
     command: >
       sh -c "
-        npm run dev
+        npm run dev:client
       "
 
 networks:

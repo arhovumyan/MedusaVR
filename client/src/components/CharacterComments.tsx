@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
+import { apiService } from '@/lib/api';
 import type { Comment } from '@shared/api-types';
 
 interface CharacterCommentsProps {
@@ -34,8 +35,7 @@ export function CharacterComments({ characterId, className = '' }: CharacterComm
   const fetchComments = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/characters/${characterId}/comments?page=${currentPage}&limit=10`);
-      const data = await response.json();
+      const data = await apiService.getCharacterComments(characterId, currentPage, 10);
       
       if (data.success) {
         setComments(data.data);
@@ -68,19 +68,7 @@ export function CharacterComments({ characterId, className = '' }: CharacterComm
 
     try {
       setSubmitting(true);
-      const response = await fetch(`/api/characters/${characterId}/comments`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('medusavr_access_token')}`
-        },
-        body: JSON.stringify({
-          content: content.trim(),
-          parentCommentId
-        })
-      });
-
-      const data = await response.json();
+      const data = await apiService.createComment(characterId, content, parentCommentId);
       
       if (data.success) {
         setNewComment('');
@@ -115,14 +103,7 @@ export function CharacterComments({ characterId, className = '' }: CharacterComm
     }
 
     try {
-      const response = await fetch(`/api/comments/${commentId}/like`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('medusavr_access_token')}`
-        }
-      });
-
-      const data = await response.json();
+      const data = await apiService.likeComment(commentId);
       
       if (data.success) {
         await fetchComments();
@@ -141,14 +122,7 @@ export function CharacterComments({ characterId, className = '' }: CharacterComm
     if (!confirm('Are you sure you want to delete this comment?')) return;
 
     try {
-      const response = await fetch(`/api/comments/${commentId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('medusavr_access_token')}`
-        }
-      });
-
-      const data = await response.json();
+      const data = await apiService.deleteComment(commentId);
       
       if (data.success) {
         await fetchComments();
@@ -171,18 +145,7 @@ export function CharacterComments({ characterId, className = '' }: CharacterComm
     if (!editContent.trim()) return;
 
     try {
-      const response = await fetch(`/api/comments/${commentId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('medusavr_access_token')}`
-        },
-        body: JSON.stringify({
-          content: editContent.trim()
-        })
-      });
-
-      const data = await response.json();
+      const data = await apiService.updateComment(commentId, editContent);
       
       if (data.success) {
         setEditingComment(null);

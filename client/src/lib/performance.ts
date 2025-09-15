@@ -87,13 +87,25 @@ export const observeWebVitals = () => {
 export const preloadCriticalResources = () => {
   if (typeof window === 'undefined') return;
   
-  // Preload critical API endpoints
-  const criticalEndpoints = ['/api/characters'];
+  // Get the correct API base URL
+  const getApiBaseUrl = (): string => {
+    if (import.meta.env.VITE_API_URL) {
+      return import.meta.env.VITE_API_URL;
+    }
+    
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
+    
+    if (isLocalhost) {
+      return 'http://localhost:5002';
+    }
+    
+    // For production, use relative URLs
+    return '';
+  };
   
-  criticalEndpoints.forEach((endpoint) => {
-    const link = document.createElement('link');
-    link.rel = 'prefetch';
-    link.href = endpoint;
-    document.head.appendChild(link);
-  });
+  const apiBaseUrl = getApiBaseUrl();
+  
+  // Note: API endpoint preloading is disabled due to CORS restrictions
+  // The API calls will be made when needed by the components
 };

@@ -511,6 +511,62 @@ class ApiService {
     const response = await apiRequest('POST', '/api/coins/claim-monthly');
     return await response.json();
   }
+
+  // Comment Management
+  async getCharacterComments(characterId: string, page: number = 1, limit: number = 10): Promise<{
+    success: boolean;
+    data: any[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+    };
+  }> {
+    const response = await apiRequest('GET', `/api/characters/${characterId}/comments?page=${page}&limit=${limit}`);
+    return await response.json();
+  }
+
+  async createComment(characterId: string, content: string, parentCommentId?: string): Promise<{
+    success: boolean;
+    data?: any;
+    error?: string;
+  }> {
+    const response = await apiRequest('POST', `/api/characters/${characterId}/comments`, {
+      content: content.trim(),
+      parentCommentId
+    });
+    return await response.json();
+  }
+
+  async updateComment(commentId: string, content: string): Promise<{
+    success: boolean;
+    data?: any;
+    error?: string;
+  }> {
+    const response = await apiRequest('PUT', `/api/comments/${commentId}`, {
+      content: content.trim()
+    });
+    return await response.json();
+  }
+
+  async deleteComment(commentId: string): Promise<{
+    success: boolean;
+    message?: string;
+    error?: string;
+  }> {
+    const response = await apiRequest('DELETE', `/api/comments/${commentId}`);
+    return await response.json();
+  }
+
+  async likeComment(commentId: string): Promise<{
+    success: boolean;
+    data?: any;
+    error?: string;
+  }> {
+    const response = await apiRequest('POST', `/api/comments/${commentId}/like`);
+    return await response.json();
+  }
   
 }
 

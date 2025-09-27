@@ -67,8 +67,8 @@ const SearchPage = () => {
       <SEOHead 
         title={searchQuery ? `Search Results for "${searchQuery}" - AI Characters | MedusaVR` : "Search AI Characters & Companions | MedusaVR"}
         description={searchQuery ? 
-          `Find AI characters matching "${searchQuery}". Browse NSFW characters, anime personalities, and AI companions for chat and roleplay.` :
-          "Search through thousands of AI characters and companions. Find anime personalities, AI girlfriends, NSFW characters, and custom AI companions for chat and roleplay."
+          `Find AI characters matching "${searchQuery}". Browse NSFW characters, anime personalities, and AI companions for chat and interactions.` :
+          "Search through thousands of AI characters and companions. Find anime personalities, AI girlfriends, NSFW characters, and custom AI companions for chat and interactions."
         }
         keywords="search AI characters, find AI companions, AI character search, anime character search, NSFW AI search, AI girlfriend search, character finder"
         url={`https://medusa-vrfriendly.vercel.app/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`}
@@ -88,7 +88,7 @@ const SearchPage = () => {
           </h1>
           <div className="max-w-3xl mx-auto">
             <p className="text-lg text-zinc-300 mb-4">
-              Find the perfect AI character for chat, roleplay, or creative conversations. Search through our extensive library of AI companions with unique personalities and styles.
+              Find the perfect AI character for chat, interactions, or creative conversations. Search through our extensive library of AI companions with unique personalities and styles.
             </p>
             <p className="text-zinc-400">
               Search by character name, personality traits, conversation topics, or character tags. Discover NSFW characters, anime personalities, realistic companions, and custom AI characters created by our community.
@@ -108,7 +108,7 @@ const SearchPage = () => {
               NSFW chat
             </button>
             <button className="text-xs bg-zinc-800 hover:bg-zinc-700 px-2 py-1 rounded text-orange-400 transition-colors">
-              Roleplay partners
+              Interaction partners
             </button>
           </div>
         </div>

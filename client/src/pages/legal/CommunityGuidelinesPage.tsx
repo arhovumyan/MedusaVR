@@ -75,7 +75,7 @@ const CommunityGuidelinesPage: React.FC = () => {
               <ul className="list-disc list-inside space-y-1 text-gray-300 text-sm">
                 <li>Fictional adult character interactions</li>
                 <li>Consensual romantic and sexual scenarios</li>
-                <li>Creative storytelling and roleplay</li>
+                <li>Creative storytelling and interactions</li>
                 <li>Artistic and aesthetic character designs</li>
               </ul>
             </div>

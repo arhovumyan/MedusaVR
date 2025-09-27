@@ -26,7 +26,7 @@ interface OpenRouterResponse {
 }
 
 async function testModelWithFallback(model: string, modelIndex: number, totalModels: number): Promise<boolean> {
-  console.log(`🔧 Testing model ${modelIndex}/${totalModels}: ${model}`);
+  console.log(` Testing model ${modelIndex}/${totalModels}: ${model}`);
   
   try {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -44,15 +44,15 @@ async function testModelWithFallback(model: string, modelIndex: number, totalMod
       }),
     });
     
-    console.log(`📡 Response Status: ${response.status}`);
+    console.log(` Response Status: ${response.status}`);
     
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`❌ Model ${model} failed:`, errorText);
+      console.error(` Model ${model} failed:`, errorText);
       
       // Check if it's a "model is busy" error
       if (errorText.includes('busy') || errorText.includes('502')) {
-        console.log(`⏳ Model ${model} is busy, trying next fallback...`);
+        console.log(` Model ${model} is busy, trying next fallback...`);
         return false;
       }
       
@@ -63,36 +63,36 @@ async function testModelWithFallback(model: string, modelIndex: number, totalMod
     
     // Check for error in response data
     if (data.error) {
-      console.error(`❌ Model ${model} error:`, data.error.message);
+      console.error(` Model ${model} error:`, data.error.message);
       if (data.error.message.includes('busy') || data.error.code === 502) {
-        console.log(`⏳ Model ${model} is busy, trying next fallback...`);
+        console.log(` Model ${model} is busy, trying next fallback...`);
         return false;
       }
       return false;
     }
     
-    console.log(`✅ Model ${model} successful!`);
-    console.log('📝 Test Response:', data.choices?.[0]?.message?.content || 'No content received');
+    console.log(` Model ${model} successful!`);
+    console.log(' Test Response:', data.choices?.[0]?.message?.content || 'No content received');
     return true;
     
   } catch (error) {
-    console.error(`❌ Connection error with ${model}:`, error);
+    console.error(` Connection error with ${model}:`, error);
     return false;
   }
 }
 
 async function testOpenRouterConnection() {
-  console.log('🔧 Testing OpenRouter API connection with fallback models...');
+  console.log(' Testing OpenRouter API connection with fallback models...');
   
   // Check if API key is configured
   if (!process.env.OPENROUTER_API_KEY) {
-    console.error('❌ OPENROUTER_API_KEY environment variable is not set');
+    console.error(' OPENROUTER_API_KEY environment variable is not set');
     console.log('Please add your OpenRouter API key to your .env file:');
     console.log('OPENROUTER_API_KEY=your_api_key_here');
     return;
   }
   
-  console.log('✅ OpenRouter API key found');
+  console.log(' OpenRouter API key found');
   
   // Define backup models in priority order
   const models = [
@@ -102,7 +102,7 @@ async function testOpenRouterConnection() {
     "mistralai/pixtral-12b"
   ];
   
-  console.log('📋 Available models (in priority order):');
+  console.log(' Available models (in priority order):');
   models.forEach((model, index) => {
     console.log(`   ${index + 1}. ${model}`);
   });
@@ -113,20 +113,20 @@ async function testOpenRouterConnection() {
     const success = await testModelWithFallback(models[i], i + 1, models.length);
     
     if (success) {
-      console.log(`🎉 Successfully connected using model: ${models[i]}`);
-      console.log(`💡 This model should be used as the primary choice.`);
+      console.log(` Successfully connected using model: ${models[i]}`);
+      console.log(` This model should be used as the primary choice.`);
       return;
     }
     
     // Add a small delay between attempts
     if (i < models.length - 1) {
-      console.log('⏱️ Waiting 2 seconds before trying next model...\n');
+      console.log('⏱ Waiting 2 seconds before trying next model...\n');
       await new Promise(resolve => setTimeout(resolve, 2000));
     }
   }
   
-  console.error('❌ All models failed or are busy. Please try again later.');
-  console.log('💡 You may want to check the OpenRouter status page or try different models.');
+  console.error(' All models failed or are busy. Please try again later.');
+  console.log(' You may want to check the OpenRouter status page or try different models.');
 }
 
 // Run the test

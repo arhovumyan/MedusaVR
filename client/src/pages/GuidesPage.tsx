@@ -85,7 +85,6 @@ Before diving into conversation, establish context:
 ### 1. Layered Prompting
 Build complexity gradually rather than dumping everything at once:
 
-**Weak**: "Let's roleplay a complex scenario where you're a detective investigating a murder in Victorian London with supernatural elements and political intrigue."
 
 **Strong**: Start with "You're a detective in Victorian London" then gradually introduce elements as the conversation develops.
 
@@ -114,7 +113,7 @@ Guide the AI's viewpoint:
 - Allow for organic flow
 - Don't over-direct every response
 
-### Roleplay Scenarios  
+### Interactive Scenarios  
 - Establish clear scene and character motivations
 - Use present tense for immediacy
 - Build tension and stakes gradually
@@ -248,7 +247,7 @@ export default function GuidesPage() {
       <SEOHead
         title="AI Character Guides & Blog | MedusaVR"
         description="Expert guides on AI character creation, conversation techniques, and digital companionship. Learn from tutorials, tips, and best practices for better AI interactions."
-        keywords="AI character guides, AI chat tutorials, character creation tips, AI conversation guide, digital companions, AI roleplay guide, NSFW AI safety"
+        keywords="AI character guides, AI chat tutorials, character creation tips, AI conversation guide, digital companions, AI interaction guide, NSFW AI safety"
         structuredData={guidesSchema}
         type="website"
       />

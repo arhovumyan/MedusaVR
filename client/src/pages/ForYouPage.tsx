@@ -103,7 +103,6 @@ export default function ForYouPage() {
               "featureList": [
                 "Uncensored AI Chat",
                 "Custom Character Creation",
-                "Interactive Roleplay",
                 "Community Characters",
                 "Real-time Conversations"
               ],
@@ -205,7 +204,7 @@ export default function ForYouPage() {
                 </div>
                 
                 <div className="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-lg border border-purple-500/20">
-                  <h3 className="text-lg font-semibold text-purple-300 mb-3">Advanced Roleplay Features</h3>
+                  <h3 className="text-lg font-semibold text-purple-300 mb-3">Advanced Features</h3>
                   <ul className="text-sm text-zinc-400 space-y-2">
                     <li>• Personalized fantasy scenarios and storytelling</li>
                     <li>• Evolving narratives that adapt to your preferences</li>
@@ -236,16 +235,16 @@ export default function ForYouPage() {
       <section aria-labelledby="platform-description">
         <div className="text-center mb-4">
           <h2 id="platform-description" className="text-lg sm:text-xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent mb-2">
-            MedusaVR – Advanced AI Character Chat & Roleplay Platform
+            MedusaVR – Advanced AI Character Chat Platform
           </h2>
           <h3 className="text-xs sm:text-sm font-semibold text-orange-300 mb-3">
-            Advanced AI Chat with Lifelike Characters & Custom Roleplay
+            Advanced AI Chat with Lifelike Characters
           </h3>
           <p className="text-xs sm:text-sm text-zinc-300 mx-auto leading-relaxed mb-4">
-            Welcome to MedusaVR, the premier platform for AI character chat where your ideas come to life with realistic, customizable AI companions. Whether you're seeking romance, meaningful conversations, or immersive roleplay, our AI chat platform offers an advanced, judgment-free experience powered by cutting-edge artificial intelligence.
+            Welcome to MedusaVR, the premier platform for AI character chat where your ideas come to life with realistic, customizable AI companions. Whether you're seeking romance, meaningful conversations, our AI chat platform offers an advanced, judgment-free experience powered by cutting-edge artificial intelligence.
           </p>
           <p className="text-xs text-zinc-400 mx-auto leading-relaxed">
-            Enjoy deep conversations, stunning AI-generated imagery, and personalized roleplay with characters you create or discover from our community. Experience complete freedom of expression in your AI conversations.
+            Enjoy deep conversations, stunning AI-generated imagery, and personalized chats with characters you create or discover from our community. Experience complete freedom of expression in your AI conversations.
           </p>
         </div>
         <div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-500/30 to-transparent my-6"></div>

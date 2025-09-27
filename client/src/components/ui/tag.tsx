@@ -56,7 +56,6 @@ const tagEmojiMap: Record<string, string> = {
   'adventure': '🗺️',
   'wholesome': '🤗',
   'modern': '🏙️',
-  'roleplay': '🎭',
   'ai-companion': '🤖',
   'ai companion': '🤖',
   'interactive': '🎮',

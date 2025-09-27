@@ -27,11 +27,6 @@ const FeaturesPage = () => {
       description: "Design and create your own AI characters from scratch. Customize appearance, personality, voice, and behavior to match your ideal companion."
     },
     {
-      icon: <Sparkles className="w-8 h-8 text-purple-400" />,
-      title: "Advanced AI Roleplay",
-      description: "Explore unlimited roleplay scenarios with intelligent AI. From casual conversations to meaningful encounters, create any story you imagine."
-    },
-    {
       icon: <Shield className="w-8 h-8 text-green-400" />,
       title: "Age-Verified Content",
       description: "Safe and secure access to content with proper age verification. All mature features are restricted to verified 18+ users only."
@@ -92,8 +87,8 @@ const FeaturesPage = () => {
     <>
       <SEOHead 
         title="AI Character Platform Features - Image Generator & AI Chat | MedusaVR"
-        description="Discover MedusaVR's advanced features: AI character chat, image generation, custom AI companions, roleplay, and premium AI technology. Learn how our platform works."
-        keywords="AI character features, AI generator features, AI companion capabilities, AI chat features, character customization, AI roleplay features"
+        description="Discover MedusaVR's advanced features: AI character chat, image generation, custom AI companions and premium AI technology. Learn how our platform works."
+        keywords="AI character features, AI generator features, AI companion capabilities, AI chat features, character customization."
         url="https://medusa-vrfriendly.vercel.app/features"
         structuredData={faqStructuredData}
       />
@@ -141,7 +136,7 @@ const FeaturesPage = () => {
                 Our platform enables users to <Link href="/create-character" className="text-orange-400 hover:text-orange-300 underline">create custom AI characters</Link>, customize companions, and chat with AI while <Link href="/generate-images" className="text-orange-400 hover:text-orange-300 underline">generating personalized content</Link> including NSFW imagery.
               </p>
               <p>
-                Whether you're looking for an AI girlfriend, exploring adult roleplay scenarios, or creating custom character art, MedusaVR provides 
+                Whether you're looking for an AI girlfriend, exploring or creating custom character art, MedusaVR provides 
                 the most sophisticated AI technology available. Our platform serves both casual users seeking entertainment and <Link href="/creators" className="text-orange-400 hover:text-orange-300 underline">creators building detailed AI companions</Link>.
               </p>
               <p>
@@ -212,7 +207,6 @@ const FeaturesPage = () => {
                 <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Sparkles className="w-8 h-8 text-orange-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Fantasy & Roleplay</h3>
                 <p className="text-sm text-zinc-300">
                   Explore fantasy worlds with magical characters, mythical beings, and adventure-themed companions.
                 </p>

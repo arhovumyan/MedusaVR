@@ -22,8 +22,8 @@ interface SEOHeadProps {
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
   title = "MedusaVR - AI Character Chat & Image Generator",
-  description = "Create custom AI characters, generate custom images, and enjoy unlimited AI chat conversations. The ultimate platform for AI companions, content creation, and interactive roleplay.",
-  keywords = "AI character chat, AI generator, AI companion app, generate AI images, AI chat, anime AI characters, custom AI characters, AI roleplay, character creation, AI art generator",
+  description = "Create custom AI characters, generate custom images, and enjoy unlimited AI chat conversations. The ultimate platform for AI companions, content creation.",
+  keywords = "AI character chat, AI generator, AI companion app, generate AI images, AI chat, anime AI characters, custom AI characters, AI character creation, AI art generator",
   image = "https://medusa-vrfriendly.vercel.app/medusaSnake.png",
   url = "https://medusa-vrfriendly.vercel.app",
   type = "website",

@@ -86,7 +86,6 @@ Before diving into conversation, establish context:
 ### 1. Layered Prompting
 Build complexity gradually rather than dumping everything at once:
 
-**Weak**: "Let's roleplay a complex scenario where you're a detective investigating a murder in Victorian London with supernatural elements and political intrigue."
 
 **Strong**: Start with "You're a detective in Victorian London" then gradually introduce elements as the conversation develops.
 
@@ -115,10 +114,6 @@ Guide the AI's viewpoint:
 - Allow for organic flow
 - Don't over-direct every response
 
-### Roleplay Scenarios  
-- Establish clear scene and character motivations
-- Use present tense for immediacy
-- Build tension and stakes gradually
 
 ### Creative Collaborations
 - Define roles clearly (you write X, AI writes Y)

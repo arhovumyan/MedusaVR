@@ -20,8 +20,8 @@ const ContentPolicyPage: React.FC = () => {
               <li>Adult AI chat conversations with mature themes</li>
               <li>NSFW image generation with AI characters</li>
               <li>Fictional adult character interactions and relationships</li>
-              <li>Consensual romantic and sexual scenarios in AI roleplay</li>
-              <li>Creative storytelling and mature roleplay content</li>
+              <li>Consensual romantic and sexual scenarios in AI interactions</li>
+              <li>Creative storytelling and mature interactive content</li>
               <li>Artistic character designs including adult-oriented customizations</li>
               <li>Educational content about adult relationships and intimacy</li>
               <li>Custom AI companion creation for mature audiences</li>

@@ -79,7 +79,7 @@ export default function SubscribePage() {
       description: "Unlimited-access - Everything in Deluxe + Priority access, Exclusive models. Go all out🔥",
       features: [
         { icon: Coins, text: "3000 free coins each month", color: "text-amber-400" },
-        { icon: Crown, text: "Elite Roleplay Engine", color: "text-amber-400" },
+        { icon: Crown, text: "Elite Interaction Engine", color: "text-amber-400" },
         { icon: CheckCircle, text: "Chat History", color: "text-green-400" },
         { icon: Star, text: "Premium Models", color: "text-purple-400" },
         { icon: Phone, text: "Voice Calls (Beta)", color: "text-green-400" },

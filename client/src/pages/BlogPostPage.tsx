@@ -155,7 +155,6 @@ NSFW AI content exists within a complex framework of legal, ethical, and technol
 
 ### For Creators
 1. **Clear Content Labeling**: Always mark NSFW content appropriately
-2. **Age Restrictions**: Ensure content is only accessible to adults
 3. **Consent Mechanisms**: Build in clear opt-in systems
 4. **Boundary Respect**: Respect user limits and preferences
 

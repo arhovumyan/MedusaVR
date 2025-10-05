@@ -13,7 +13,7 @@ cloudinary.config({
 });
 
 async function testCompleteFolderStructure() {
-  console.log('🔄 Testing complete Cloudinary folder structure...');
+  console.log(' Testing complete Cloudinary folder structure...');
   
   // Test user IDs
   const testUserId1 = '507f1f77bcf86cd799439011';
@@ -36,7 +36,7 @@ async function testCompleteFolderStructure() {
     const uploadedImages: string[] = [];
     
     // Test 1: User 1 Avatar
-    console.log('\n📸 Testing User 1 Avatar Upload...');
+    console.log('\n Testing User 1 Avatar Upload...');
     const user1Avatar = await uploadToCloudinary(testImageBuffer, {
       folder: `user_${testUserId1}/avatar`,
       public_id: `avatar_${Date.now()}`,
@@ -44,10 +44,10 @@ async function testCompleteFolderStructure() {
       height: 400,
     });
     uploadedImages.push(user1Avatar.public_id);
-    console.log(`✅ User 1 Avatar: ${user1Avatar.secure_url}`);
+    console.log(` User 1 Avatar: ${user1Avatar.secure_url}`);
     
     // Test 2: User 1 Character Images
-    console.log('\n🎭 Testing User 1 Character Images...');
+    console.log('\n Testing User 1 Character Images...');
     for (let i = 1; i <= 2; i++) {
       const characterImage = await uploadToCloudinary(testImageBuffer, {
         folder: `user_${testUserId1}/characters`,
@@ -56,11 +56,11 @@ async function testCompleteFolderStructure() {
         height: 512,
       });
       uploadedImages.push(characterImage.public_id);
-      console.log(`✅ User 1 Character ${i}: ${characterImage.secure_url}`);
+      console.log(` User 1 Character ${i}: ${characterImage.secure_url}`);
     }
     
     // Test 3: User 2 Avatar
-    console.log('\n📸 Testing User 2 Avatar Upload...');
+    console.log('\n Testing User 2 Avatar Upload...');
     const user2Avatar = await uploadToCloudinary(testImageBuffer, {
       folder: `user_${testUserId2}/avatar`,
       public_id: `avatar_${Date.now()}`,
@@ -68,10 +68,10 @@ async function testCompleteFolderStructure() {
       height: 400,
     });
     uploadedImages.push(user2Avatar.public_id);
-    console.log(`✅ User 2 Avatar: ${user2Avatar.secure_url}`);
+    console.log(` User 2 Avatar: ${user2Avatar.secure_url}`);
     
     // Test 4: User 2 Character Images
-    console.log('\n🎭 Testing User 2 Character Images...');
+    console.log('\n Testing User 2 Character Images...');
     for (let i = 1; i <= 3; i++) {
       const characterImage = await uploadToCloudinary(testImageBuffer, {
         folder: `user_${testUserId2}/characters`,
@@ -80,29 +80,29 @@ async function testCompleteFolderStructure() {
         height: 512,
       });
       uploadedImages.push(characterImage.public_id);
-      console.log(`✅ User 2 Character ${i}: ${characterImage.secure_url}`);
+      console.log(` User 2 Character ${i}: ${characterImage.secure_url}`);
     }
     
     console.log('\n🏗️ Folder Structure Created:');
-    console.log(`📁 user_${testUserId1}/`);
-    console.log(`├── 📁 avatar/`);
-    console.log(`└── 📁 characters/`);
-    console.log(`📁 user_${testUserId2}/`);
-    console.log(`├── 📁 avatar/`);
-    console.log(`└── 📁 characters/`);
+    console.log(` user_${testUserId1}/`);
+    console.log(`├──  avatar/`);
+    console.log(`└──  characters/`);
+    console.log(` user_${testUserId2}/`);
+    console.log(`├──  avatar/`);
+    console.log(`└──  characters/`);
     
     console.log('\n🧹 Cleaning up test images...');
     for (const publicId of uploadedImages) {
       try {
         await cloudinary.uploader.destroy(publicId);
-        console.log(`🗑️ Deleted: ${publicId}`);
+        console.log(` Deleted: ${publicId}`);
       } catch (error) {
-        console.warn(`⚠️ Could not delete ${publicId}:`, error);
+        console.warn(` Could not delete ${publicId}:`, error);
       }
     }
     
-    console.log('\n🎉 Complete folder structure test successful!');
-    console.log('📂 Your Cloudinary now supports:');
+    console.log('\n Complete folder structure test successful!');
+    console.log(' Your Cloudinary now supports:');
     console.log('   • User-specific folders (user_[userId])');
     console.log('   • Separate avatar folders (user_[userId]/avatar)');
     console.log('   • Separate character image folders (user_[userId]/characters)');
@@ -110,7 +110,7 @@ async function testCompleteFolderStructure() {
     console.log('   • Organized storage with clear hierarchy');
     
   } catch (error) {
-    console.error('❌ Folder structure test failed:', error);
+    console.error(' Folder structure test failed:', error);
   }
 }
 

@@ -75,12 +75,6 @@ const LegalPage: React.FC = () => {
       icon: "📄"
     },
     {
-      title: "Age Verification Policy",
-      description: "Our policies and procedures for verifying user age and protecting minors.",
-      route: "/legal/age-verification-policy",
-      icon: "🔍"
-    },
-    {
       title: "Content Provider Compliance",
       description: "Comprehensive compliance requirements for content providers and merchant standards.",
       route: "/legal/content-provider-compliance",

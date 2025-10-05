@@ -195,7 +195,6 @@ export const getTestimonials = () => {
 // Category emojis and descriptions
 export const getCategories = () => {
   return [
-    { name: "NSFW", emoji: "🔥", description: "Adult content and mature themes" },
     { name: "Female", emoji: "👩‍🦰", description: "Female characters" },
     { name: "Male", emoji: "👨‍🦰", description: "Male characters" },
     { name: "Fictional", emoji: "📚", description: "Characters from fiction" },

@@ -54,7 +54,6 @@ const BlockedContentPolicyPage = lazy(() => import("./pages/legal/BlockedContent
 const CookiePolicyPage = lazy(() => import("./pages/legal/CookiePolicyPage"));
 const DMCANoticePage = lazy(() => import("./pages/legal/DMCANoticePage"));
 const ExemptionStatementPage = lazy(() => import("./pages/legal/ExemptionStatementPage"));
-const AgeVerificationPolicyPage = lazy(() => import("./pages/legal/AgeVerificationPolicyPage"));
 const ContentProviderCompliancePage = lazy(() => import("./pages/legal/ContentProviderCompliancePage"));
 const ContentSafetyCompliancePage = lazy(() => import("./pages/legal/ContentSafetyCompliancePage"));
 const LiabilityDisclaimerPage = lazy(() => import("./pages/legal/LiabilityDisclaimerPage"));
@@ -151,7 +150,6 @@ export default function Router() {
           <Route path="/legal/cookie-policy" component={() => <SafeLazyRoute Component={CookiePolicyPage as React.LazyExoticComponent<() => JSX.Element>} />} />
           <Route path="/legal/dmca-notice" component={() => <SafeLazyRoute Component={DMCANoticePage as React.LazyExoticComponent<() => JSX.Element>} />} />
           <Route path="/legal/2257-exemption-statement" component={() => <SafeLazyRoute Component={ExemptionStatementPage as React.LazyExoticComponent<() => JSX.Element>} />} />
-          <Route path="/legal/age-verification-policy" component={() => <SafeLazyRoute Component={AgeVerificationPolicyPage as React.LazyExoticComponent<() => JSX.Element>} />} />
           <Route path="/legal/content-provider-compliance" component={() => <SafeLazyRoute Component={ContentProviderCompliancePage as React.LazyExoticComponent<() => JSX.Element>} />} />
           <Route path="/legal/content-safety-compliance" component={() => <SafeLazyRoute Component={ContentSafetyCompliancePage as React.LazyExoticComponent<() => JSX.Element>} />} />
           <Route path="/legal/liability-disclaimer" component={() => <SafeLazyRoute Component={LiabilityDisclaimerPage as React.LazyExoticComponent<() => JSX.Element>} />} />

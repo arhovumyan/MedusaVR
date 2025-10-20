@@ -18381,7 +18381,7 @@ function setupSocket(server) {
     });
     ioInstance.use(async (socket, next) => {
       try {
-        console.log("\u{1F510} Socket authentication attempt:", {
+        console.log(" Socket authentication attempt:", {
           hasToken: !!socket.handshake.auth.token,
           hasCharacterId: !!socket.handshake.auth.characterId,
           characterId: socket.handshake.auth.characterId,
@@ -18391,30 +18391,30 @@ function setupSocket(server) {
         const token = socket.handshake.auth.token;
         const characterId = socket.handshake.auth.characterId;
         if (!token) {
-          console.error("\u274C Socket auth failed: No token provided");
+          console.error(" Socket auth failed: No token provided");
           return next(new Error("No authentication token provided"));
         }
         if (!characterId) {
-          console.error("\u274C Socket auth failed: No character ID provided");
+          console.error(" Socket auth failed: No character ID provided");
           return next(new Error("No character ID provided"));
         }
         const decoded = jwt5.verify(token, process.env.JWT_SECRET || "your-secret-key-change-this-in-production");
-        console.log("\u{1F513} Token decoded successfully for user:", decoded.userId);
+        console.log(" Token decoded successfully for user:", decoded.userId);
         const user = await UserModel.findById(decoded.userId);
         if (!user) {
-          console.error("\u274C Socket auth failed: User not found for ID:", decoded.userId);
+          console.error(" Socket auth failed: User not found for ID:", decoded.userId);
           return next(new Error("User not found"));
         }
         const character = await CharacterModel.findOne({ id: characterId }).lean();
         if (!character) {
-          console.error("\u274C Socket auth failed: Character not found for ID:", characterId);
+          console.error(" Socket auth failed: Character not found for ID:", characterId);
           return next(new Error("Character not found"));
         }
         socket.data.userId = user._id;
         socket.data.characterId = character.id;
         socket.data.character = character;
         socket.data.username = user.username;
-        console.log("\u2705 Socket authentication successful:", {
+        console.log(" Socket authentication successful:", {
           userId: user._id,
           username: user.username,
           characterId: character.id,
@@ -18423,14 +18423,14 @@ function setupSocket(server) {
         });
         next();
       } catch (error) {
-        console.error("\u274C Socket authentication error:", error);
+        console.error(" Socket authentication error:", error);
         next(new Error(`Authentication failed: ${error instanceof Error ? error.message : "Unknown error"}`));
       }
     });
     ioInstance.on("connection", (socket) => {
       const { userId, characterId } = socket.data;
-      console.log(`\u2705 User ${userId} connected to character ${characterId}`);
-      console.log("\u{1F50C} Connection details:", {
+      console.log(` User ${userId} connected to character ${characterId}`);
+      console.log(" Connection details:", {
         socketId: socket.id,
         transport: socket.conn?.transport?.name,
         origin: socket.handshake.headers.origin,
@@ -18446,7 +18446,7 @@ function setupSocket(server) {
           messageContent = lastMessage.content;
         }
         if (!messageContent?.trim()) return;
-        console.log(`\u{1F4AC} ${socket.data.username} \u2192 ${socket.data.character?.name}: "${messageContent.trim()}"`);
+        console.log(` ${socket.data.username} \u2192 ${socket.data.character?.name}: "${messageContent.trim()}"`);
         const moderationResult = ContentModerationService.moderateContent(messageContent);
         if (moderationResult.isViolation) {
           const monitoringResult = await ContentModerationService.monitorUserBehavior(
@@ -18653,12 +18653,12 @@ function setupSocket(server) {
             if (ioInstance) {
               ioInstance.to(`character-${characterId}`).emit("receive-message", aiMessage2);
             }
-            console.log("\u2705 Mock chat response sent successfully");
+            console.log(" Mock chat response sent successfully");
             return;
           }
-          console.log("\u{1F916} Fetching AI response from OpenRouter...");
+          console.log(" Fetching AI response from OpenRouter...");
           if (!process.env.OPENROUTER_API_KEY) {
-            console.error("\u274C OPENROUTER_API_KEY not configured");
+            console.error(" OPENROUTER_API_KEY not configured");
             socket.emit("error", { message: "AI service not configured." });
             return;
           }

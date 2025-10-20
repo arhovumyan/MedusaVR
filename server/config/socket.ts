@@ -55,7 +55,7 @@ export function setupSocket(server: HttpServer) {
     // Middleware for authentication
     ioInstance.use(async (socket, next) => {
       try {
-        console.log('🔐 Socket authentication attempt:', {
+        console.log(' Socket authentication attempt:', {
           hasToken: !!socket.handshake.auth.token,
           hasCharacterId: !!socket.handshake.auth.characterId,
           characterId: socket.handshake.auth.characterId,
@@ -67,27 +67,27 @@ export function setupSocket(server: HttpServer) {
         const characterId = socket.handshake.auth.characterId;
 
         if (!token) {
-          console.error('❌ Socket auth failed: No token provided');
+          console.error(' Socket auth failed: No token provided');
           return next(new Error('No authentication token provided'));
         }
         
         if (!characterId) {
-          console.error('❌ Socket auth failed: No character ID provided');
+          console.error(' Socket auth failed: No character ID provided');
           return next(new Error('No character ID provided'));
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key-change-this-in-production") as any;
-        console.log('🔓 Token decoded successfully for user:', decoded.userId);
+        console.log(' Token decoded successfully for user:', decoded.userId);
         
         const user = await UserModel.findById(decoded.userId);
         if (!user) {
-          console.error('❌ Socket auth failed: User not found for ID:', decoded.userId);
+          console.error(' Socket auth failed: User not found for ID:', decoded.userId);
           return next(new Error('User not found'));
         }
 
         const character = await CharacterModel.findOne({ id: characterId }).lean();
         if (!character) {
-          console.error('❌ Socket auth failed: Character not found for ID:', characterId);
+          console.error(' Socket auth failed: Character not found for ID:', characterId);
           return next(new Error('Character not found'));
         }
 
@@ -96,7 +96,7 @@ export function setupSocket(server: HttpServer) {
         socket.data.character = character; // Cache the character object
         socket.data.username = user.username; // Store username in socket data
 
-        console.log('✅ Socket authentication successful:', {
+        console.log(' Socket authentication successful:', {
           userId: user._id,
           username: user.username,
           characterId: character.id, // Use numeric ID in logs
@@ -105,7 +105,7 @@ export function setupSocket(server: HttpServer) {
 
         next();
       } catch (error) {
-        console.error('❌ Socket authentication error:', error);
+        console.error(' Socket authentication error:', error);
         next(new Error(`Authentication failed: ${error instanceof Error ? error.message : 'Unknown error'}`));
       }
     });
@@ -113,8 +113,8 @@ export function setupSocket(server: HttpServer) {
     //when a user connects to the socket, it will log the userId and characterId
     ioInstance.on('connection', (socket) => {
       const { userId, characterId } = socket.data;
-      console.log(`✅ User ${userId} connected to character ${characterId}`);
-      console.log('🔌 Connection details:', {
+      console.log(` User ${userId} connected to character ${characterId}`);
+      console.log(' Connection details:', {
         socketId: socket.id,
         transport: socket.conn?.transport?.name,
         origin: socket.handshake.headers.origin,
@@ -140,7 +140,7 @@ export function setupSocket(server: HttpServer) {
       if (!messageContent?.trim()) return;
 
       // ===== ENHANCED AGE PROTECTION AND CONTENT MODERATION =====
-      console.log(`💬 ${socket.data.username} → ${socket.data.character?.name}: "${messageContent.trim()}"`);
+      console.log(` ${socket.data.username} → ${socket.data.character?.name}: "${messageContent.trim()}"`);
 
       // Check for content violations and manipulation attempts
       const moderationResult = ContentModerationService.moderateContent(messageContent);
@@ -339,15 +339,15 @@ export function setupSocket(server: HttpServer) {
               ioInstance.to(`character-${characterId}`).emit('receive-message', aiMessage);
             }
             
-            console.log("✅ Mock chat response sent successfully");
+            console.log(" Mock chat response sent successfully");
             return; // Skip OpenRouter call
           }
           
-          console.log("🤖 Fetching AI response from OpenRouter...");
+          console.log(" Fetching AI response from OpenRouter...");
           
           // Check if OpenRouter API key is configured
           if (!process.env.OPENROUTER_API_KEY) {
-            console.error("❌ OPENROUTER_API_KEY not configured");
+            console.error(" OPENROUTER_API_KEY not configured");
             socket.emit("error", { message: "AI service not configured." });
             return;
           }

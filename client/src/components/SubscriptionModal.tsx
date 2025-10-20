@@ -3,14 +3,14 @@ import { Fragment } from "react";
 import { Button } from "@/components/ui/button";
 import { X, Heart, Star, Crown } from "lucide-react";
 import modelImage from "@/constants/pics/model.jpg";
-import modelImage2 from "@/constants/pics/bitties.png"; // Ensure this path is correct
+import modelImage2 from "@/constants/pics/aiCompanion.jpg";
 
 interface SubscriptionModalProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   onSignIn: () => void;
   onSignUp: () => void;
-  action?: string; // e.g., "add to favorites", "chat with character"
+  action?: string; 
 }
 
 export default function SubscriptionModal({ 

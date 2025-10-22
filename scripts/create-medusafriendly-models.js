@@ -41,10 +41,10 @@ const MODELS_TO_CREATE = [
 async function connectToMedusaFriendly() {
   try {
     await mongoose.connect(MEDUSAFRIENDLY_DB_URI);
-    console.log('✅ Connected to MedusaFriendly database');
+    console.log(' Connected to MedusaFriendly database');
     return mongoose.connection;
   } catch (error) {
-    console.error('❌ Failed to connect to MedusaFriendly database:', error.message);
+    console.error(' Failed to connect to MedusaFriendly database:', error.message);
     throw error;
   }
 }
@@ -59,7 +59,7 @@ async function createModelInDatabase(modelInfo, connection) {
     const collections = await connection.db.listCollections({ name: collection }).toArray();
     
     if (collections.length > 0) {
-      console.log(`  ⚠️  Collection '${collection}' already exists`);
+      console.log(`    Collection '${collection}' already exists`);
       return;
     }
     
@@ -69,27 +69,27 @@ async function createModelInDatabase(modelInfo, connection) {
     await tempDoc.save();
     await model.deleteOne({ _id: tempDoc._id });
     
-    console.log(`  ✅ Created collection '${collection}' with schema`);
+    console.log(`   Created collection '${collection}' with schema`);
     
     // Get the schema and create indexes
     const schema = model.schema;
     const indexes = schema.indexes();
     
     if (indexes && indexes.length > 0) {
-      console.log(`  📊 Creating ${indexes.length} indexes for ${collection}`);
+      console.log(`   Creating ${indexes.length} indexes for ${collection}`);
       
       for (const index of indexes) {
         try {
           await connection.db.collection(collection).createIndex(index[0], index[1] || {});
-          console.log(`    ✅ Created index: ${JSON.stringify(index[0])}`);
+          console.log(`     Created index: ${JSON.stringify(index[0])}`);
         } catch (indexError) {
-          console.log(`    ⚠️  Index creation failed: ${indexError.message}`);
+          console.log(`      Index creation failed: ${indexError.message}`);
         }
       }
     }
     
   } catch (error) {
-    console.error(`  ❌ Error creating model ${name}:`, error.message);
+    console.error(`   Error creating model ${name}:`, error.message);
     throw error;
   }
 }
@@ -98,12 +98,12 @@ async function createAllModels() {
   let connection = null;
   
   try {
-    console.log('🚀 Creating all models in MedusaFriendly database...\n');
+    console.log(' Creating all models in MedusaFriendly database...\n');
     
     // Connect to MedusaFriendly database
     connection = await connectToMedusaFriendly();
     
-    console.log('\n📋 Creating models and collections...\n');
+    console.log('\n Creating models and collections...\n');
     
     // Create each model
     for (const modelInfo of MODELS_TO_CREATE) {
@@ -111,31 +111,31 @@ async function createAllModels() {
       console.log(''); // Add spacing between models
     }
     
-    console.log('✅ All models created successfully!');
-    console.log('\n📊 Summary:');
+    console.log(' All models created successfully!');
+    console.log('\n Summary:');
     console.log(`  • Created ${MODELS_TO_CREATE.length} collections in MedusaFriendly database`);
     console.log('  • All schemas and indexes have been applied');
     
     // List all collections to verify
-    console.log('\n📁 Collections in MedusaFriendly database:');
+    console.log('\n Collections in MedusaFriendly database:');
     const collections = await connection.db.listCollections().toArray();
     collections.forEach(collection => {
       console.log(`  • ${collection.name}`);
     });
     
-    console.log('\n🎯 Next steps:');
+    console.log('\n Next steps:');
     console.log('  • Verify collections in your MongoDB admin interface');
     console.log('  • Test your application with the new MedusaFriendly database');
     console.log('  • Consider migrating data from test database if needed');
     
   } catch (error) {
-    console.error('\n❌ Model creation failed:', error.message);
+    console.error('\n Model creation failed:', error.message);
     process.exit(1);
   } finally {
     // Close connection
     if (connection) {
       await mongoose.disconnect();
-      console.log('\n🔌 Disconnected from MedusaFriendly database');
+      console.log('\n Disconnected from MedusaFriendly database');
     }
   }
 }
@@ -143,7 +143,7 @@ async function createAllModels() {
 // Handle script execution
 if (import.meta.url === `file://${process.argv[1]}`) {
   createAllModels().catch(error => {
-    console.error('❌ Script execution failed:', error);
+    console.error(' Script execution failed:', error);
     process.exit(1);
   });
 }

@@ -3,7 +3,7 @@
 # Security Headers Testing Script for MedusaVR
 # Tests CSP and clickjacking protection implementation
 
-echo "🔒 MedusaVR Security Headers Test"
+echo " MedusaVR Security Headers Test"
 echo "================================="
 echo ""
 
@@ -15,35 +15,35 @@ NGINX_CONFIGS=(
 )
 
 # Check if nginx configurations are valid
-echo "📋 Testing nginx configuration syntax..."
+echo " Testing nginx configuration syntax..."
 for config in "${NGINX_CONFIGS[@]}"; do
     if [ -f "$config" ]; then
-        echo "✅ Found: $config"
+        echo " Found: $config"
         # Note: This would require nginx to be installed
-        # nginx -t -c "$config" 2>/dev/null && echo "   ✅ Syntax OK" || echo "   ❌ Syntax Error"
+        # nginx -t -c "$config" 2>/dev/null && echo "    Syntax OK" || echo "    Syntax Error"
     else
-        echo "❌ Missing: $config"
+        echo " Missing: $config"
     fi
 done
 echo ""
 
 # Test if security test page exists
-echo "🧪 Checking security test resources..."
+echo " Checking security test resources..."
 if [ -f "security/csp-test.html" ]; then
-    echo "✅ CSP test page created: security/csp-test.html"
+    echo " CSP test page created: security/csp-test.html"
 else
-    echo "❌ CSP test page missing"
+    echo " CSP test page missing"
 fi
 
 if [ -f "documentation/CSP_CLICKJACKING_IMPLEMENTATION.md" ]; then
-    echo "✅ Documentation created: documentation/CSP_CLICKJACKING_IMPLEMENTATION.md"
+    echo " Documentation created: documentation/CSP_CLICKJACKING_IMPLEMENTATION.md"
 else
-    echo "❌ Documentation missing"
+    echo " Documentation missing"
 fi
 echo ""
 
 # Check for required security headers in configurations
-echo "🔍 Verifying security headers implementation..."
+echo " Verifying security headers implementation..."
 
 REQUIRED_HEADERS=(
     "X-Frame-Options"
@@ -60,9 +60,9 @@ for config in "${NGINX_CONFIGS[@]}"; do
         echo "Checking $config:"
         for header in "${REQUIRED_HEADERS[@]}"; do
             if grep -q "add_header $header" "$config"; then
-                echo "   ✅ $header"
+                echo "    $header"
             else
-                echo "   ❌ $header (missing)"
+                echo "    $header (missing)"
             fi
         done
         echo ""
@@ -70,30 +70,30 @@ for config in "${NGINX_CONFIGS[@]}"; do
 done
 
 # Check for clickjacking protection specifics
-echo "🛡️  Verifying clickjacking protection..."
+echo "  Verifying clickjacking protection..."
 for config in "${NGINX_CONFIGS[@]}"; do
     if [ -f "$config" ]; then
         echo "Checking $config:"
         
         # Check X-Frame-Options
         if grep -q 'X-Frame-Options.*DENY' "$config"; then
-            echo "   ✅ X-Frame-Options DENY"
+            echo "    X-Frame-Options DENY"
         else
-            echo "   ❌ X-Frame-Options DENY (missing or incorrect)"
+            echo "    X-Frame-Options DENY (missing or incorrect)"
         fi
         
         # Check frame-ancestors
         if grep -q "frame-ancestors.*'none'" "$config"; then
-            echo "   ✅ CSP frame-ancestors 'none'"
+            echo "    CSP frame-ancestors 'none'"
         else
-            echo "   ❌ CSP frame-ancestors 'none' (missing)"
+            echo "    CSP frame-ancestors 'none' (missing)"
         fi
         echo ""
     fi
 done
 
 # Check CSP directive completeness
-echo "📝 Verifying CSP directive coverage..."
+echo " Verifying CSP directive coverage..."
 CSP_DIRECTIVES=(
     "default-src"
     "script-src"
@@ -112,23 +112,23 @@ for config in "${NGINX_CONFIGS[@]}"; do
         echo "Checking CSP in $config:"
         for directive in "${CSP_DIRECTIVES[@]}"; do
             if grep -q "$directive" "$config"; then
-                echo "   ✅ $directive"
+                echo "    $directive"
             else
-                echo "   ⚠️  $directive (not found - may be intentional)"
+                echo "     $directive (not found - may be intentional)"
             fi
         done
         echo ""
     fi
 done
 
-echo "🚀 Testing complete!"
+echo " Testing complete!"
 echo ""
-echo "📊 Summary:"
+echo " Summary:"
 echo "- Configuration files checked: ${#NGINX_CONFIGS[@]}"
 echo "- Security headers verified: ${#REQUIRED_HEADERS[@]}"
 echo "- CSP directives checked: ${#CSP_DIRECTIVES[@]}"
 echo ""
-echo "🔧 Next steps:"
+echo " Next steps:"
 echo "1. Deploy the updated nginx configuration"
 echo "2. Test using the CSP test page (security/csp-test.html)"
 echo "3. Monitor CSP violations in production"

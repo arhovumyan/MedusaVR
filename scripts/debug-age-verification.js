@@ -3,11 +3,11 @@
  * Run this in browser console to debug the issue
  */
 
-console.log('🔍 Age Verification Debug');
+console.log(' Age Verification Debug');
 console.log('========================');
 
 // Check current localStorage values
-console.log('\n📊 Current localStorage values:');
+console.log('\n Current localStorage values:');
 console.log('ageVerified:', localStorage.getItem('ageVerified'));
 console.log('ageVerifiedTimestamp:', localStorage.getItem('ageVerifiedTimestamp'));
 console.log('ageVerificationVersion:', localStorage.getItem('ageVerificationVersion'));
@@ -19,7 +19,7 @@ if (timestamp) {
     const now = new Date();
     const diffHours = (now - date) / (1000 * 60 * 60);
     
-    console.log('\n⏰ Timestamp Details:');
+    console.log('\n Timestamp Details:');
     console.log('Verification Date:', date);
     console.log('Current Date:', now);
     console.log('Hours since verification:', diffHours.toFixed(2));
@@ -27,12 +27,12 @@ if (timestamp) {
 }
 
 // Clear all age verification data to reset
-console.log('\n🧹 Clearing all age verification data...');
+console.log('\n Clearing all age verification data...');
 localStorage.removeItem('ageVerified');
 localStorage.removeItem('ageVerifiedTimestamp');
 localStorage.removeItem('ageVerificationVersion');
 
-console.log('\n✅ Cleared! Refresh the page to see the modal, then click "Yes, I am 18 or older"');
+console.log('\n Cleared! Refresh the page to see the modal, then click "Yes, I am 18 or older"');
 console.log('After that, refresh again - the modal should NOT appear for 24 hours.');
 
 // Function to manually set verification (for testing)
@@ -40,7 +40,7 @@ window.setAgeVerification = function() {
     localStorage.setItem('ageVerified', 'true');
     localStorage.setItem('ageVerifiedTimestamp', Date.now().toString());
     localStorage.setItem('ageVerificationVersion', 'v2');
-    console.log('✅ Age verification set manually');
+    console.log(' Age verification set manually');
     console.log('Refresh the page - modal should NOT appear');
 };
 
@@ -50,7 +50,7 @@ window.checkAgeVerification = function() {
     const timestamp = localStorage.getItem('ageVerifiedTimestamp');
     const version = localStorage.getItem('ageVerificationVersion');
     
-    console.log('\n📋 Verification Status:');
+    console.log('\n Verification Status:');
     console.log('Verified:', verified);
     console.log('Timestamp:', timestamp ? new Date(parseInt(timestamp)) : null);
     console.log('Version:', version);

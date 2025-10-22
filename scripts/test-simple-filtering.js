@@ -46,13 +46,13 @@ console.log('=============');
 
 testCases.forEach(testCase => {
   const result = containsProhibitedWord(testCase, prohibitedWords);
-  const status = result.isBlocked ? '❌ BLOCKED' : '✅ ALLOWED';
+  const status = result.isBlocked ? ' BLOCKED' : ' ALLOWED';
   const blockedWords = result.blockedWords.length > 0 ? ` (blocked: ${result.blockedWords.join(', ')})` : '';
   console.log(`${status}: "${testCase}"${blockedWords}`);
 });
 
 console.log('\n=============');
-console.log('✅ SUCCESS: Substring filtering now blocks bypass attempts!');
+console.log(' SUCCESS: Substring filtering now blocks bypass attempts!');
 console.log('Previously: "dogPod" would be allowed (word boundary matching)');
 console.log('Now: "dogPod" is blocked because it contains "dog"');
 console.log('This prevents users from adding extra letters to bypass the filter.');

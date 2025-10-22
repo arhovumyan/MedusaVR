@@ -13,7 +13,7 @@ const fetch = require('node-fetch');
 const API_BASE = 'http://localhost:5002'; // Adjust if your server runs on different port
 
 async function testRealisticArtStyleCreation() {
-  console.log('🧪 Testing realistic art style character creation...\n');
+  console.log(' Testing realistic art style character creation...\n');
 
   // Test data - realistic character
   const testCharacter = {
@@ -37,8 +37,8 @@ async function testRealisticArtStyleCreation() {
     }
   };
 
-  console.log('📝 Test character data:', JSON.stringify(testCharacter, null, 2));
-  console.log('\n🎯 Expected behavior:');
+  console.log(' Test character data:', JSON.stringify(testCharacter, null, 2));
+  console.log('\n Expected behavior:');
   console.log('  - Should use RUNPOD_REALISTIC_URL (https://vkfydhwbdpn6pq-7860.proxy.runpod.net)');
   console.log('  - Should use cyberrealistic.safetensors model');
   console.log('  - Should generate realistic-style image\n');
@@ -47,7 +47,7 @@ async function testRealisticArtStyleCreation() {
     // Get auth token (you'll need to update this with a valid token)
     const token = 'YOUR_AUTH_TOKEN_HERE'; // Replace with actual token from localStorage
     
-    console.log('🚀 Creating character...');
+    console.log(' Creating character...');
     
     const response = await fetch(`${API_BASE}/api/characters`, {
       method: 'POST',
@@ -63,31 +63,31 @@ async function testRealisticArtStyleCreation() {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('❌ Request failed:', errorText);
+      console.error(' Request failed:', errorText);
       return;
     }
 
     const result = await response.json();
-    console.log('✅ Character creation result:', JSON.stringify(result, null, 2));
+    console.log(' Character creation result:', JSON.stringify(result, null, 2));
 
     if (result.success && result.character) {
-      console.log('\n🎉 SUCCESS! Character created successfully!');
+      console.log('\n SUCCESS! Character created successfully!');
       console.log(`📍 Character ID: ${result.character.id}`);
-      console.log(`🖼️ Avatar URL: ${result.character.avatar}`);
-      console.log(`🎨 Art Style: ${result.character.artStyle?.primaryStyle}`);
+      console.log(` Avatar URL: ${result.character.avatar}`);
+      console.log(` Art Style: ${result.character.artStyle?.primaryStyle}`);
       
       // Check server logs for evidence of realistic routing
-      console.log('\n🔍 Check your server logs for these messages:');
-      console.log('  - "🔍 Getting WebUI URL for style: realistic"');
-      console.log('  - "🎨 Using realistic checkpoint: https://vkfydhwbdpn6pq-7860.proxy.runpod.net"');
-      console.log('  - "🔧 Using model: cyberrealistic.safetensors"');
+      console.log('\n Check your server logs for these messages:');
+      console.log('  - " Getting WebUI URL for style: realistic"');
+      console.log('  - " Using realistic checkpoint: https://vkfydhwbdpn6pq-7860.proxy.runpod.net"');
+      console.log('  - " Using model: cyberrealistic.safetensors"');
     } else {
-      console.log('⚠️ Character creation completed but may have used fallback method');
+      console.log(' Character creation completed but may have used fallback method');
     }
 
   } catch (error) {
-    console.error('❌ Test failed with error:', error.message);
-    console.log('\n🔧 Troubleshooting:');
+    console.error(' Test failed with error:', error.message);
+    console.log('\n Troubleshooting:');
     console.log('1. Make sure your server is running on http://localhost:5002');
     console.log('2. Update the AUTH_TOKEN in this script with a valid token');
     console.log('3. Check that RUNPOD_REALISTIC_URL is set in your .env file');
@@ -120,7 +120,7 @@ async function testAnimeComparison() {
     }
   };
 
-  console.log('🎯 Expected behavior for anime:');
+  console.log(' Expected behavior for anime:');
   console.log('  - Should use RUNPOD_ANIME_CARTOON_FANTASY_URL (port 7861)');
   console.log('  - Should use diving.safetensors model\n');
 
@@ -138,27 +138,27 @@ async function testAnimeComparison() {
 
     if (response.ok) {
       const result = await response.json();
-      console.log('✅ Anime character created successfully!');
-      console.log('🔍 Check server logs for anime routing evidence');
+      console.log(' Anime character created successfully!');
+      console.log(' Check server logs for anime routing evidence');
     } else {
-      console.log('❌ Anime test failed');
+      console.log(' Anime test failed');
     }
 
   } catch (error) {
-    console.log('❌ Anime comparison test failed:', error.message);
+    console.log(' Anime comparison test failed:', error.message);
   }
 }
 
 // Run tests
-console.log('🎨 Art Style Routing Test for Character Creation\n');
+console.log(' Art Style Routing Test for Character Creation\n');
 console.log('This script tests the realistic art style routing fix.\n');
 
 testRealisticArtStyleCreation()
   .then(() => testAnimeComparison())
   .then(() => {
-    console.log('\n📋 Test Summary:');
+    console.log('\n Test Summary:');
     console.log('- Realistic characters should route to port 7860 with cyberrealistic.safetensors');
     console.log('- Anime characters should route to port 7861 with diving.safetensors');
     console.log('- Check server logs for routing confirmation');
-    console.log('\n✅ Art style routing implementation is complete!');
+    console.log('\n Art style routing implementation is complete!');
   });

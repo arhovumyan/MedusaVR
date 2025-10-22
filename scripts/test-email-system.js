@@ -17,11 +17,11 @@ const __dirname = path.dirname(__filename);
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, 'server/.env') });
 
-console.log('🔍 MedusaVR Email System Diagnostic Tool\n');
+console.log(' MedusaVR Email System Diagnostic Tool\n');
 
 // Check environment variables
 function checkEnvVars() {
-  console.log('📋 Checking Email Configuration:');
+  console.log(' Checking Email Configuration:');
   console.log('================================');
   
   const requiredVars = [
@@ -37,24 +37,24 @@ function checkEnvVars() {
     const value = process.env[varName];
     if (!value || value === 'your_sendgrid_api_key_here') {
       missing.push(varName);
-      console.log(`❌ ${varName}: Not configured`);
+      console.log(` ${varName}: Not configured`);
     } else {
       configured.push(varName);
-      console.log(`✅ ${varName}: ${varName === 'SENDGRID_API_KEY' ? '[HIDDEN]' : value}`);
+      console.log(` ${varName}: ${varName === 'SENDGRID_API_KEY' ? '[HIDDEN]' : value}`);
     }
   });
   
   console.log('');
   
   if (missing.length > 0) {
-    console.log('🚨 MISSING CONFIGURATION:');
+    console.log(' MISSING CONFIGURATION:');
     console.log('=========================');
     missing.forEach(varName => {
-      console.log(`❌ ${varName} is required but not configured`);
+      console.log(` ${varName} is required but not configured`);
     });
     console.log('');
     
-    console.log('🔧 HOW TO FIX:');
+    console.log(' HOW TO FIX:');
     console.log('=============');
     console.log('Add these lines to your server/.env file:');
     console.log('');
@@ -78,11 +78,11 @@ function checkEnvVars() {
 // Test SendGrid connection
 async function testSendGridConnection() {
   if (!process.env.SENDGRID_API_KEY || process.env.SENDGRID_API_KEY === 'your_sendgrid_api_key_here') {
-    console.log('⚠️ Cannot test SendGrid - API key not configured');
+    console.log(' Cannot test SendGrid - API key not configured');
     return false;
   }
   
-  console.log('🔗 Testing SendGrid Connection:');
+  console.log(' Testing SendGrid Connection:');
   console.log('===============================');
   
   try {
@@ -95,10 +95,10 @@ async function testSendGridConnection() {
     };
     
     await sgMail.request(request);
-    console.log('✅ SendGrid connection successful!');
+    console.log(' SendGrid connection successful!');
     return true;
   } catch (error) {
-    console.log('❌ SendGrid connection failed:');
+    console.log(' SendGrid connection failed:');
     console.log(`   Error: ${error.message}`);
     
     if (error.response) {
@@ -107,7 +107,7 @@ async function testSendGridConnection() {
     }
     
     console.log('');
-    console.log('🔧 COMMON ISSUES:');
+    console.log(' COMMON ISSUES:');
     console.log('================');
     console.log('1. Invalid API key - check your SendGrid dashboard');
     console.log('2. API key permissions - ensure it has "Mail Send" permission');
@@ -121,11 +121,11 @@ async function testSendGridConnection() {
 // Send test email
 async function sendTestEmail(testEmail = 'test@example.com') {
   if (!process.env.SENDGRID_API_KEY || process.env.SENDGRID_API_KEY === 'your_sendgrid_api_key_here') {
-    console.log('⚠️ Cannot send test email - SendGrid not configured');
+    console.log(' Cannot send test email - SendGrid not configured');
     return false;
   }
   
-  console.log(`📧 Sending Test Email to: ${testEmail}`);
+  console.log(` Sending Test Email to: ${testEmail}`);
   console.log('=========================================');
   
   const msg = {
@@ -166,11 +166,11 @@ MedusaVR Email System Test
 <body>
   <div class="container">
     <div class="header">
-      <h1>🎉 MedusaVR Email System Test</h1>
+      <h1> MedusaVR Email System Test</h1>
     </div>
     
     <div class="success">
-      <strong>✅ Success!</strong> If you received this email, the email configuration is working correctly!
+      <strong> Success!</strong> If you received this email, the email configuration is working correctly!
     </div>
     
     <p>This is a test email from the MedusaVR email verification system.</p>
@@ -191,11 +191,11 @@ MedusaVR Email System Test
   
   try {
     await sgMail.send(msg);
-    console.log('✅ Test email sent successfully!');
+    console.log(' Test email sent successfully!');
     console.log(`   Check ${testEmail} for the test message`);
     return true;
   } catch (error) {
-    console.log('❌ Failed to send test email:');
+    console.log(' Failed to send test email:');
     console.log(`   Error: ${error.message}`);
     
     if (error.response) {
@@ -209,7 +209,7 @@ MedusaVR Email System Test
 
 // Test the complete signup email flow
 async function testSignupEmailFlow() {
-  console.log('🚀 Testing Complete Signup Email Flow:');
+  console.log(' Testing Complete Signup Email Flow:');
   console.log('=====================================');
   
   try {
@@ -217,14 +217,14 @@ async function testSignupEmailFlow() {
     const emailServicePath = path.join(__dirname, 'server/services/EmailVerificationService.js');
     const { emailVerificationService } = await import(emailServicePath);
     
-    console.log('✅ Email verification service loaded');
+    console.log(' Email verification service loaded');
     
     // Check if service is configured
     const isConfigured = emailVerificationService.isEmailServiceConfigured();
-    console.log(`📧 Email service configured: ${isConfigured ? '✅ Yes' : '❌ No'}`);
+    console.log(` Email service configured: ${isConfigured ? ' Yes' : ' No'}`);
     
     if (!isConfigured) {
-      console.log('⚠️ Email service not configured - emails will be logged instead of sent');
+      console.log(' Email service not configured - emails will be logged instead of sent');
     }
     
     // Generate a test token
@@ -243,19 +243,19 @@ async function testSignupEmailFlow() {
     );
     
     if (emailSent) {
-      console.log('✅ Verification email flow test completed successfully!');
+      console.log(' Verification email flow test completed successfully!');
       if (isConfigured) {
-        console.log(`   📧 Email sent to ${testEmail}`);
+        console.log(`    Email sent to ${testEmail}`);
       } else {
-        console.log('   📝 Email content logged to console (SendGrid not configured)');
+        console.log('    Email content logged to console (SendGrid not configured)');
       }
     } else {
-      console.log('❌ Verification email flow test failed');
+      console.log(' Verification email flow test failed');
     }
     
     return emailSent;
   } catch (error) {
-    console.log('❌ Signup email flow test failed:');
+    console.log(' Signup email flow test failed:');
     console.log(`   Error: ${error.message}`);
     return false;
   }
@@ -307,14 +307,14 @@ async function main() {
     const testEmail = args[emailIndex + 1];
     
     if (!testEmail) {
-      console.log('❌ Please provide an email address after --test-email');
+      console.log(' Please provide an email address after --test-email');
       process.exit(1);
     }
     
     if (connectionOk) {
       await sendTestEmail(testEmail);
     } else {
-      console.log('⚠️ Skipping test email - connection failed');
+      console.log(' Skipping test email - connection failed');
     }
     return;
   }
@@ -331,17 +331,17 @@ async function main() {
   await testSignupEmailFlow();
   
   console.log('');
-  console.log('🎯 NEXT STEPS:');
+  console.log(' NEXT STEPS:');
   console.log('=============');
   
   if (!connectionOk) {
-    console.log('1. ❌ Fix SendGrid configuration first');
-    console.log('2. 🔧 Add your SendGrid API key to server/.env');
-    console.log('3. 🧪 Run: node test-email-system.js --test-email your@email.com');
+    console.log('1.  Fix SendGrid configuration first');
+    console.log('2.  Add your SendGrid API key to server/.env');
+    console.log('3.  Run: node test-email-system.js --test-email your@email.com');
   } else {
-    console.log('1. ✅ Email system is working!');
-    console.log('2. 🧪 Test with your email: node test-email-system.js --test-email your@email.com');
-    console.log('3. 🚀 Try registering a new user account');
+    console.log('1.  Email system is working!');
+    console.log('2.  Test with your email: node test-email-system.js --test-email your@email.com');
+    console.log('3.  Try registering a new user account');
   }
   
   console.log('');

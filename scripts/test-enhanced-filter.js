@@ -59,7 +59,7 @@ testCases.forEach(testCase => {
     const isBlocked = checkObfuscatedContent(testCase.text);
     const testPassed = (isBlocked === testCase.shouldBlock);
     
-    const status = testPassed ? '✅ PASS' : '❌ FAIL';
+    const status = testPassed ? ' PASS' : ' FAIL';
     const expectedStatus = testCase.shouldBlock ? 'BLOCK' : 'ALLOW';
     const actualStatus = isBlocked ? 'BLOCKED' : 'ALLOWED';
     

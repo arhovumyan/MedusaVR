@@ -50,18 +50,18 @@ async function testAvatarUpload() {
       console.log('Public access status:', publicResponse.status);
       
       if (publicResponse.ok) {
-        console.log('✅ Avatar upload test successful!');
-        console.log('✅ File is accessible via public URL');
+        console.log(' Avatar upload test successful!');
+        console.log(' File is accessible via public URL');
       } else {
-        console.log('❌ File not accessible via public URL');
+        console.log(' File not accessible via public URL');
       }
     } else {
       const errorText = await response.text();
-      console.log('❌ Upload failed:', errorText);
+      console.log(' Upload failed:', errorText);
     }
 
   } catch (error) {
-    console.error('❌ Test error:', error);
+    console.error(' Test error:', error);
   }
 }
 

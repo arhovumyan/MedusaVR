@@ -39,7 +39,7 @@ console.log('\n=== Individual Word Testing ===');
 testCases.forEach(testCase => {
     const isDetected = checkObfuscatedContent(testCase);
     const details = obfuscationFilter.getDetectionDetails(testCase);
-    console.log(`"${testCase}" - ${isDetected ? '🚫 BLOCKED' : '✅ ALLOWED'}`);
+    console.log(`"${testCase}" - ${isDetected ? '🚫 BLOCKED' : ' ALLOWED'}`);
     if (isDetected && details.matches.length > 0) {
         console.log(`  -> Matched: ${details.matches.map(m => `${m.type}: ${m.normalized || m.text}`).join(', ')}`);
     }
@@ -60,7 +60,7 @@ sentences.forEach(sentence => {
     const isBlocked = checkObfuscatedContent(sentence);
     const censored = obfuscationFilter.censorContent(sentence);
     console.log(`Original: "${sentence}"`);
-    console.log(`Status: ${isBlocked ? '🚫 BLOCKED' : '✅ ALLOWED'}`);
+    console.log(`Status: ${isBlocked ? '🚫 BLOCKED' : ' ALLOWED'}`);
     console.log(`Censored: "${censored}"`);
     console.log('---');
 });

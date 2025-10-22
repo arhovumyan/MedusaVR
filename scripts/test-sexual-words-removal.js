@@ -38,13 +38,13 @@ console.log('=======');
 testCases.forEach(testWord => {
   try {
     const result = checkProhibitedWords(testWord);
-    const status = result.isAllowed ? '✅ ALLOWED' : '❌ BLOCKED';
+    const status = result.isAllowed ? ' ALLOWED' : ' BLOCKED';
     console.log(`${testWord.padEnd(20)} - ${status}`);
     if (!result.isAllowed) {
       console.log(`   Reason: ${result.message}`);
     }
   } catch (error) {
-    console.log(`${testWord.padEnd(20)} - ⚠️ ERROR: ${error.message}`);
+    console.log(`${testWord.padEnd(20)} -  ERROR: ${error.message}`);
   }
   console.log('');
 });

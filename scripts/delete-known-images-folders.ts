@@ -59,15 +59,15 @@ const KNOWN_IMAGES_FOLDERS = [
 ];
 
 async function deleteKnownImagesFolders() {
-  console.log('🎯 Direct Deletion of Known Images Folders');
+  console.log(' Direct Deletion of Known Images Folders');
   console.log('==========================================\n');
   
-  console.log(`🗑️  Will delete ${KNOWN_IMAGES_FOLDERS.length} known images folders:`);
+  console.log(`  Will delete ${KNOWN_IMAGES_FOLDERS.length} known images folders:`);
   KNOWN_IMAGES_FOLDERS.forEach((folder, index) => {
     console.log(`  ${index + 1}. ${folder}`);
   });
   
-  console.log(`\n⚠️  WARNING: This will delete ALL files in these specific images folders!`);
+  console.log(`\n  WARNING: This will delete ALL files in these specific images folders!`);
   console.log('This action cannot be undone!\n');
   
   const startTime = Date.now();
@@ -78,20 +78,20 @@ async function deleteKnownImagesFolders() {
     const totalTime = ((Date.now() - startTime) / 1000 / 60).toFixed(2);
     
     if (result.success) {
-      console.log('\n🎉 Complete deletion finished successfully!');
-      console.log(`📁 Images folders: ${result.totalImagesFolders}`);
-      console.log(`📄 Files: ${result.overallSummary.totalFiles}`);
-      console.log(`✅ Successful: ${result.overallSummary.successful}`);
-      console.log(`❌ Failed: ${result.overallSummary.failed}`);
-      console.log(`📁 Total size: ${result.overallSummary.totalSizeMB.toFixed(2)} MB`);
+      console.log('\n Complete deletion finished successfully!');
+      console.log(` Images folders: ${result.totalImagesFolders}`);
+      console.log(` Files: ${result.overallSummary.totalFiles}`);
+      console.log(` Successful: ${result.overallSummary.successful}`);
+      console.log(` Failed: ${result.overallSummary.failed}`);
+      console.log(` Total size: ${result.overallSummary.totalSizeMB.toFixed(2)} MB`);
       console.log(`⏱️  Total time: ${totalTime} minutes`);
     } else {
-      console.log('\n⚠️  Complete deletion finished with some failures');
-      console.log(`📁 Images folders: ${result.totalImagesFolders}`);
-      console.log(`📄 Files: ${result.overallSummary.totalFiles}`);
-      console.log(`✅ Successful: ${result.overallSummary.successful}`);
-      console.log(`❌ Failed: ${result.overallSummary.failed}`);
-      console.log(`📁 Total size: ${result.overallSummary.totalSizeMB.toFixed(2)} MB`);
+      console.log('\n  Complete deletion finished with some failures');
+      console.log(` Images folders: ${result.totalImagesFolders}`);
+      console.log(` Files: ${result.overallSummary.totalFiles}`);
+      console.log(` Successful: ${result.overallSummary.successful}`);
+      console.log(` Failed: ${result.overallSummary.failed}`);
+      console.log(` Total size: ${result.overallSummary.totalSizeMB.toFixed(2)} MB`);
       console.log(`⏱️  Total time: ${totalTime} minutes`);
       
       if (result.error) {
@@ -101,7 +101,7 @@ async function deleteKnownImagesFolders() {
       // Show folders with failures
       const foldersWithFailures = result.folderResults.filter(r => r.summary.failed > 0);
       if (foldersWithFailures.length > 0) {
-        console.log(`\n⚠️  Folders with failures:`);
+        console.log(`\n  Folders with failures:`);
         foldersWithFailures.forEach(folder => {
           console.log(`  - ${folder.folderPath}: ${folder.summary.failed} failures`);
         });
@@ -109,7 +109,7 @@ async function deleteKnownImagesFolders() {
     }
     
   } catch (error) {
-    console.error('❌ Complete deletion failed:', error);
+    console.error(' Complete deletion failed:', error);
     process.exit(1);
   }
 }

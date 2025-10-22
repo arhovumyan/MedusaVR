@@ -15,11 +15,11 @@ cloudinary.config({
 });
 
 async function deleteAllImagesFoldersDirect() {
-  console.log('🎯 Direct Images Folder Mass Deletion');
+  console.log(' Direct Images Folder Mass Deletion');
   console.log('====================================\n');
   
-  console.log('⚠️  This will search for and delete ALL resources in ANY folder named "images"');
-  console.log('⚠️  Using direct resource search - no folder scanning needed!');
+  console.log('  This will search for and delete ALL resources in ANY folder named "images"');
+  console.log('  Using direct resource search - no folder scanning needed!');
   console.log('This action cannot be undone!\n');
   
   const startTime = Date.now();
@@ -28,7 +28,7 @@ async function deleteAllImagesFoldersDirect() {
   let totalSizeMB = 0;
   
   try {
-    console.log('🔍 Searching for all resources and filtering for "images" folders...\n');
+    console.log(' Searching for all resources and filtering for "images" folders...\n');
     
     // Get all resources and filter for ones in "images" folders
     // This avoids complex search expressions that might fail
@@ -38,7 +38,7 @@ async function deleteAllImagesFoldersDirect() {
     
     do {
       batchCount++;
-      console.log(`📦 Processing batch ${batchCount}...`);
+      console.log(` Processing batch ${batchCount}...`);
       
       const searchOptions: any = {
         max_results: 100,
@@ -78,14 +78,14 @@ async function deleteAllImagesFoldersDirect() {
           if (deleteResult.result === 'ok') {
             totalDeleted++;
             totalSizeMB += (resource.bytes || 0) / (1024 * 1024);
-            console.log(`✅ Deleted: ${resource.public_id}`);
+            console.log(` Deleted: ${resource.public_id}`);
           } else {
             totalFailed++;
-            console.log(`❌ Failed to delete: ${resource.public_id} (${deleteResult.result})`);
+            console.log(` Failed to delete: ${resource.public_id} (${deleteResult.result})`);
           }
         } catch (deleteError) {
           totalFailed++;
-          console.log(`❌ Error deleting ${resource.public_id}:`, deleteError);
+          console.log(` Error deleting ${resource.public_id}:`, deleteError);
         }
         
         // Small delay to avoid overwhelming the API
@@ -95,7 +95,7 @@ async function deleteAllImagesFoldersDirect() {
       nextCursor = result.next_cursor;
       
       if (nextCursor) {
-        console.log(`📄 Batch ${batchCount} complete. Continuing to next batch...\n`);
+        console.log(` Batch ${batchCount} complete. Continuing to next batch...\n`);
         // Longer delay between batches
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
@@ -104,27 +104,27 @@ async function deleteAllImagesFoldersDirect() {
     
     const duration = Date.now() - startTime;
     
-    console.log(`\n🎉 Mass Deletion Complete!`);
-    console.log(`📊 Results:`);
-    console.log(`   📄 Total files processed: ${totalDeleted + totalFailed}`);
-    console.log(`   ✅ Successfully deleted: ${totalDeleted}`);
-    console.log(`   ❌ Failed: ${totalFailed}`);
-    console.log(`   📁 Total size deleted: ${totalSizeMB.toFixed(2)} MB`);
-    console.log(`   📦 Batches processed: ${batchCount}`);
+    console.log(`\n Mass Deletion Complete!`);
+    console.log(` Results:`);
+    console.log(`    Total files processed: ${totalDeleted + totalFailed}`);
+    console.log(`    Successfully deleted: ${totalDeleted}`);
+    console.log(`    Failed: ${totalFailed}`);
+    console.log(`    Total size deleted: ${totalSizeMB.toFixed(2)} MB`);
+    console.log(`    Batches processed: ${batchCount}`);
     console.log(`   ⏱️  Total duration: ${(duration/1000/60).toFixed(2)} minutes`);
     
     if (totalFailed > 0) {
-      console.log(`\n⚠️  ${totalFailed} files failed to delete. This may be due to:`);
+      console.log(`\n  ${totalFailed} files failed to delete. This may be due to:`);
       console.log('   - Files already deleted');
       console.log('   - Permission issues');
       console.log('   - Network timeouts');
     }
     
   } catch (error: any) {
-    console.error('❌ Mass deletion failed:', error);
+    console.error(' Mass deletion failed:', error);
     
     if (error.message?.includes('Rate Limit')) {
-      console.log('\n💡 Hit rate limit. Try again after the limit resets.');
+      console.log('\n Hit rate limit. Try again after the limit resets.');
       console.log('Current progress saved - deleted files won\'t be processed again.');
     }
     

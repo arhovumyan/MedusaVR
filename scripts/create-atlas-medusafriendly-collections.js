@@ -38,12 +38,12 @@ async function connectToAtlas() {
     // Replace the database name in the URI from 'test' to 'MedusaFriendly'
     const medusaFriendlyUri = atlasUri.replace('/test?', '/MedusaFriendly?');
     
-    console.log('🔗 Connecting to MongoDB Atlas...');
+    console.log(' Connecting to MongoDB Atlas...');
     await mongoose.connect(medusaFriendlyUri);
-    console.log('✅ Connected to MongoDB Atlas - MedusaFriendly database');
+    console.log(' Connected to MongoDB Atlas - MedusaFriendly database');
     return mongoose.connection;
   } catch (error) {
-    console.error('❌ Failed to connect to MongoDB Atlas:', error.message);
+    console.error(' Failed to connect to MongoDB Atlas:', error.message);
     throw error;
   }
 }
@@ -56,16 +56,16 @@ async function createCollection(collectionName, connection) {
     const collections = await connection.db.listCollections({ name: collectionName }).toArray();
     
     if (collections.length > 0) {
-      console.log(`  ⚠️  Collection '${collectionName}' already exists`);
+      console.log(`    Collection '${collectionName}' already exists`);
       return;
     }
     
     // Create the collection
     await connection.db.createCollection(collectionName);
-    console.log(`  ✅ Created collection '${collectionName}'`);
+    console.log(`   Created collection '${collectionName}'`);
     
   } catch (error) {
-    console.error(`  ❌ Error creating collection '${collectionName}':`, error.message);
+    console.error(`   Error creating collection '${collectionName}':`, error.message);
     throw error;
   }
 }
@@ -74,42 +74,42 @@ async function createAllCollections() {
   let connection = null;
   
   try {
-    console.log('🚀 Creating all collections in MongoDB Atlas - MedusaFriendly database...\n');
+    console.log(' Creating all collections in MongoDB Atlas - MedusaFriendly database...\n');
     
     // Connect to MongoDB Atlas
     connection = await connectToAtlas();
     
-    console.log('\n📋 Creating collections...\n');
+    console.log('\n Creating collections...\n');
     
     // Create each collection
     for (const collectionName of COLLECTIONS_TO_CREATE) {
       await createCollection(collectionName, connection);
     }
     
-    console.log('\n✅ All collections created successfully in MongoDB Atlas!');
-    console.log('\n📊 Summary:');
+    console.log('\n All collections created successfully in MongoDB Atlas!');
+    console.log('\n Summary:');
     console.log(`  • Created ${COLLECTIONS_TO_CREATE.length} collections in MedusaFriendly database on MongoDB Atlas`);
     
     // List all collections to verify
-    console.log('\n📁 Collections in MedusaFriendly database:');
+    console.log('\n Collections in MedusaFriendly database:');
     const collections = await connection.db.listCollections().toArray();
     collections.forEach(collection => {
       console.log(`  • ${collection.name}`);
     });
     
-    console.log('\n🎯 Next steps:');
+    console.log('\n Next steps:');
     console.log('  • Check your MongoDB Atlas interface to see the new collections');
     console.log('  • Update your application to use MedusaFriendly database');
     console.log('  • Your MedusaFriendly database now has the same structure as the test database');
     
   } catch (error) {
-    console.error('\n❌ Collection creation failed:', error.message);
+    console.error('\n Collection creation failed:', error.message);
     process.exit(1);
   } finally {
     // Close connection
     if (connection) {
       await mongoose.disconnect();
-      console.log('\n🔌 Disconnected from MongoDB Atlas');
+      console.log('\n Disconnected from MongoDB Atlas');
     }
   }
 }
@@ -117,7 +117,7 @@ async function createAllCollections() {
 // Handle script execution
 if (import.meta.url === `file://${process.argv[1]}`) {
   createAllCollections().catch(error => {
-    console.error('❌ Script execution failed:', error);
+    console.error(' Script execution failed:', error);
     process.exit(1);
   });
 }

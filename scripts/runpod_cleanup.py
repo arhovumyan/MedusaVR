@@ -37,7 +37,7 @@ def clear_gpu_memory():
             memory_allocated = torch.cuda.memory_allocated() / 1024**2  # MB
             memory_reserved = torch.cuda.memory_reserved() / 1024**2    # MB
             
-            print(f"✅ GPU memory cleared. Allocated: {memory_allocated:.1f}MB, Reserved: {memory_reserved:.1f}MB")
+            print(f" GPU memory cleared. Allocated: {memory_allocated:.1f}MB, Reserved: {memory_reserved:.1f}MB")
             return {
                 "success": True, 
                 "memory_allocated_mb": memory_allocated,
@@ -53,7 +53,7 @@ def clear_system_memory():
     try:
         print("🧹 Running garbage collection...")
         collected = gc.collect()
-        print(f"✅ Garbage collection completed. Collected {collected} objects")
+        print(f" Garbage collection completed. Collected {collected} objects")
         return {"success": True, "collected_objects": collected}
     except Exception as e:
         return {"success": False, "error": str(e)}
@@ -93,7 +93,7 @@ def cleanup_temp_files():
     
     print(f"🧹 Cleaned {cleaned_files} temporary files")
     if errors:
-        print(f"⚠️ {len(errors)} cleanup errors occurred")
+        print(f" {len(errors)} cleanup errors occurred")
     
     return {
         "success": True,
@@ -106,7 +106,7 @@ def reset_models():
     try:
         # This is a placeholder for model-specific reset logic
         # You might need to customize this based on your specific WebUI setup
-        print("🔄 Attempting model reset...")
+        print(" Attempting model reset...")
         
         # For Automatic1111 WebUI, we can try to trigger model unloading
         # This might require specific API calls depending on your setup
@@ -156,9 +156,9 @@ def main():
             print(json.dumps(result, indent=2))
         else:
             if result.get("success"):
-                print("✅ Cleanup completed successfully")
+                print(" Cleanup completed successfully")
             else:
-                print("❌ Cleanup encountered errors")
+                print(" Cleanup encountered errors")
                 if "error" in result:
                     print(f"Error: {result['error']}")
         
@@ -169,7 +169,7 @@ def main():
         if args.json:
             print(json.dumps({"success": False, "error": error_msg}))
         else:
-            print(f"❌ {error_msg}")
+            print(f" {error_msg}")
         return 1
 
 if __name__ == "__main__":

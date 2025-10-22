@@ -33,10 +33,10 @@ const COLLECTIONS_TO_REPLICATE = [
 async function connectToDatabase(uri, dbName) {
   try {
     await mongoose.connect(uri);
-    console.log(`✅ Connected to ${dbName} database`);
+    console.log(` Connected to ${dbName} database`);
     return mongoose.connection;
   } catch (error) {
-    console.error(`❌ Failed to connect to ${dbName} database:`, error.message);
+    console.error(` Failed to connect to ${dbName} database:`, error.message);
     throw error;
   }
 }
@@ -47,7 +47,7 @@ async function getCollectionSchema(collection, connection) {
     const sampleDoc = await connection.db.collection(collection).findOne({});
     
     if (!sampleDoc) {
-      console.log(`⚠️  Collection '${collection}' is empty, creating with basic structure`);
+      console.log(`  Collection '${collection}' is empty, creating with basic structure`);
       return null;
     }
     
@@ -60,7 +60,7 @@ async function getCollectionSchema(collection, connection) {
       indexes: await connection.db.collection(collection).indexes()
     };
   } catch (error) {
-    console.error(`❌ Error analyzing collection '${collection}':`, error.message);
+    console.error(` Error analyzing collection '${collection}':`, error.message);
     return null;
   }
 }
@@ -73,13 +73,13 @@ async function createCollectionInTarget(collectionName, schemaInfo, targetConnec
     const collections = await targetDb.listCollections({ name: collectionName }).toArray();
     
     if (collections.length > 0) {
-      console.log(`⚠️  Collection '${collectionName}' already exists in MedusaFriendly database`);
+      console.log(`  Collection '${collectionName}' already exists in MedusaFriendly database`);
       return;
     }
     
     // Create the collection
     await targetDb.createCollection(collectionName);
-    console.log(`✅ Created collection '${collectionName}' in MedusaFriendly database`);
+    console.log(` Created collection '${collectionName}' in MedusaFriendly database`);
     
     // If we have schema info, try to recreate indexes
     if (schemaInfo && schemaInfo.indexes) {
@@ -95,16 +95,16 @@ async function createCollectionInTarget(collectionName, schemaInfo, targetConnec
             delete indexOptions.ns;
             
             await collection.createIndex(indexSpec, indexOptions);
-            console.log(`  ✅ Created index on '${collectionName}': ${JSON.stringify(indexSpec)}`);
+            console.log(`   Created index on '${collectionName}': ${JSON.stringify(indexSpec)}`);
           } catch (indexError) {
-            console.log(`  ⚠️  Could not create index on '${collectionName}': ${indexError.message}`);
+            console.log(`    Could not create index on '${collectionName}': ${indexError.message}`);
           }
         }
       }
     }
     
   } catch (error) {
-    console.error(`❌ Error creating collection '${collectionName}':`, error.message);
+    console.error(` Error creating collection '${collectionName}':`, error.message);
     throw error;
   }
 }
@@ -114,27 +114,27 @@ async function replicateModels() {
   let medusaFriendlyConnection = null;
   
   try {
-    console.log('🚀 Starting model replication from test to MedusaFriendly database...\n');
+    console.log(' Starting model replication from test to MedusaFriendly database...\n');
     
     // Connect to both databases
     testConnection = await connectToDatabase(TEST_DB_URI, 'test');
     medusaFriendlyConnection = await connectToDatabase(MEDUSAFRIENDLY_DB_URI, 'MedusaFriendly');
     
-    console.log('\n📋 Analyzing collections in test database...\n');
+    console.log('\n Analyzing collections in test database...\n');
     
     // Analyze each collection in the test database
     const collectionAnalysis = {};
     
     for (const collectionName of COLLECTIONS_TO_REPLICATE) {
-      console.log(`🔍 Analyzing collection: ${collectionName}`);
+      console.log(` Analyzing collection: ${collectionName}`);
       const schemaInfo = await getCollectionSchema(collectionName, testConnection);
       collectionAnalysis[collectionName] = schemaInfo;
       
       if (schemaInfo) {
-        console.log(`  📊 Found ${schemaInfo.stats.count} documents`);
-        console.log(`  🔗 Found ${schemaInfo.indexes.length} indexes`);
+        console.log(`   Found ${schemaInfo.stats.count} documents`);
+        console.log(`   Found ${schemaInfo.indexes.length} indexes`);
       } else {
-        console.log(`  ⚠️  Collection is empty or doesn't exist`);
+        console.log(`    Collection is empty or doesn't exist`);
       }
     }
     
@@ -146,23 +146,23 @@ async function replicateModels() {
       await createCollectionInTarget(collectionName, collectionAnalysis[collectionName], medusaFriendlyConnection);
     }
     
-    console.log('\n✅ Model replication completed successfully!');
-    console.log('\n📊 Summary:');
+    console.log('\n Model replication completed successfully!');
+    console.log('\n Summary:');
     console.log(`  • Analyzed ${COLLECTIONS_TO_REPLICATE.length} collections from test database`);
     console.log(`  • Created ${COLLECTIONS_TO_REPLICATE.length} collections in MedusaFriendly database`);
-    console.log('\n🎯 Next steps:');
+    console.log('\n Next steps:');
     console.log('  • Verify collections in your MongoDB admin interface');
     console.log('  • Test your application with the new MedusaFriendly database');
     console.log('  • Consider migrating data if needed');
     
   } catch (error) {
-    console.error('\n❌ Model replication failed:', error.message);
+    console.error('\n Model replication failed:', error.message);
     process.exit(1);
   } finally {
     // Close connections
     if (testConnection) {
       await mongoose.disconnect();
-      console.log('\n🔌 Disconnected from databases');
+      console.log('\n Disconnected from databases');
     }
   }
 }
@@ -170,7 +170,7 @@ async function replicateModels() {
 // Handle script execution
 if (import.meta.url === `file://${process.argv[1]}`) {
   replicateModels().catch(error => {
-    console.error('❌ Script execution failed:', error);
+    console.error(' Script execution failed:', error);
     process.exit(1);
   });
 }

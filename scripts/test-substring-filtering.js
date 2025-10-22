@@ -25,11 +25,11 @@ console.log('=============');
 testCases.forEach(testCase => {
   try {
     const result = checkProhibitedWords(testCase);
-    const status = result.isAllowed ? '✅ ALLOWED' : '❌ BLOCKED';
+    const status = result.isAllowed ? ' ALLOWED' : ' BLOCKED';
     const blockedWords = result.blockedWords.length > 0 ? ` (blocked: ${result.blockedWords.join(', ')})` : '';
     console.log(`${status}: "${testCase}"${blockedWords}`);
   } catch (error) {
-    console.log(`⚠️  ERROR: "${testCase}" - ${error.message}`);
+    console.log(`  ERROR: "${testCase}" - ${error.message}`);
   }
 });
 

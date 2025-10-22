@@ -5,7 +5,7 @@
  * This script can be run in browser console to test the age verification logic
  */
 
-console.log('🧪 Testing Age Verification Fix');
+console.log(' Testing Age Verification Fix');
 console.log('================================');
 
 // Simulate the age verification utility functions
@@ -87,28 +87,28 @@ const testAgeVerification = {
 };
 
 // Test scenarios
-console.log('\n📋 Test Scenarios:');
+console.log('\n Test Scenarios:');
 console.log('=================');
 
 // Clear any existing verification
 testAgeVerification.clearVerification();
-console.log('1. ✅ Cleared existing verification');
+console.log('1.  Cleared existing verification');
 
 // Test: No verification should show modal
 let shouldShowModal = !testAgeVerification.isAgeVerified();
-console.log(`2. Should show modal (no verification): ${shouldShowModal ? '✅ YES' : '❌ NO'}`);
+console.log(`2. Should show modal (no verification): ${shouldShowModal ? ' YES' : ' NO'}`);
 
 // Set age verification
 testAgeVerification.setAgeVerified();
-console.log('3. ✅ Set age verification');
+console.log('3.  Set age verification');
 
 // Test: With fresh verification should NOT show modal
 shouldShowModal = !testAgeVerification.isAgeVerified();
-console.log(`4. Should show modal (fresh verification): ${shouldShowModal ? '❌ YES (ERROR!)' : '✅ NO'}`);
+console.log(`4. Should show modal (fresh verification): ${shouldShowModal ? ' YES (ERROR!)' : ' NO'}`);
 
 // Show current status
 const status = testAgeVerification.getStatus();
-console.log('\n📊 Current Status:');
+console.log('\n Current Status:');
 console.log('==================');
 console.log('Verified:', status.isVerified);
 console.log('Timestamp:', status.timestamp);
@@ -116,7 +116,7 @@ console.log('Version:', status.version);
 console.log('Hours until expiry:', status.hoursUntilExpiry);
 
 // Test old version cleanup
-console.log('\n🔄 Testing Version Migration:');
+console.log('\n Testing Version Migration:');
 console.log('============================');
 
 // Simulate old version data
@@ -125,23 +125,23 @@ localStorage.setItem(AGE_VERIFICATION_TIMESTAMP_KEY, Date.now().toString());
 localStorage.setItem(AGE_VERIFICATION_VERSION_KEY, 'v1'); // Old version
 
 shouldShowModal = !testAgeVerification.isAgeVerified();
-console.log(`Should show modal (old version): ${shouldShowModal ? '✅ YES' : '❌ NO (ERROR!)'}`);
+console.log(`Should show modal (old version): ${shouldShowModal ? ' YES' : ' NO (ERROR!)'}`);
 
 // Set new verification
 testAgeVerification.setAgeVerified();
 shouldShowModal = !testAgeVerification.isAgeVerified();
-console.log(`Should show modal (after migration): ${shouldShowModal ? '❌ YES (ERROR!)' : '✅ NO'}`);
+console.log(`Should show modal (after migration): ${shouldShowModal ? ' YES (ERROR!)' : ' NO'}`);
 
-console.log('\n🎉 Age verification fix test completed!');
-console.log('\n🔧 Summary of Changes:');
+console.log('\n Age verification fix test completed!');
+console.log('\n Summary of Changes:');
 console.log('=====================');
-console.log('- ✅ Changed expiry from 30 days to 1 day (24 hours)');
-console.log('- ✅ Added version checking for seamless migration');
-console.log('- ✅ Users with old verification will be re-prompted once');
-console.log('- ✅ After verification, modal won\'t show for 24 hours');
-console.log('- ✅ Added debugging utilities for troubleshooting');
+console.log('-  Changed expiry from 30 days to 1 day (24 hours)');
+console.log('-  Added version checking for seamless migration');
+console.log('-  Users with old verification will be re-prompted once');
+console.log('-  After verification, modal won\'t show for 24 hours');
+console.log('-  Added debugging utilities for troubleshooting');
 
-console.log('\n📝 To test in browser:');
+console.log('\n To test in browser:');
 console.log('======================');
 console.log('1. Open browser console');
 console.log('2. Paste this script');

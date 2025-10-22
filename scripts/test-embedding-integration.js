@@ -22,14 +22,14 @@ const mockUser = {
 };
 
 async function testEmbeddingIntegration() {
-  console.log('🧪 Testing Textual Inversion Embedding Integration\n');
+  console.log(' Testing Textual Inversion Embedding Integration\n');
 
   try {
     // Test 1: Check if TextualInversionService can generate embedding name
     console.log('1️⃣ Testing embedding name generation...');
     const textualInversionService = new TextualInversionService();
     const embeddingName = textualInversionService.generateEmbeddingName(mockCharacter.name);
-    console.log(`✅ Generated embedding name: ${embeddingName}`);
+    console.log(` Generated embedding name: ${embeddingName}`);
 
     // Test 2: Check if EmbeddingBasedImageGenerationService can build prompts with embeddings
     console.log('\n2️⃣ Testing prompt building with embeddings...');
@@ -42,7 +42,7 @@ async function testEmbeddingIntegration() {
       mockUser,
       false
     );
-    console.log(`✅ Prompt without embedding: ${promptWithoutEmbedding}`);
+    console.log(` Prompt without embedding: ${promptWithoutEmbedding}`);
 
     // Test with embedding
     const promptWithEmbedding = imageGenService.buildEmbeddingPrompt(
@@ -52,7 +52,7 @@ async function testEmbeddingIntegration() {
       true,
       embeddingName
     );
-    console.log(`✅ Prompt with embedding: ${promptWithEmbedding}`);
+    console.log(` Prompt with embedding: ${promptWithEmbedding}`);
 
     // Test 3: Check if workflow generation includes TextualInversionLoader
     console.log('\n3️⃣ Testing ComfyUI workflow generation...');
@@ -68,12 +68,12 @@ async function testEmbeddingIntegration() {
     const hasTextualInversionLoader = Object.values(workflow).some(node => 
       node.class_type === 'TextualInversionLoader'
     );
-    console.log(`✅ Workflow includes TextualInversionLoader: ${hasTextualInversionLoader}`);
+    console.log(` Workflow includes TextualInversionLoader: ${hasTextualInversionLoader}`);
 
     // Test 4: Validate embedding file path structure
     console.log('\n4️⃣ Testing embedding file path structure...');
     const expectedPath = `${mockUser.username}/characters/${mockCharacter.name}/embeddings/${embeddingName}.safetensors`;
-    console.log(`✅ Expected embedding file path: ${expectedPath}`);
+    console.log(` Expected embedding file path: ${expectedPath}`);
 
     // Test 5: Check training workflow generation
     console.log('\n5️⃣ Testing training workflow generation...');
@@ -86,21 +86,21 @@ async function testEmbeddingIntegration() {
     const hasTextualInversionTraining = Object.values(trainingWorkflow).some(node => 
       node.class_type === 'TextualInversionTraining'
     );
-    console.log(`✅ Training workflow includes TextualInversionTraining: ${hasTextualInversionTraining}`);
+    console.log(` Training workflow includes TextualInversionTraining: ${hasTextualInversionTraining}`);
 
-    console.log('\n🎉 All embedding integration tests passed!');
-    console.log('\n📋 Summary:');
-    console.log('- ✅ Embedding name generation working');
-    console.log('- ✅ Prompt building with embedding tokens working');
-    console.log('- ✅ ComfyUI workflow generation with TextualInversionLoader working');
-    console.log('- ✅ Training workflow generation working');
-    console.log('- ✅ File path structure validated');
+    console.log('\n All embedding integration tests passed!');
+    console.log('\n Summary:');
+    console.log('-  Embedding name generation working');
+    console.log('-  Prompt building with embedding tokens working');
+    console.log('-  ComfyUI workflow generation with TextualInversionLoader working');
+    console.log('-  Training workflow generation working');
+    console.log('-  File path structure validated');
     
-    console.log('\n🔄 Integration Status: READY FOR PRODUCTION');
+    console.log('\n Integration Status: READY FOR PRODUCTION');
     console.log('The system now properly uses embeddings from bunny.net in image generation!');
 
   } catch (error) {
-    console.error('❌ Test failed:', error.message);
+    console.error(' Test failed:', error.message);
     console.error(error.stack);
   }
 }

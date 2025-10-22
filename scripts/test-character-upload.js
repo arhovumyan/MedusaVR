@@ -50,19 +50,19 @@ async function testCharacterUpload() {
       console.log('Public access status:', publicResponse.status);
       
       if (publicResponse.ok) {
-        console.log('✅ Character image upload test successful!');
-        console.log('✅ File is accessible via public URL');
-        console.log('✅ Folder structure: userName/characters/general/images/ is working');
+        console.log(' Character image upload test successful!');
+        console.log(' File is accessible via public URL');
+        console.log(' Folder structure: userName/characters/general/images/ is working');
       } else {
-        console.log('❌ File not accessible via public URL');
+        console.log(' File not accessible via public URL');
       }
     } else {
       const errorText = await response.text();
-      console.log('❌ Upload failed:', errorText);
+      console.log(' Upload failed:', errorText);
     }
 
   } catch (error) {
-    console.error('❌ Test error:', error);
+    console.error(' Test error:', error);
   }
 }
 

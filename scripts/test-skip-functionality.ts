@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function testSkipFunctionality() {
-  console.log('🧪 Testing folder skip functionality...\n');
+  console.log(' Testing folder skip functionality...\n');
   
   try {
     // Test with just a few folders to see the skip behavior
@@ -26,26 +26,26 @@ async function testSkipFunctionality() {
     let migratedCount = 0;
     
     for (const folder of testFolders) {
-      console.log(`🔍 Testing folder: ${folder}`);
+      console.log(` Testing folder: ${folder}`);
       const result = await CloudinaryToBunnyMigrationService.migrateFolderCompletely(folder);
       
       if (result.skipped) {
         console.log(`  ⏭️  SKIPPED - already exists`);
         skippedCount++;
       } else {
-        console.log(`  ✅ MIGRATED - ${result.summary.successful} files, ${result.summary.failed} failed`);
+        console.log(`   MIGRATED - ${result.summary.successful} files, ${result.summary.failed} failed`);
         migratedCount++;
       }
       console.log('');
     }
     
-    console.log('📊 Test Results:');
+    console.log(' Test Results:');
     console.log(`   ⏭️  Skipped: ${skippedCount}`);
-    console.log(`   🚀 Migrated: ${migratedCount}`);
-    console.log(`   📁 Total tested: ${testFolders.length}`);
+    console.log(`    Migrated: ${migratedCount}`);
+    console.log(`    Total tested: ${testFolders.length}`);
     
   } catch (error) {
-    console.error('❌ Test failed:', error);
+    console.error(' Test failed:', error);
   }
 }
 

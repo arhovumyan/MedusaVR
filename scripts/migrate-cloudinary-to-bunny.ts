@@ -16,12 +16,12 @@ interface MigrationProgress {
 }
 
 async function main() {
-  console.log('🚀 Cloudinary to Bunny.net Migration Tool');
+  console.log(' Cloudinary to Bunny.net Migration Tool');
   console.log('=========================================\n');
 
   // Check configuration
   if (!CloudinaryToBunnyMigrationService.isConfigured()) {
-    console.error('❌ Configuration Error:');
+    console.error(' Configuration Error:');
     console.error('Please ensure the following environment variables are set:');
     console.error('- CLOUDINARY_CLOUD_NAME');
     console.error('- CLOUDINARY_API_KEY');
@@ -31,7 +31,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log('✅ Configuration validated');
+  console.log(' Configuration validated');
 
   // Get command line arguments
   const args = process.argv.slice(2);
@@ -45,7 +45,7 @@ async function main() {
     
     case 'test':
       if (!folderName) {
-        console.error('❌ Please provide a folder name to test');
+        console.error(' Please provide a folder name to test');
         console.error('Usage: npm run migrate test <folder-name>');
         process.exit(1);
       }
@@ -68,7 +68,7 @@ async function main() {
 }
 
 async function listFolders() {
-  console.log('📁 Fetching all Cloudinary folders...\n');
+  console.log(' Fetching all Cloudinary folders...\n');
   
   try {
     const folders = await CloudinaryToBunnyMigrationService.getAllCloudinaryFolders();
@@ -86,24 +86,24 @@ async function listFolders() {
     console.log(`\nUse 'npm run migrate test <folder-name>' to test migration for a specific folder`);
     
   } catch (error) {
-    console.error('❌ Failed to list folders:', error);
+    console.error(' Failed to list folders:', error);
     process.exit(1);
   }
 }
 
 async function testMigration(folderName: string) {
-  console.log(`🧪 Testing migration for folder: ${folderName}\n`);
+  console.log(` Testing migration for folder: ${folderName}\n`);
   
   try {
     const result = await CloudinaryToBunnyMigrationService.testMigrationForFolder(folderName);
     
     if (result.success) {
-      console.log(`\n✅ Test migration successful for ${folderName}!`);
+      console.log(`\n Test migration successful for ${folderName}!`);
       console.log('You can now run full migration for this folder or all folders.');
       console.log(`\nTo migrate this folder: npm run migrate migrate ${folderName}`);
       console.log('To migrate all folders: npm run migrate migrate');
     } else {
-      console.log(`\n❌ Test migration failed for ${folderName}`);
+      console.log(`\n Test migration failed for ${folderName}`);
       if (result.error) {
         console.error('Error:', result.error);
       }
@@ -119,13 +119,13 @@ async function testMigration(folderName: string) {
     }
     
   } catch (error) {
-    console.error('❌ Test migration failed:', error);
+    console.error(' Test migration failed:', error);
     process.exit(1);
   }
 }
 
 async function migrateFolder(folderName: string) {
-  console.log(`🚀 Starting complete migration for folder: ${folderName}\n`);
+  console.log(` Starting complete migration for folder: ${folderName}\n`);
   
   const startTime = Date.now();
   
@@ -134,7 +134,7 @@ async function migrateFolder(folderName: string) {
     const percentage = ((progress.processed / progress.total) * 100).toFixed(1);
     const successRate = progress.processed > 0 ? ((progress.successful / progress.processed) * 100).toFixed(1) : '0.0';
     
-    console.log(`📊 Progress: ${progress.processed}/${progress.total} (${percentage}%) | Success: ${successRate}% | Current: ${progress.currentFile}`);
+    console.log(` Progress: ${progress.processed}/${progress.total} (${percentage}%) | Success: ${successRate}% | Current: ${progress.currentFile}`);
   };
   
   try {
@@ -143,10 +143,10 @@ async function migrateFolder(folderName: string) {
     const totalTime = ((Date.now() - startTime) / 1000 / 60).toFixed(2);
     
     if (result.success) {
-      console.log(`\n🎉 Migration completed successfully for ${folderName}!`);
+      console.log(`\n Migration completed successfully for ${folderName}!`);
       console.log(`⏱️  Total time: ${totalTime} minutes`);
     } else {
-      console.log(`\n⚠️  Migration completed with some failures for ${folderName}`);
+      console.log(`\n  Migration completed with some failures for ${folderName}`);
       console.log(`⏱️  Total time: ${totalTime} minutes`);
       
       if (result.error) {
@@ -156,7 +156,7 @@ async function migrateFolder(folderName: string) {
       // Show failed files
       const failedFiles = result.results.filter(r => !r.success);
       if (failedFiles.length > 0) {
-        console.log(`\n❌ ${failedFiles.length} files failed to migrate:`);
+        console.log(`\n ${failedFiles.length} files failed to migrate:`);
         failedFiles.slice(0, 10).forEach(file => { // Show first 10 failures
           console.log(`  - ${file.resource.filename}: ${file.error}`);
         });
@@ -168,14 +168,14 @@ async function migrateFolder(folderName: string) {
     }
     
   } catch (error) {
-    console.error('❌ Migration failed:', error);
+    console.error(' Migration failed:', error);
     process.exit(1);
   }
 }
 
 async function migrateAll() {
   console.log('🌍 Starting migration of ALL folders from Cloudinary to Bunny.net\n');
-  console.log('⚠️  This will migrate all your Cloudinary data. Please ensure you have sufficient Bunny.net storage space.\n');
+  console.log('  This will migrate all your Cloudinary data. Please ensure you have sufficient Bunny.net storage space.\n');
   
   // Add a 10 second countdown
   for (let i = 10; i > 0; i--) {
@@ -183,7 +183,7 @@ async function migrateAll() {
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
   
-  console.log('\n🚀 Migration started!\n');
+  console.log('\n Migration started!\n');
   
   const startTime = Date.now();
   
@@ -192,7 +192,7 @@ async function migrateAll() {
     const percentage = ((progress.processed / progress.total) * 100).toFixed(1);
     const successRate = progress.processed > 0 ? ((progress.successful / progress.processed) * 100).toFixed(1) : '0.0';
     
-    console.log(`📊 [${progress.folderName}] ${progress.processed}/${progress.total} (${percentage}%) | Success: ${successRate}% | ${progress.currentFile}`);
+    console.log(` [${progress.folderName}] ${progress.processed}/${progress.total} (${percentage}%) | Success: ${successRate}% | ${progress.currentFile}`);
   };
   
   try {
@@ -201,20 +201,20 @@ async function migrateAll() {
     const totalTime = ((Date.now() - startTime) / 1000 / 60).toFixed(2);
     
     if (result.success) {
-      console.log('\n🎉 Complete migration finished successfully!');
-      console.log(`📁 Folders: ${result.totalFolders}`);
-      console.log(`📄 Files: ${result.overallSummary.totalFiles}`);
-      console.log(`✅ Successful: ${result.overallSummary.successful}`);
-      console.log(`❌ Failed: ${result.overallSummary.failed}`);
-      console.log(`📁 Total size: ${result.overallSummary.totalSizeMB.toFixed(2)} MB`);
+      console.log('\n Complete migration finished successfully!');
+      console.log(` Folders: ${result.totalFolders}`);
+      console.log(` Files: ${result.overallSummary.totalFiles}`);
+      console.log(` Successful: ${result.overallSummary.successful}`);
+      console.log(` Failed: ${result.overallSummary.failed}`);
+      console.log(` Total size: ${result.overallSummary.totalSizeMB.toFixed(2)} MB`);
       console.log(`⏱️  Total time: ${totalTime} minutes`);
     } else {
-      console.log('\n⚠️  Complete migration finished with some failures');
-      console.log(`📁 Folders: ${result.totalFolders}`);
-      console.log(`📄 Files: ${result.overallSummary.totalFiles}`);
-      console.log(`✅ Successful: ${result.overallSummary.successful}`);
-      console.log(`❌ Failed: ${result.overallSummary.failed}`);
-      console.log(`📁 Total size: ${result.overallSummary.totalSizeMB.toFixed(2)} MB`);
+      console.log('\n  Complete migration finished with some failures');
+      console.log(` Folders: ${result.totalFolders}`);
+      console.log(` Files: ${result.overallSummary.totalFiles}`);
+      console.log(` Successful: ${result.overallSummary.successful}`);
+      console.log(` Failed: ${result.overallSummary.failed}`);
+      console.log(` Total size: ${result.overallSummary.totalSizeMB.toFixed(2)} MB`);
       console.log(`⏱️  Total time: ${totalTime} minutes`);
       
       if (result.error) {
@@ -224,7 +224,7 @@ async function migrateAll() {
       // Show folders with failures
       const foldersWithFailures = result.folderResults.filter(r => r.summary.failed > 0);
       if (foldersWithFailures.length > 0) {
-        console.log(`\n⚠️  Folders with failures:`);
+        console.log(`\n  Folders with failures:`);
         foldersWithFailures.forEach(folder => {
           console.log(`  - ${folder.folderName}: ${folder.summary.failed} failures`);
         });
@@ -232,7 +232,7 @@ async function migrateAll() {
     }
     
   } catch (error) {
-    console.error('❌ Complete migration failed:', error);
+    console.error(' Complete migration failed:', error);
     process.exit(1);
   }
 }
@@ -272,6 +272,6 @@ process.on('SIGTERM', () => {
 
 // Run the main function
 main().catch((error) => {
-  console.error('❌ Unexpected error:', error);
+  console.error(' Unexpected error:', error);
   process.exit(1);
 });

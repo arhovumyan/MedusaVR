@@ -71,7 +71,7 @@ class DatabaseTester {
 
   async connectToDatabase() {
     try {
-      console.log('🔗 Connecting to MongoDB Atlas MedusaFriendly database...');
+      console.log(' Connecting to MongoDB Atlas MedusaFriendly database...');
       
       const atlasUri = process.env.MONGODB_URI;
       if (!atlasUri) {
@@ -84,18 +84,18 @@ class DatabaseTester {
       await mongoose.connect(medusaFriendlyUri);
       this.connection = mongoose.connection;
       
-      console.log('✅ Connected to MongoDB Atlas - MedusaFriendly database');
+      console.log(' Connected to MongoDB Atlas - MedusaFriendly database');
       this.testResults.connection = true;
       return true;
     } catch (error) {
-      console.error('❌ Database connection failed:', error.message);
+      console.error(' Database connection failed:', error.message);
       this.testResults.connection = false;
       return false;
     }
   }
 
   async testCollections() {
-    console.log('\n📋 Testing collections...');
+    console.log('\n Testing collections...');
     
     const expectedCollections = [
       'characters', 'chats', 'comments', 'conversations', 
@@ -106,15 +106,15 @@ class DatabaseTester {
     const actualCollections = await this.connection.db.listCollections().toArray();
     const collectionNames = actualCollections.map(c => c.name);
 
-    console.log('\n📁 Found collections:');
+    console.log('\n Found collections:');
     collectionNames.forEach(name => {
       console.log(`  • ${name}`);
     });
 
-    console.log('\n🔍 Checking expected collections:');
+    console.log('\n Checking expected collections:');
     for (const expectedCollection of expectedCollections) {
       const exists = collectionNames.includes(expectedCollection);
-      console.log(`  ${exists ? '✅' : '❌'} ${expectedCollection}`);
+      console.log(`  ${exists ? '' : ''} ${expectedCollection}`);
       this.testResults.collections[expectedCollection] = exists;
     }
 
@@ -122,22 +122,22 @@ class DatabaseTester {
   }
 
   async testModelOperations() {
-    console.log('\n🧪 Testing model operations...');
+    console.log('\n Testing model operations...');
     
     try {
       // Test User Model
       console.log('\n👤 Testing User model...');
       const testUser = new UserModel(TEST_DATA.user);
       const savedUser = await testUser.save();
-      console.log('  ✅ User created successfully');
+      console.log('   User created successfully');
       this.testResults.cleanup.push({ model: UserModel, id: savedUser._id });
       this.testResults.models.user = true;
 
       // Test Character Model
-      console.log('\n🎭 Testing Character model...');
+      console.log('\n Testing Character model...');
       const testCharacter = new CharacterModel(TEST_DATA.character);
       const savedCharacter = await testCharacter.save();
-      console.log('  ✅ Character created successfully');
+      console.log('   Character created successfully');
       this.testResults.cleanup.push({ model: CharacterModel, id: savedCharacter._id });
       this.testResults.models.character = true;
 
@@ -145,12 +145,12 @@ class DatabaseTester {
       console.log('\n🏷️ Testing Tag model...');
       const testTag = new TagModel(TEST_DATA.tag);
       const savedTag = await testTag.save();
-      console.log('  ✅ Tag created successfully');
+      console.log('   Tag created successfully');
       this.testResults.cleanup.push({ model: TagModel, id: savedTag._id });
       this.testResults.models.tag = true;
 
       // Test Conversation Model
-      console.log('\n💬 Testing Conversation model...');
+      console.log('\n Testing Conversation model...');
       const testConversation = new ConversationModel({
         userId: savedUser._id,
         characterId: savedCharacter.id,
@@ -158,7 +158,7 @@ class DatabaseTester {
         messages: []
       });
       const savedConversation = await testConversation.save();
-      console.log('  ✅ Conversation created successfully');
+      console.log('   Conversation created successfully');
       this.testResults.cleanup.push({ model: ConversationModel, id: savedConversation._id });
       this.testResults.models.conversation = true;
 
@@ -172,19 +172,19 @@ class DatabaseTester {
         characterName: savedCharacter.name
       });
       const savedMessage = await testMessage.save();
-      console.log('  ✅ Message created successfully');
+      console.log('   Message created successfully');
       this.testResults.cleanup.push({ model: MessageModel, id: savedMessage._id });
       this.testResults.models.message = true;
 
       return true;
     } catch (error) {
-      console.error('❌ Model operations test failed:', error.message);
+      console.error(' Model operations test failed:', error.message);
       return false;
     }
   }
 
   async testQueries() {
-    console.log('\n🔍 Testing database queries...');
+    console.log('\n Testing database queries...');
     
     try {
       // Test counting documents
@@ -192,72 +192,72 @@ class DatabaseTester {
       const characterCount = await CharacterModel.countDocuments();
       const tagCount = await TagModel.countDocuments();
       
-      console.log(`  📊 User documents: ${userCount}`);
-      console.log(`  📊 Character documents: ${characterCount}`);
-      console.log(`  📊 Tag documents: ${tagCount}`);
+      console.log(`   User documents: ${userCount}`);
+      console.log(`   Character documents: ${characterCount}`);
+      console.log(`   Tag documents: ${tagCount}`);
       
       // Test finding documents
       const users = await UserModel.find().limit(5);
-      console.log(`  🔍 Found ${users.length} users`);
+      console.log(`   Found ${users.length} users`);
       
       return true;
     } catch (error) {
-      console.error('❌ Query test failed:', error.message);
+      console.error(' Query test failed:', error.message);
       return false;
     }
   }
 
   async cleanupTestData() {
-    console.log('\n🧹 Cleaning up test data...');
+    console.log('\n Cleaning up test data...');
     
     try {
       for (const item of this.testResults.cleanup) {
         await item.model.deleteOne({ _id: item.id });
       }
-      console.log('  ✅ Test data cleaned up successfully');
+      console.log('   Test data cleaned up successfully');
       return true;
     } catch (error) {
-      console.error('❌ Cleanup failed:', error.message);
+      console.error(' Cleanup failed:', error.message);
       return false;
     }
   }
 
   generateReport() {
-    console.log('\n📊 TEST REPORT');
+    console.log('\n TEST REPORT');
     console.log('================');
     
-    console.log(`\n🔗 Database Connection: ${this.testResults.connection ? '✅ PASS' : '❌ FAIL'}`);
+    console.log(`\n Database Connection: ${this.testResults.connection ? ' PASS' : ' FAIL'}`);
     
-    console.log('\n📁 Collections:');
+    console.log('\n Collections:');
     Object.entries(this.testResults.collections).forEach(([name, exists]) => {
-      console.log(`  ${exists ? '✅' : '❌'} ${name}`);
+      console.log(`  ${exists ? '' : ''} ${name}`);
     });
     
-    console.log('\n🧪 Model Operations:');
+    console.log('\n Model Operations:');
     Object.entries(this.testResults.models).forEach(([name, success]) => {
-      console.log(`  ${success ? '✅' : '❌'} ${name}`);
+      console.log(`  ${success ? '' : ''} ${name}`);
     });
     
     const allCollectionsExist = Object.values(this.testResults.collections).every(exists => exists);
     const allModelsWork = Object.values(this.testResults.models).every(success => success);
     const overallSuccess = this.testResults.connection && allCollectionsExist && allModelsWork;
     
-    console.log(`\n🎯 OVERALL RESULT: ${overallSuccess ? '✅ ALL TESTS PASSED' : '❌ SOME TESTS FAILED'}`);
+    console.log(`\n OVERALL RESULT: ${overallSuccess ? ' ALL TESTS PASSED' : ' SOME TESTS FAILED'}`);
     
     if (overallSuccess) {
-      console.log('\n🎉 Your MedusaFriendly database is ready to use!');
-      console.log('\n📋 Next steps:');
+      console.log('\n Your MedusaFriendly database is ready to use!');
+      console.log('\n Next steps:');
       console.log('  • Update your application to use MedusaFriendly database');
       console.log('  • Test your application with the new database');
       console.log('  • Consider migrating data from test database if needed');
     } else {
-      console.log('\n⚠️  Some tests failed. Please check the errors above.');
+      console.log('\n  Some tests failed. Please check the errors above.');
     }
   }
 
   async runAllTests() {
     try {
-      console.log('🚀 Starting MedusaFriendly Database Tests...\n');
+      console.log(' Starting MedusaFriendly Database Tests...\n');
       
       // Test 1: Database Connection
       const connected = await this.connectToDatabase();
@@ -282,11 +282,11 @@ class DatabaseTester {
       this.generateReport();
       
     } catch (error) {
-      console.error('\n❌ Test suite failed:', error.message);
+      console.error('\n Test suite failed:', error.message);
     } finally {
       if (this.connection) {
         await mongoose.disconnect();
-        console.log('\n🔌 Disconnected from database');
+        console.log('\n Disconnected from database');
       }
     }
   }
@@ -296,7 +296,7 @@ class DatabaseTester {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const tester = new DatabaseTester();
   tester.runAllTests().catch(error => {
-    console.error('❌ Test execution failed:', error);
+    console.error(' Test execution failed:', error);
     process.exit(1);
   });
 }

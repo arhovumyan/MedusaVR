@@ -42,7 +42,7 @@ const mustStillBeBlocked = [
   'kill', 'murder', 'torture', 'abuse', 'loli', 'shota', 'cp', 'child porn'
 ];
 
-console.log('\n🔍 TESTING EACH FILE:');
+console.log('\n TESTING EACH FILE:');
 console.log('-'.repeat(70));
 
 testFiles.forEach(file => {
@@ -51,7 +51,7 @@ testFiles.forEach(file => {
   try {
     const content = fs.readFileSync(filePath, 'utf8').toLowerCase();
     
-    console.log(`\n📄 ${file.name}`);
+    console.log(`\n ${file.name}`);
     console.log(`   File: ${file.path}`);
     
     // Check if consensual adult words were removed
@@ -81,25 +81,25 @@ testFiles.forEach(file => {
     });
     
     // Results
-    console.log(`   ✅ Consensual words removed: ${removedWords.length}/${shouldBeAllowed.length}`);
-    console.log(`   ✅ Harmful words still blocked: ${stillBlockedHarmful.length}/${mustStillBeBlocked.length}`);
+    console.log(`    Consensual words removed: ${removedWords.length}/${shouldBeAllowed.length}`);
+    console.log(`    Harmful words still blocked: ${stillBlockedHarmful.length}/${mustStillBeBlocked.length}`);
     
     if (stillBlockedAllowed.length > 0) {
-      console.log(`   ⚠️  Still blocking consensual words: ${stillBlockedAllowed.slice(0, 3).join(', ')}${stillBlockedAllowed.length > 3 ? '...' : ''}`);
+      console.log(`     Still blocking consensual words: ${stillBlockedAllowed.slice(0, 3).join(', ')}${stillBlockedAllowed.length > 3 ? '...' : ''}`);
     }
     
     if (incorrectlyRemovedHarmful.length > 0) {
-      console.log(`   ❌ CRITICAL: Harmful words removed: ${incorrectlyRemovedHarmful.slice(0, 3).join(', ')}${incorrectlyRemovedHarmful.length > 3 ? '...' : ''}`);
+      console.log(`    CRITICAL: Harmful words removed: ${incorrectlyRemovedHarmful.slice(0, 3).join(', ')}${incorrectlyRemovedHarmful.length > 3 ? '...' : ''}`);
     }
     
   } catch (error) {
-    console.log(`   ❌ Error reading file: ${error.message}`);
+    console.log(`    Error reading file: ${error.message}`);
   }
 });
 
 console.log('\n' + '='.repeat(70));
 console.log('SUMMARY:');
-console.log('✅ Consensual adult sexual content should now be ALLOWED');
-console.log('✅ Harmful content (CSAM, bestiality, rape, etc.) remains BLOCKED');
-console.log('✅ The word "sex" and similar should no longer trigger content warnings');
+console.log(' Consensual adult sexual content should now be ALLOWED');
+console.log(' Harmful content (CSAM, bestiality, rape, etc.) remains BLOCKED');
+console.log(' The word "sex" and similar should no longer trigger content warnings');
 console.log('='.repeat(70));

@@ -4,7 +4,7 @@ import { BunnyStorageService } from '../server/services/BunnyStorageService.js';
 // Load environment variables
 dotenv.config();
 
-console.log('🔍 Debug Environment Variables');
+console.log(' Debug Environment Variables');
 console.log('================================');
 
 console.log('Raw environment variables:');

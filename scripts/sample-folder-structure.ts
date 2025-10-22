@@ -14,7 +14,7 @@ cloudinary.config({
 });
 
 async function sampleFolderStructure() {
-  console.log('🔍 Sampling folder structures in Cloudinary...\n');
+  console.log(' Sampling folder structures in Cloudinary...\n');
   
   try {
     const result = await cloudinary.search
@@ -23,7 +23,7 @@ async function sampleFolderStructure() {
       .with_field('context')
       .execute();
     
-    console.log(`📊 Found ${result.resources.length} resources. Analyzing folder paths:\n`);
+    console.log(` Found ${result.resources.length} resources. Analyzing folder paths:\n`);
     
     const folderCounts: { [key: string]: number } = {};
     const samplePaths: string[] = [];
@@ -37,13 +37,13 @@ async function sampleFolderStructure() {
       }
     }
     
-    console.log('📁 Sample file paths:');
+    console.log(' Sample file paths:');
     console.log('===================');
     for (const path of samplePaths) {
       console.log(path);
     }
     
-    console.log('\n📊 Top folders by file count:');
+    console.log('\n Top folders by file count:');
     console.log('=============================');
     const sortedFolders = Object.entries(folderCounts)
       .sort(([,a], [,b]) => b - a)
@@ -54,11 +54,11 @@ async function sampleFolderStructure() {
       
       // Check if this folder path contains "images"
       if (folder.includes('images') || folder.includes('Images')) {
-        console.log(`  ⚡ CONTAINS "images"!`);
+        console.log(`   CONTAINS "images"!`);
       }
     }
     
-    console.log('\n🎯 Looking specifically for paths containing "images":');
+    console.log('\n Looking specifically for paths containing "images":');
     console.log('======================================================');
     let foundImagesFolder = false;
     
@@ -67,13 +67,13 @@ async function sampleFolderStructure() {
       const publicId = resource.public_id || '';
       
       if (folderPath.includes('images') || folderPath.includes('Images') || publicId.includes('images') || publicId.includes('Images')) {
-        console.log(`✅ ${publicId} -> folder: "${folderPath}"`);
+        console.log(` ${publicId} -> folder: "${folderPath}"`);
         foundImagesFolder = true;
       }
     }
     
     if (!foundImagesFolder) {
-      console.log('❌ No files found with "images" in folder path or public_id in this sample');
+      console.log(' No files found with "images" in folder path or public_id in this sample');
       console.log('   This might mean:');
       console.log('   - Images folders were already deleted');
       console.log('   - Files are in different folder structures');
@@ -81,7 +81,7 @@ async function sampleFolderStructure() {
     }
     
   } catch (error) {
-    console.error('❌ Error sampling folder structure:', error);
+    console.error(' Error sampling folder structure:', error);
   }
 }
 

@@ -16,7 +16,7 @@ console.log('===================================================================
 
 sexualWords.forEach(word => {
   const isStillBlocked = sharedContent.toLowerCase().includes(`'${word}'`) || sharedContent.toLowerCase().includes(`"${word}"`);
-  const status = isStillBlocked ? '❌ STILL BLOCKED' : '✅ REMOVED FROM FILTER';
+  const status = isStillBlocked ? ' STILL BLOCKED' : ' REMOVED FROM FILTER';
   console.log(`${word.padEnd(20)} - ${status}`);
 });
 
@@ -25,6 +25,6 @@ console.log('============================================================');
 
 harmfulWords.forEach(word => {
   const isStillBlocked = sharedContent.toLowerCase().includes(`'${word}'`) || sharedContent.toLowerCase().includes(`"${word}"`);
-  const status = isStillBlocked ? '✅ STILL BLOCKED' : '❌ REMOVED (ERROR)';
+  const status = isStillBlocked ? ' STILL BLOCKED' : ' REMOVED (ERROR)';
   console.log(`${word.padEnd(20)} - ${status}`);
 });

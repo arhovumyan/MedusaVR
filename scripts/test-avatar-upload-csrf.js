@@ -16,13 +16,13 @@ async function testAvatarUploadWithCsrf() {
     });
 
     if (!csrfResponse.ok) {
-      console.error('❌ Failed to get CSRF token:', csrfResponse.status);
+      console.error(' Failed to get CSRF token:', csrfResponse.status);
       return;
     }
 
     const csrfData = await csrfResponse.json();
     const csrfToken = csrfData.csrfToken;
-    console.log('✅ CSRF token obtained:', csrfToken ? 'Yes' : 'No');
+    console.log(' CSRF token obtained:', csrfToken ? 'Yes' : 'No');
 
     // Create a simple test image buffer (1x1 pixel PNG)
     const testImageBuffer = Buffer.from([
@@ -65,29 +65,29 @@ async function testAvatarUploadWithCsrf() {
     
     if (uploadResponse.ok) {
       const responseData = await uploadResponse.json();
-      console.log('✅ Avatar upload successful!');
+      console.log(' Avatar upload successful!');
       console.log('Response data:', responseData);
       
       if (responseData.url) {
-        console.log('✅ Avatar URL:', responseData.url);
+        console.log(' Avatar URL:', responseData.url);
         
         // Test if the uploaded file is accessible
         const publicResponse = await fetch(responseData.url);
         console.log('Public access status:', publicResponse.status);
         
         if (publicResponse.ok) {
-          console.log('✅ Avatar is accessible via public URL');
+          console.log(' Avatar is accessible via public URL');
         } else {
-          console.log('❌ Avatar not accessible via public URL');
+          console.log(' Avatar not accessible via public URL');
         }
       }
     } else {
       const errorText = await uploadResponse.text();
-      console.log('❌ Upload failed:', errorText);
+      console.log(' Upload failed:', errorText);
     }
 
   } catch (error) {
-    console.error('❌ Test error:', error);
+    console.error(' Test error:', error);
   }
 }
 

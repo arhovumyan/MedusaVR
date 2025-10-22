@@ -2,7 +2,7 @@
 // Run this in the browser console after the fixes are deployed
 
 async function testSignupFlow() {
-  console.log('🧪 Testing signup flow fixes...');
+  console.log(' Testing signup flow fixes...');
   
   try {
     // Test 1: Check if CSP allows Google Tag Manager
@@ -10,8 +10,8 @@ async function testSignupFlow() {
     const script = document.createElement('script');
     script.src = 'https://www.googletagmanager.com/gtag/js?l=dataLayer&id=test';
     document.head.appendChild(script);
-    script.onload = () => console.log('✅ Google Tag Manager script loaded successfully');
-    script.onerror = () => console.error('❌ Google Tag Manager blocked by CSP');
+    script.onload = () => console.log(' Google Tag Manager script loaded successfully');
+    script.onerror = () => console.error(' Google Tag Manager blocked by CSP');
     
     // Test 2: Check if CSRF token endpoint works
     console.log('2️⃣ Testing CSRF token endpoint...');
@@ -22,9 +22,9 @@ async function testSignupFlow() {
     
     if (csrfResponse.ok) {
       const csrfData = await csrfResponse.json();
-      console.log('✅ CSRF token retrieved:', csrfData.csrfToken ? 'Yes' : 'No');
+      console.log(' CSRF token retrieved:', csrfData.csrfToken ? 'Yes' : 'No');
     } else {
-      console.error('❌ Failed to get CSRF token:', csrfResponse.status);
+      console.error(' Failed to get CSRF token:', csrfResponse.status);
     }
     
     // Test 3: Check registration endpoint (without actually registering)
@@ -39,15 +39,15 @@ async function testSignupFlow() {
     
     if (testRegResponse.status === 400) {
       const errorData = await testRegResponse.json();
-      console.log('✅ Registration endpoint responding correctly with validation:', errorData.message);
+      console.log(' Registration endpoint responding correctly with validation:', errorData.message);
     } else {
-      console.error('❌ Unexpected registration response:', testRegResponse.status);
+      console.error(' Unexpected registration response:', testRegResponse.status);
     }
     
-    console.log('🎉 Basic functionality tests completed!');
+    console.log(' Basic functionality tests completed!');
     
   } catch (error) {
-    console.error('❌ Test failed:', error);
+    console.error(' Test failed:', error);
   }
 }
 

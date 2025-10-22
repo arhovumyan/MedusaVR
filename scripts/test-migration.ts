@@ -7,7 +7,7 @@ import { v2 as cloudinary } from 'cloudinary';
 dotenv.config();
 
 async function quickTest() {
-  console.log('🧪 Quick Migration Test');
+  console.log(' Quick Migration Test');
   console.log('=======================\n');
 
   try {
@@ -34,15 +34,15 @@ async function quickTest() {
 
     // Check if services are configured
     if (!CloudinaryToBunnyMigrationService.isConfigured()) {
-      console.error('❌ Services not configured properly');
+      console.error(' Services not configured properly');
       console.error('Please check your environment variables');
       return;
     }
 
-    console.log('✅ Services configured successfully');
+    console.log(' Services configured successfully');
 
     // List all folders
-    console.log('\n📁 Fetching Cloudinary folders...');
+    console.log('\n Fetching Cloudinary folders...');
     const folders = await CloudinaryToBunnyMigrationService.getAllCloudinaryFolders();
     console.log(`Found ${folders.length} folders:`);
     
@@ -71,7 +71,7 @@ async function quickTest() {
     const foldersToCheck = candidateFolders.length > 0 ? candidateFolders.slice(0, 10) : folders.slice(0, 10);
     
     for (const folder of foldersToCheck) {
-      console.log(`\n🔍 Checking folder: ${folder}`);
+      console.log(`\n Checking folder: ${folder}`);
       const resources = await CloudinaryToBunnyMigrationService.getCloudinaryResourcesInFolder(folder);
       console.log(`Found ${resources.length} resources in ${folder}`);
       
@@ -86,25 +86,25 @@ async function quickTest() {
       return;
     }
 
-    console.log(`\n🧪 Testing migration with folder: ${testFolder}`);
+    console.log(`\n Testing migration with folder: ${testFolder}`);
     
     const testResult = await CloudinaryToBunnyMigrationService.testMigrationForFolder(testFolder);
     
     if (testResult.success) {
-      console.log('✅ Test migration successful!');
+      console.log(' Test migration successful!');
       console.log('\nNext steps:');
       console.log(`1. To migrate just this folder: npm run migrate migrate ${testFolder}`);
       console.log('2. To migrate all folders: npm run migrate migrate');
       console.log('3. To list all commands: npm run migrate help');
     } else {
-      console.log('❌ Test migration failed');
+      console.log(' Test migration failed');
       if (testResult.error) {
         console.log('Error:', testResult.error);
       }
     }
 
   } catch (error) {
-    console.error('❌ Test failed:', error);
+    console.error(' Test failed:', error);
   }
 }
 

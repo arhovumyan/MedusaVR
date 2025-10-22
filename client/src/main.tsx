@@ -29,7 +29,7 @@ window.addEventListener('error', (event) => {
 
 // Handle unhandled promise rejections
 window.addEventListener('unhandledrejection', (event) => {
-  console.error('🚨 Unhandled promise rejection:', event.reason);
+  console.error(' Unhandled promise rejection:', event.reason);
   // Don't prevent default - let React handle it properly
 });
 

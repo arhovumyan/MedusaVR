@@ -81,7 +81,7 @@ export const generateAIResponse = async (
   characterPersona?: string
 ): Promise<string> => {
   try {
-    console.log(`🤖 Generating AI response for ${characterName}...`);
+    console.log(` Generating AI response for ${characterName}...`);
     
     // Use Replicate service to generate the response
     const response = await replicateService.generateResponse(
@@ -92,7 +92,7 @@ export const generateAIResponse = async (
     
     return response;
   } catch (error) {
-    console.error('❌ Error generating AI response:', error);
+    console.error(' Error generating AI response:', error);
     
     // Fallback to a simple response if Replicate fails
     return `*${characterName} looks thoughtful* I'm having some trouble understanding right now. Could you try rephrasing that?`;
@@ -129,7 +129,7 @@ router.get("/:characterId", requireAuth, async (req, res) => {
         "Generate a first greeting message that introduces your character based on your description. Make it engaging, personality-driven, and true to your character's nature. Keep it to 2-3 sentences maximum."
       );
 
-      console.log(`🎭 Generating first greeting for ${character.name}`);
+      console.log(` Generating first greeting for ${character.name}`);
 
       // Generate AI greeting based on character description
       let aiGreeting = "";
@@ -151,11 +151,11 @@ router.get("/:characterId", requireAuth, async (req, res) => {
           // Filter AI response for safety
           const filterResult = AIResponseFilterService.filterAIResponse(rawAIGreeting, character.name);
           if (filterResult.violations.length > 0) {
-            console.error(`🚨 AI GREETING FILTERED for ${character.name}:`, filterResult.violations);
+            console.error(` AI GREETING FILTERED for ${character.name}:`, filterResult.violations);
           }
           
           aiGreeting = filterResult.filteredResponse;
-          console.log(`✅ Generated greeting for ${character.name}: ${aiGreeting.substring(0, 100)}...`);
+          console.log(` Generated greeting for ${character.name}: ${aiGreeting.substring(0, 100)}...`);
         } else {
           console.error("Failed to generate greeting:", result.error);
           // Fallback greeting based on character description
@@ -276,9 +276,9 @@ router.post("/:characterId/message", requireAuth, ContentModerationService.moder
     const personalityVariation = getPersonalityVariation(tagNames);
     const enhancedSystemMessage = `${systemMessage} ${personalityVariation}`;
 
-    console.log("🎭 Character personality tags:", tagNames);
-    console.log("🎨 System message preview:", systemMessage.substring(0, 100) + '...');
-    console.log("👤 Username being sent to AI:", username);
+    console.log(" Character personality tags:", tagNames);
+    console.log(" System message preview:", systemMessage.substring(0, 100) + '...');
+    console.log(" Username being sent to AI:", username);
 
     // Use OpenRouter with fallback system for personality-based response
     const result = await openRouterWithFallback({
@@ -294,18 +294,18 @@ router.post("/:characterId/message", requireAuth, ContentModerationService.moder
 
     let aiResponse: string;
     if (result.success) {
-      console.log(`✅ OpenRouter response successful using model: ${result.modelUsed}`);
+      console.log(` OpenRouter response successful using model: ${result.modelUsed}`);
       const rawAIResponse = result.data.choices[0].message.content.trim();
       
       // Filter AI response for safety
       const filterResult = AIResponseFilterService.filterAIResponse(rawAIResponse, character.name);
       if (filterResult.violations.length > 0) {
-        console.error(`🚨 AI RESPONSE FILTERED for ${character.name}:`, filterResult.violations);
+        console.error(` AI RESPONSE FILTERED for ${character.name}:`, filterResult.violations);
       }
       
       aiResponse = filterResult.filteredResponse;
     } else {
-      console.error('❌ OpenRouter failed, using fallback response:', result.error);
+      console.error(' OpenRouter failed, using fallback response:', result.error);
       aiResponse = `*${character.name} looks thoughtful* I'm having some trouble understanding right now. Could you try rephrasing that?`;
     }
     const aiMessage: ChatMessage = {
@@ -387,7 +387,7 @@ router.post('/generate', requireAuth, ContentModerationService.moderateChatMessa
     });
 
     if (result.success) {
-      console.log(`✅ OpenRouter response successful using model: ${result.modelUsed}`);
+      console.log(` OpenRouter response successful using model: ${result.modelUsed}`);
       
       // Filter AI response for safety before sending
       if (result.data?.choices?.[0]?.message?.content) {
@@ -395,7 +395,7 @@ router.post('/generate', requireAuth, ContentModerationService.moderateChatMessa
         const filterResult = AIResponseFilterService.filterAIResponse(rawAIResponse, character.name);
         
         if (filterResult.violations.length > 0) {
-          console.error(`🚨 AI RESPONSE FILTERED for ${character.name}:`, filterResult.violations);
+          console.error(` AI RESPONSE FILTERED for ${character.name}:`, filterResult.violations);
         }
         
         // Update the response with filtered content
@@ -404,7 +404,7 @@ router.post('/generate', requireAuth, ContentModerationService.moderateChatMessa
       
       res.json(result.data);
     } else {
-      console.error('❌ All OpenRouter models failed:', result.error);
+      console.error(' All OpenRouter models failed:', result.error);
       res.status(500).json({ error: 'Failed to get response from OpenRouter - all models unavailable' });
     }
   } catch (err) {

@@ -249,7 +249,7 @@ function ChatPageContent({ characterId, messagesEndRef }: { characterId: string;
           {messages.length === 0 && (
             <div className="flex justify-center px-4">
               <div className="text-center text-zinc-400 max-w-md">
-                <p className="text-lg mb-2">👋 Start your conversation!</p>
+                <p className="text-lg mb-2">Start your conversation!</p>
                 <p className="text-sm">
                   Send a message to {character.name} to begin chatting.
                 </p>
